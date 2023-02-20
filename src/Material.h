@@ -88,9 +88,9 @@ public:
 			reflected_prob = 1.0f;
 		}
 
-		vec3 out = (linearRand(0.f,1.f) < reflected_prob) ?
+		vec3 output = (linearRand(0.f,1.f) < reflected_prob) ?
 			reflect(ray_in.direction, rec.normal) : refracted;
-		ray_scattered = Ray(rec.point, out);
+		ray_scattered = Ray(rec.point, output);
 		return true;
 	}
 

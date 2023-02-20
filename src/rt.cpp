@@ -14,8 +14,54 @@
 #define GLM_FORCE_ALIGNED
 #define GLM_FORCE_AVX2
 
+#include <3rdparty\glm\glm.hpp>
 #include <3rdparty/glm/vec3.hpp>
 #include <3rdparty/glm/gtc/random.hpp>
+
+#define in
+#define out
+
+using glm::min;
+using glm::max;
+using glm::clamp;
+
+using glm::normalize;
+using glm::dot;
+
+using glm::fract;
+using glm::sign;
+using glm::inversesqrt;
+using glm::floatBitsToUint;
+using glm::floatBitsToInt;
+using glm::intBitsToFloat;
+using glm::uintBitsToFloat;
+
+using glm::findMSB;
+using glm::bitfieldExtract;
+using glm::bitfieldInsert;
+
+using glm::mat2;
+using glm::mat3x2;
+using glm::mat4x2;
+
+using glm::mat2x3;
+using glm::mat3;
+using glm::mat4x3;
+
+using glm::mat2x4;
+using glm::mat3x4;
+using glm::mat4;
+
+using glm::vec2;
+using glm::vec3;
+using glm::vec4;
+using glm::uint; 
+using glm::uvec2;
+using glm::uvec3;
+using glm::uvec4;
+using glm::ivec2;
+using glm::ivec3;
+using glm::ivec4;
 
 #include "rt_math.h"
 #include <ray.h>

@@ -248,6 +248,8 @@ namespace geometry
 					return true;
 				}
 			}
+
+			return false;
 		}
 
 		vec3 Normal(vec3 const& surface_point) const

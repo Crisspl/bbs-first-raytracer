@@ -10,14 +10,14 @@ float sum_parts(vec3 const& v)
 	return v.x + v.y + v.z;
 }
 
-vec3 reflect(vec3 in, vec3 normal)
+vec3 reflect(vec3 inp, vec3 normal)
 {
-	return in - 2.f * dot(in, normal) * normal;
+	return in - 2.f * dot(inp, normal) * normal;
 }
 
-bool refract(vec3 in, vec3 normal, float ni_over_no, vec3& refracted)
+bool refract(vec3 inp, vec3 normal, float ni_over_no, vec3& refracted)
 {
-	float h = dot(normalize(in), normal);
+	float h = dot(normalize(inp), normal);
 	float discriminant = 1 - ni_over_no * ni_over_no * (1 - h * h);
 	if (discriminant > 0)
 	{
@@ -42,22 +42,22 @@ float schlick(float costheta, float index)
 
 vec3 sample_in_sphere(vec3 center, vec3 radius)
 {
-	vec3 out;
+	vec3 outp;
 	do 
 	{ 
-		out = linearRand(vec3(-1), vec3(1)); 
-	} while (dot(out, out) >= 1);
-	return out * radius + center;
+		outp = linearRand(vec3(-1), vec3(1)); 
+	} while (dot(outp, outp) >= 1);
+	return outp * radius + center;
 }
 
 vec2 sample_in_disk(vec2 center, vec2 radius)
 {
-	vec2 out;
+	vec2 outp;
 	do
 	{
-		out = linearRand(vec2(-1.f), vec2(1.f));
-	} while (dot(out, out) >= 1);
-	return out * radius + center;
+		outp = linearRand(vec2(-1.f), vec2(1.f));
+	} while (dot(outp, outp) >= 1);
+	return outp * radius + center;
 }
 
 
