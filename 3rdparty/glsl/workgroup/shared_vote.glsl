@@ -1,0 +1,14 @@
+#ifndef _NBL_BUILTIN_GLSL_WORKGROUP_SHARED_VOTE_INCLUDED_
+#define _NBL_BUILTIN_GLSL_WORKGROUP_SHARED_VOTE_INCLUDED_
+
+
+
+#include <3rdparty/glsl/workgroup/basic.glsl>
+
+
+
+#define _NBL_GLSL_WORKGROUP_VOTE_SHARED_SIZE_NEEDED_  1
+
+
+
+#endif
