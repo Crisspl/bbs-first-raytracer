@@ -6,12 +6,12 @@
 #include <3rdparty/glsl/blit/multi_dimensional_array_addressing.glsl>
 
 #include <3rdparty/glsl/blit/parameters.glsl>
-nbl_glsl_blit_parameters_t nbl_glsl_blit_getParameters();
+NBL_GLSL_API nbl_glsl_blit_parameters_t nbl_glsl_blit_getParameters();
 
-vec4 nbl_glsl_blit_getData(in vec3 texCoord, in uint layerIdx);
-void nbl_glsl_blit_setData(in vec4 data, in uvec3 coord, in uint layerIdx);
-vec4 nbl_glsl_blit_getKernelWeight(in uint index);
-void nbl_glsl_blit_addToHistogram(in uint bucketIndex, in uint layerIdx);
+NBL_GLSL_API vec4 nbl_glsl_blit_getData(in vec3 texCoord, in uint layerIdx);
+NBL_GLSL_API void nbl_glsl_blit_setData(in vec4 data, in uvec3 coord, in uint layerIdx);
+NBL_GLSL_API vec4 nbl_glsl_blit_getKernelWeight(in uint index);
+NBL_GLSL_API void nbl_glsl_blit_addToHistogram(in uint bucketIndex, in uint layerIdx);
 
 #ifndef _NBL_GLSL_BLIT_ALPHA_BIN_COUNT_
 #error _NBL_GLSL_BLIT_ALPHA_BIN_COUNT_ must be defined
@@ -25,7 +25,7 @@ ivec3 getMinKernelWindowCoord(in vec3 p, in vec3 minSupport)
 	return ivec3(ceil(p - vec3(0.5f) + minSupport));
 }
 
-void nbl_glsl_blit_main()
+NBL_GLSL_API void nbl_glsl_blit_main()
 {
 	const uvec3 inDim = nbl_glsl_blit_parameters_getInputImageDimensions();
 	const uvec3 outDim = nbl_glsl_blit_parameters_getOutputImageDimensions();

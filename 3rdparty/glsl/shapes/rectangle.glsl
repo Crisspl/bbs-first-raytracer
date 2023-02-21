@@ -7,12 +7,12 @@
 
 #include <3rdparty/glsl/math/functions.glsl>
 
-vec3 nbl_glsl_shapes_getSphericalRectangle(in vec3 observer, in vec3 rectangleOrigin, in mat3 rectangleNormalBasis)
+NBL_GLSL_API vec3 nbl_glsl_shapes_getSphericalRectangle(in vec3 observer, in vec3 rectangleOrigin, in mat3 rectangleNormalBasis)
 {
     return (rectangleOrigin-observer) * rectangleNormalBasis;
 }
 
-float nbl_glsl_shapes_SolidAngleOfRectangle(in vec3 r0, in vec2 rectangleExtents) 
+NBL_GLSL_API float nbl_glsl_shapes_SolidAngleOfRectangle(in vec3 r0, in vec2 rectangleExtents) 
 {
     const vec4 denorm_n_z = vec4(-r0.y, r0.x+rectangleExtents.x, r0.y+rectangleExtents.y, -r0.x);
     const vec4 n_z = denorm_n_z*inversesqrt(vec4(r0.z*r0.z)+denorm_n_z*denorm_n_z);

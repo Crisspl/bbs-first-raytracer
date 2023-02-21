@@ -8,7 +8,7 @@
 #define NBL_INLINE
 #endif
 
-struct nbl_glsl_transform_tree_relative_transform_modification_t
+NBL_GLSL_API struct nbl_glsl_transform_tree_relative_transform_modification_t
 {
 	uvec4 data[3];
 };
@@ -27,13 +27,13 @@ NBL_INLINE uint nbl_glsl_transform_tree_relative_transform_modification_t_getTyp
 #ifndef __cplusplus
 #include "nbl/builtin/glsl/utils/transform.glsl"
 
-mat4x3 nbl_glsl_transform_tree_relative_transform_modification_t_getMatrix(in nbl_glsl_transform_tree_relative_transform_modification_t rtm)
+NBL_GLSL_API mat4x3 nbl_glsl_transform_tree_relative_transform_modification_t_getMatrix(in nbl_glsl_transform_tree_relative_transform_modification_t rtm)
 {
 	return transpose(mat3x4(uintBitsToFloat(rtm.data[0]),uintBitsToFloat(rtm.data[1]),uintBitsToFloat(rtm.data[2])));
 }
 
 #include "nbl/builtin/glsl/utils/transform.glsl"
-mat4x3 nbl_glsl_transform_tree_relative_transform_modification_t_apply(in mat4x3 oldTform, in nbl_glsl_transform_tree_relative_transform_modification_t rtm)
+NBL_GLSL_API mat4x3 nbl_glsl_transform_tree_relative_transform_modification_t_apply(in mat4x3 oldTform, in nbl_glsl_transform_tree_relative_transform_modification_t rtm)
 {
 	const mat4x3 delta = nbl_glsl_transform_tree_relative_transform_modification_t_getMatrix(rtm);
 	switch (nbl_glsl_transform_tree_relative_transform_modification_t_getType(rtm))

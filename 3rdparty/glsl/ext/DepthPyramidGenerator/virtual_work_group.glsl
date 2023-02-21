@@ -23,7 +23,7 @@ layout(binding = 1, set = 0, std430) restrict readonly buffer VirtualWorkGroupDa
 }virtualWorkGroupData;
 
 // NOTE: it is writen solely for 8 image binding limit
-uvec3 nbl_glsl_depthPyramid_scheduler_getWork(in uint metaZLayer)
+NBL_GLSL_API uvec3 nbl_glsl_depthPyramid_scheduler_getWork(in uint metaZLayer)
 {
     //TODO: in fact `metaZLayer` is just a bool, which indicates if work group belongs to the main dispatch (0) or virtual dispatch (1), probably I should rename it to make it less confusing
     if(metaZLayer == 0u)
@@ -56,7 +56,7 @@ uvec3 nbl_glsl_depthPyramid_scheduler_getWork(in uint metaZLayer)
     }
 }
 
-bool nbl_glsl_depthPyramid_finalizeVirtualWorkgGroup(in uint metaZLayer)
+NBL_GLSL_API bool nbl_glsl_depthPyramid_finalizeVirtualWorkgGroup(in uint metaZLayer)
 {
     if(pc.data.virtualDispatchMipCnt == 0u || metaZLayer >= (pc.data.maxMetaZLayerCnt - 1u))
     {
@@ -88,7 +88,7 @@ bool nbl_glsl_depthPyramid_finalizeVirtualWorkgGroup(in uint metaZLayer)
 }
 
 // maybe I should do it after shader exectution via `IVideoDriver::fillBuffer` or smth, if not: TODO: optimize this function
-void nbl_glsl_depthPyramid_resetAtomicCounters()
+NBL_GLSL_API void nbl_glsl_depthPyramid_resetAtomicCounters()
 {
     const uint thisVirtualDispatchIndex = pc.data.virtualDispatchIndex;
     const uint mainPassWGCnt = virtualWorkGroupData.zLayerWorkGroupDim[thisVirtualDispatchIndex].x * virtualWorkGroupData.zLayerWorkGroupDim[thisVirtualDispatchIndex].y;

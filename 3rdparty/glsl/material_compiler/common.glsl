@@ -15,7 +15,7 @@
 #include <3rdparty/glsl/format/decode.glsl>
 
 // this all all the things we can precompute agnostic of the light sample
-nbl_glsl_MC_precomputed_t nbl_glsl_MC_precomputeData(in bool frontface)
+NBL_GLSL_API nbl_glsl_MC_precomputed_t nbl_glsl_MC_precomputeData(in bool frontface)
 {
 	nbl_glsl_MC_precomputed_t p;
 	p.N = nbl_glsl_MC_getNormalizedWorldSpaceN();
@@ -25,38 +25,38 @@ nbl_glsl_MC_precomputed_t nbl_glsl_MC_precomputeData(in bool frontface)
 	return p;
 }
 
-float nbl_glsl_MC_colorToScalar(in vec3 color)
+NBL_GLSL_API float nbl_glsl_MC_colorToScalar(in vec3 color)
 {
 	return dot(color,NBL_GLSL_MC_CIE_XYZ_Luma_Y_coeffs);
 }
 
 // Instruction Methods
 // RnP = Remainder and PDF
-uint nbl_glsl_MC_instr_getOffsetIntoRnPStream(in nbl_glsl_MC_instr_t instr)
+NBL_GLSL_API uint nbl_glsl_MC_instr_getOffsetIntoRnPStream(in nbl_glsl_MC_instr_t instr)
 {
 	return bitfieldExtract(instr.y, int(INSTR_OFFSET_INTO_REMANDPDF_STREAM_SHIFT-32u), int(INSTR_OFFSET_INTO_REMANDPDF_STREAM_WIDTH));
 }
-uint nbl_glsl_MC_instr_getOpcode(in nbl_glsl_MC_instr_t instr)
+NBL_GLSL_API uint nbl_glsl_MC_instr_getOpcode(in nbl_glsl_MC_instr_t instr)
 {
 	return instr.x&INSTR_OPCODE_MASK;
 }
-uint nbl_glsl_MC_instr_getBSDFbufOffset(in nbl_glsl_MC_instr_t instr)
+NBL_GLSL_API uint nbl_glsl_MC_instr_getBSDFbufOffset(in nbl_glsl_MC_instr_t instr)
 {
 	// if we allowed for variable size (or very padded) instructions, we wouldnt need to fetch bsdf data from offset
 	// https://github.com/Devsh-Graphics-Programming/Nabla/issues/287
 	return (instr.x>>INSTR_BSDF_BUF_OFFSET_SHIFT) & INSTR_BSDF_BUF_OFFSET_MASK;
 }
-uint nbl_glsl_MC_instr_getNDF(in nbl_glsl_MC_instr_t instr)
+NBL_GLSL_API uint nbl_glsl_MC_instr_getNDF(in nbl_glsl_MC_instr_t instr)
 {
 	return (instr.x>>INSTR_NDF_SHIFT) & INSTR_NDF_MASK;
 }
-uint nbl_glsl_MC_instr_getRightJump(in nbl_glsl_MC_instr_t instr)
+NBL_GLSL_API uint nbl_glsl_MC_instr_getRightJump(in nbl_glsl_MC_instr_t instr)
 {
 	return bitfieldExtract(instr.y, int(INSTR_RIGHT_JUMP_SHIFT-32u), int(INSTR_RIGHT_JUMP_WIDTH));
 }
 
 // BSDFs can have at most 2 parameters come from textures
-bool nbl_glsl_MC_instr_get1stParamTexPresence(in nbl_glsl_MC_instr_t instr)
+NBL_GLSL_API bool nbl_glsl_MC_instr_get1stParamTexPresence(in nbl_glsl_MC_instr_t instr)
 {
 #if defined(PARAM1_NEVER_TEX)
 	return false;
@@ -66,7 +66,7 @@ bool nbl_glsl_MC_instr_get1stParamTexPresence(in nbl_glsl_MC_instr_t instr)
 	return (instr.x&(1u<<INSTR_1ST_PARAM_TEX_SHIFT)) != 0u;
 #endif
 }
-bool nbl_glsl_MC_instr_get2ndParamTexPresence(in nbl_glsl_MC_instr_t instr)
+NBL_GLSL_API bool nbl_glsl_MC_instr_get2ndParamTexPresence(in nbl_glsl_MC_instr_t instr)
 {
 #if defined(PARAM2_NEVER_TEX)
 	return false;
@@ -78,39 +78,39 @@ bool nbl_glsl_MC_instr_get2ndParamTexPresence(in nbl_glsl_MC_instr_t instr)
 }
 
 // some texture parameters are mutually exclusive
-bool nbl_glsl_MC_instr_params_getAlphaUTexPresence(in nbl_glsl_MC_instr_t instr)
+NBL_GLSL_API bool nbl_glsl_MC_instr_params_getAlphaUTexPresence(in nbl_glsl_MC_instr_t instr)
 {
 	return nbl_glsl_MC_instr_get1stParamTexPresence(instr);
 }
-bool nbl_glsl_MC_instr_params_getAlphaVTexPresence(in nbl_glsl_MC_instr_t instr)
+NBL_GLSL_API bool nbl_glsl_MC_instr_params_getAlphaVTexPresence(in nbl_glsl_MC_instr_t instr)
 {
 	return nbl_glsl_MC_instr_get2ndParamTexPresence(instr);
 }
-bool nbl_glsl_MC_instr_params_getReflectanceTexPresence(in nbl_glsl_MC_instr_t instr)
+NBL_GLSL_API bool nbl_glsl_MC_instr_params_getReflectanceTexPresence(in nbl_glsl_MC_instr_t instr)
 {
 	return nbl_glsl_MC_instr_get2ndParamTexPresence(instr);
 }
-bool nbl_glsl_MC_instr_getSigmaATexPresence(in nbl_glsl_MC_instr_t instr)
+NBL_GLSL_API bool nbl_glsl_MC_instr_getSigmaATexPresence(in nbl_glsl_MC_instr_t instr)
 {
 	return nbl_glsl_MC_instr_get1stParamTexPresence(instr);
 }
-bool nbl_glsl_MC_instr_getTransmittanceTexPresence(in nbl_glsl_MC_instr_t instr)
+NBL_GLSL_API bool nbl_glsl_MC_instr_getTransmittanceTexPresence(in nbl_glsl_MC_instr_t instr)
 {
 	return nbl_glsl_MC_instr_get2ndParamTexPresence(instr);
 }
-bool nbl_glsl_MC_instr_getWeightTexPresence(in nbl_glsl_MC_instr_t instr)
+NBL_GLSL_API bool nbl_glsl_MC_instr_getWeightTexPresence(in nbl_glsl_MC_instr_t instr)
 {
 	return nbl_glsl_MC_instr_get1stParamTexPresence(instr);
 }
 
 // works with tex prefetch instructions as well (x=reg0,y=reg1,z=reg2)
-struct nbl_glsl_MC_RegID_t
+NBL_GLSL_API struct nbl_glsl_MC_RegID_t
 {
 	uint dst;
 	uint srcA;
 	uint srcB;
 };
-nbl_glsl_MC_RegID_t nbl_glsl_MC_instr_decodeRegisters(in nbl_glsl_MC_instr_t instr)
+NBL_GLSL_API nbl_glsl_MC_RegID_t nbl_glsl_MC_instr_decodeRegisters(in nbl_glsl_MC_instr_t instr)
 {
 	uvec3 regs = instr.yyy >> (uvec3(INSTR_REG_DST_SHIFT,INSTR_REG_SRC1_SHIFT,INSTR_REG_SRC2_SHIFT)-32u);
 	regs &= uvec3(INSTR_REG_MASK);
@@ -123,38 +123,38 @@ nbl_glsl_MC_RegID_t nbl_glsl_MC_instr_decodeRegisters(in nbl_glsl_MC_instr_t ins
 
 // if we allowed for variable size (or very padded) instructions, we wouldnt need to fetch bsdf data from offset
 // https://github.com/Devsh-Graphics-Programming/Nabla/issues/287
-nbl_glsl_MC_bsdf_data_t nbl_glsl_MC_fetchBSDFDataForInstr(in nbl_glsl_MC_instr_t instr)
+NBL_GLSL_API nbl_glsl_MC_bsdf_data_t nbl_glsl_MC_fetchBSDFDataForInstr(in nbl_glsl_MC_instr_t instr)
 {
 	uint ix = nbl_glsl_MC_instr_getBSDFbufOffset(instr);
 	return nbl_glsl_MC_fetchBSDFData(ix);
 }
 
 // texture prefetch instructions are a bit fatter, 128bit
-uint nbl_glsl_MC_prefetch_instr_getRegCount(in nbl_glsl_MC_prefetch_instr_t instr)
+NBL_GLSL_API uint nbl_glsl_MC_prefetch_instr_getRegCount(in nbl_glsl_MC_prefetch_instr_t instr)
 {
 	uint dword4 = instr.w;
 	return bitfieldExtract(dword4, PREFETCH_INSTR_REG_CNT_SHIFT, PREFETCH_INSTR_REG_CNT_WIDTH);
 }
-uint nbl_glsl_MC_prefetch_instr_getDstReg(in nbl_glsl_MC_prefetch_instr_t instr)
+NBL_GLSL_API uint nbl_glsl_MC_prefetch_instr_getDstReg(in nbl_glsl_MC_prefetch_instr_t instr)
 {
 	uint dword4 = instr.w;
 	return bitfieldExtract(dword4, PREFETCH_INSTR_DST_REG_SHIFT, PREFETCH_INSTR_DST_REG_WIDTH);
 }
 
 // opcode methods
-bool nbl_glsl_MC_op_isBRDF(in uint op)
+NBL_GLSL_API bool nbl_glsl_MC_op_isBRDF(in uint op)
 {
 	return op<=OP_MAX_BRDF;
 }
-bool nbl_glsl_MC_op_isBSDF(in uint op)
+NBL_GLSL_API bool nbl_glsl_MC_op_isBSDF(in uint op)
 {
 	return !nbl_glsl_MC_op_isBRDF(op) && op<=OP_MAX_BSDF;
 }
-bool nbl_glsl_MC_op_isBXDF(in uint op)
+NBL_GLSL_API bool nbl_glsl_MC_op_isBXDF(in uint op)
 {
 	return op<=OP_MAX_BSDF;
 }
-bool nbl_glsl_MC_op_isBXDForCoatOrBlend(in uint op)
+NBL_GLSL_API bool nbl_glsl_MC_op_isBXDForCoatOrBlend(in uint op)
 {
 #ifdef OP_BLEND
 	return op<=OP_BLEND;
@@ -164,7 +164,7 @@ bool nbl_glsl_MC_op_isBXDForCoatOrBlend(in uint op)
 	return nbl_glsl_MC_op_isBXDF(op);
 #endif
 }
-bool nbl_glsl_MC_op_hasSpecular(in uint op)
+NBL_GLSL_API bool nbl_glsl_MC_op_hasSpecular(in uint op)
 {
 	return
 #if defined(OP_DIELECTRIC)
@@ -182,7 +182,7 @@ bool nbl_glsl_MC_op_hasSpecular(in uint op)
 #endif
 	;
 }
-bool nbl_glsl_MC_op_isDiffuse(in uint op)
+NBL_GLSL_API bool nbl_glsl_MC_op_isDiffuse(in uint op)
 {
 #if !defined(OP_DIFFUSE) && !defined(OP_DIFFTRANS)
 	return false;
@@ -224,24 +224,24 @@ bool nbl_glsl_MC_op_isDiffuse(in uint op)
 // current interaction is a global (for now I guess)
 nbl_glsl_MC_interaction_t currInteraction;
 // methods to update the global
-void nbl_glsl_MC_setCurrInteraction(in vec3 N, in vec3 V)
+NBL_GLSL_API void nbl_glsl_MC_setCurrInteraction(in vec3 N, in vec3 V)
 {
 	nbl_glsl_IsotropicViewSurfaceInteraction interaction = nbl_glsl_calcSurfaceInteractionFromViewVector(V, N);
 	currInteraction.inner = nbl_glsl_calcAnisotropicInteraction(interaction);
 	nbl_glsl_MC_finalizeInteraction(currInteraction);
 }
-void nbl_glsl_MC_setCurrInteraction(in nbl_glsl_MC_precomputed_t precomp)
+NBL_GLSL_API void nbl_glsl_MC_setCurrInteraction(in nbl_glsl_MC_precomputed_t precomp)
 {
 	nbl_glsl_MC_setCurrInteraction(precomp.frontface ? precomp.N : -precomp.N, precomp.V);
 }
-void nbl_glsl_MC_updateCurrInteraction(in nbl_glsl_MC_precomputed_t precomp, in vec3 N)
+NBL_GLSL_API void nbl_glsl_MC_updateCurrInteraction(in nbl_glsl_MC_precomputed_t precomp, in vec3 N)
 {
 	// precomputed normals already have correct orientation
 	nbl_glsl_MC_setCurrInteraction(N, precomp.V);
 }
 
 
-struct nbl_glsl_MC_aov_t
+NBL_GLSL_API struct nbl_glsl_MC_aov_t
 {
 	nbl_glsl_MC_bxdf_spectrum_t albedo;
 	float throughputFactor; // should we have it as a full vec3 for the duration of evaluation?
@@ -249,12 +249,12 @@ struct nbl_glsl_MC_aov_t
 };
 
 // compute throughput factor from roughness
-float nbl_glsl_MC_aov_t_specularThroughputFactor(float a2)
+NBL_GLSL_API float nbl_glsl_MC_aov_t_specularThroughputFactor(float a2)
 {
 	// TODO: make the ramp tweakable
 	return exp2(-128.f*a2);
 }
-float nbl_glsl_MC_aov_t_specularThroughputFactor(float ax2, float ay2)
+NBL_GLSL_API float nbl_glsl_MC_aov_t_specularThroughputFactor(float ax2, float ay2)
 {
 	return nbl_glsl_MC_aov_t_specularThroughputFactor(ax2+ay2);
 }
@@ -262,7 +262,7 @@ float nbl_glsl_MC_aov_t_specularThroughputFactor(float ax2, float ay2)
 
 #define GEN_CHOICE_WITH_AOV_EXTRACTION 2
 // return type depends on what we'll be doing
-struct nbl_glsl_MC_eval_pdf_aov_t
+NBL_GLSL_API struct nbl_glsl_MC_eval_pdf_aov_t
 {
 	nbl_glsl_MC_bxdf_spectrum_t value;
 #ifdef GEN_CHOICE_STREAM
@@ -277,21 +277,21 @@ struct nbl_glsl_MC_eval_pdf_aov_t
 // virtual registers
 nbl_glsl_MC_reg_t registers[REG_COUNT];
 // write
-void nbl_glsl_MC_writeReg(in uint n, in float v)
+NBL_GLSL_API void nbl_glsl_MC_writeReg(in uint n, in float v)
 {
 	registers[n] = floatBitsToUint(v);
 }
-void nbl_glsl_MC_writeReg(in uint n, in vec2 v)
+NBL_GLSL_API void nbl_glsl_MC_writeReg(in uint n, in vec2 v)
 {
 	nbl_glsl_MC_writeReg(n   ,v.x);
 	nbl_glsl_MC_writeReg(n+1u,v.y);
 }
-void nbl_glsl_MC_writeReg(in uint n, in vec3 v)
+NBL_GLSL_API void nbl_glsl_MC_writeReg(in uint n, in vec3 v)
 {
 	nbl_glsl_MC_writeReg(n   ,v.xy);
 	nbl_glsl_MC_writeReg(n+2u,v.z);
 }
-void nbl_glsl_MC_writeReg(in uint n, in nbl_glsl_MC_eval_pdf_aov_t v)
+NBL_GLSL_API void nbl_glsl_MC_writeReg(in uint n, in nbl_glsl_MC_eval_pdf_aov_t v)
 {
 	nbl_glsl_MC_writeReg(n   ,v.value);
 #ifdef GEN_CHOICE_STREAM
@@ -304,21 +304,21 @@ void nbl_glsl_MC_writeReg(in uint n, in nbl_glsl_MC_eval_pdf_aov_t v)
 #endif
 }
 // read
-void nbl_glsl_MC_readReg(in uint n, out float& v)
+NBL_GLSL_API void nbl_glsl_MC_readReg(in uint n, out float& v)
 {
 	v = uintBitsToFloat( registers[n] );
 }
-void nbl_glsl_MC_readReg(in uint n, out vec2& v)
+NBL_GLSL_API void nbl_glsl_MC_readReg(in uint n, out vec2& v)
 {
 	nbl_glsl_MC_readReg(n	,v.x);
 	nbl_glsl_MC_readReg(n+1u,v.y);
 }
-void nbl_glsl_MC_readReg(in uint n, out vec3& v)
+NBL_GLSL_API void nbl_glsl_MC_readReg(in uint n, out vec3& v)
 {
 	nbl_glsl_MC_readReg(n	,v.xy);
 	nbl_glsl_MC_readReg(n+2u,v.z);
 }
-void nbl_glsl_MC_readReg(in uint n, out nbl_glsl_MC_eval_pdf_aov_t& v)
+NBL_GLSL_API void nbl_glsl_MC_readReg(in uint n, out nbl_glsl_MC_eval_pdf_aov_t& v)
 {
 	nbl_glsl_MC_readReg(n	,v.value);
 #ifdef GEN_CHOICE_STREAM
@@ -332,7 +332,7 @@ void nbl_glsl_MC_readReg(in uint n, out nbl_glsl_MC_eval_pdf_aov_t& v)
 }
 
 // when we finally know (or generate) our light sample we can precompute the rest of the angles
-void nbl_glsl_MC_updateLightSampleAfterNormalChange(inout nbl_glsl_LightSample& out_s)
+NBL_GLSL_API void nbl_glsl_MC_updateLightSampleAfterNormalChange(inout nbl_glsl_LightSample& out_s)
 {
 	out_s.TdotL = dot(currInteraction.inner.T, out_s.L);
 	out_s.BdotL = dot(currInteraction.inner.B, out_s.L);
@@ -340,7 +340,7 @@ void nbl_glsl_MC_updateLightSampleAfterNormalChange(inout nbl_glsl_LightSample& 
 	out_s.NdotL2 = out_s.NdotL*out_s.NdotL;
 }
 // not everything needs to be recomputed when `N` changes, only most things ;)
-void nbl_glsl_MC_updateMicrofacetCacheAfterNormalChange(in nbl_glsl_LightSample s, inout nbl_glsl_MC_microfacet_t& out_microfacet)
+NBL_GLSL_API void nbl_glsl_MC_updateMicrofacetCacheAfterNormalChange(in nbl_glsl_LightSample s, inout nbl_glsl_MC_microfacet_t& out_microfacet)
 {
 	const float NdotL = s.NdotL;
 	const float NdotV = currInteraction.inner.isotropic.NdotV;
@@ -358,7 +358,7 @@ void nbl_glsl_MC_updateMicrofacetCacheAfterNormalChange(in nbl_glsl_LightSample 
 
 // most parameters can be constant or come from a texture, we have a clever system where a single bitflag tells us
 // whether the 64bit value is a RGB19E7 constant or an offset to registers into which a texel was prefetched
-vec3 nbl_glsl_MC_textureOrRGBconst(in uvec2 data, in bool texPresenceFlag)
+NBL_GLSL_API vec3 nbl_glsl_MC_textureOrRGBconst(in uvec2 data, in bool texPresenceFlag)
 {
 	return
 #ifdef TEX_PREFETCH_STREAM
@@ -368,7 +368,7 @@ vec3 nbl_glsl_MC_textureOrRGBconst(in uvec2 data, in bool texPresenceFlag)
 		nbl_glsl_decodeRGB19E7(data);
 }
 
-vec3 nbl_glsl_MC_bsdf_data_getParam1(in nbl_glsl_MC_bsdf_data_t data, in bool texPresence)
+NBL_GLSL_API vec3 nbl_glsl_MC_bsdf_data_getParam1(in nbl_glsl_MC_bsdf_data_t data, in bool texPresence)
 {
 #ifdef PARAM1_ALWAYS_SAME_VALUE
 	return PARAM1_VALUE;
@@ -376,7 +376,7 @@ vec3 nbl_glsl_MC_bsdf_data_getParam1(in nbl_glsl_MC_bsdf_data_t data, in bool te
 	return nbl_glsl_MC_textureOrRGBconst(data.data[0].xy, texPresence);
 #endif
 }
-vec3 nbl_glsl_MC_bsdf_data_getParam2(in nbl_glsl_MC_bsdf_data_t data, in bool texPresence)
+NBL_GLSL_API vec3 nbl_glsl_MC_bsdf_data_getParam2(in nbl_glsl_MC_bsdf_data_t data, in bool texPresence)
 {
 #ifdef PARAM2_ALWAYS_SAME_VALUE
 	return PARAM2_VALUE;
@@ -386,14 +386,14 @@ vec3 nbl_glsl_MC_bsdf_data_getParam2(in nbl_glsl_MC_bsdf_data_t data, in bool te
 }
 
 // tells us if a particular parameter is fetched from a register or decoded
-bvec2 nbl_glsl_MC_instr_getTexPresence(in nbl_glsl_MC_instr_t i)
+NBL_GLSL_API bvec2 nbl_glsl_MC_instr_getTexPresence(in nbl_glsl_MC_instr_t i)
 {
 	return bvec2(
 		nbl_glsl_MC_instr_get1stParamTexPresence(i),
 		nbl_glsl_MC_instr_get2ndParamTexPresence(i)
 	);
 }
-nbl_glsl_MC_params_t nbl_glsl_MC_instr_getParameters(in nbl_glsl_MC_instr_t i, in nbl_glsl_MC_bsdf_data_t data)
+NBL_GLSL_API nbl_glsl_MC_params_t nbl_glsl_MC_instr_getParameters(in nbl_glsl_MC_instr_t i, in nbl_glsl_MC_bsdf_data_t data)
 {
 	nbl_glsl_MC_params_t p;
 	bvec2 presence = nbl_glsl_MC_instr_getTexPresence(i);
@@ -409,7 +409,7 @@ nbl_glsl_MC_params_t nbl_glsl_MC_instr_getParameters(in nbl_glsl_MC_instr_t i, i
 // to allow for the Eta to be already fetched as an oriented quotient of internal and external IoR.
 // IoR is just a 3rd and 4th parameter
 // TODO: Open question, is it possible to have just an IoR param wihout the& first 2?
-mat2x3 nbl_glsl_MC_bsdf_data_decodeIoR(in nbl_glsl_MC_bsdf_data_t data, in uint op)
+NBL_GLSL_API mat2x3 nbl_glsl_MC_bsdf_data_decodeIoR(in nbl_glsl_MC_bsdf_data_t data, in uint op)
 {
 	mat2x3 ior = mat2x3(0.0);
 	ior[0] = nbl_glsl_decodeRGB19E7(data.data[1].xy);
@@ -423,34 +423,34 @@ mat2x3 nbl_glsl_MC_bsdf_data_decodeIoR(in nbl_glsl_MC_bsdf_data_t data, in uint 
 // clamping alpha to min MIN_ALPHA because we're using microfacet BxDFs for deltas as well (and NDFs often end up NaN when given alpha=0) because of less deivergence
 // TODO: NDFs have been fixed, perform rigorous numerical analysis and kill all sources of NaNs
 #define MIN_ALPHA 0.0001
-float nbl_glsl_MC_params_getAlpha(in nbl_glsl_MC_params_t p)
+NBL_GLSL_API float nbl_glsl_MC_params_getAlpha(in nbl_glsl_MC_params_t p)
 {
 	return max(p[PARAMS_ALPHA_U_IX].x,MIN_ALPHA);
 }
 // TODO: reuse as IoR for Cook Torrance
-vec3 nbl_glsl_MC_params_getReflectance(in nbl_glsl_MC_params_t p)
+NBL_GLSL_API vec3 nbl_glsl_MC_params_getReflectance(in nbl_glsl_MC_params_t p)
 {
 	return p[PARAMS_REFLECTANCE_IX];
 }
-float nbl_glsl_MC_params_getAlphaV(in nbl_glsl_MC_params_t p)
+NBL_GLSL_API float nbl_glsl_MC_params_getAlphaV(in nbl_glsl_MC_params_t p)
 {
 	return max(p[PARAMS_ALPHA_V_IX].x,MIN_ALPHA);
 }
-vec3 nbl_glsl_MC_params_getSigmaA(in nbl_glsl_MC_params_t p)
+NBL_GLSL_API vec3 nbl_glsl_MC_params_getSigmaA(in nbl_glsl_MC_params_t p)
 {
 	return p[PARAMS_SIGMA_A_IX];
 }
-vec3 nbl_glsl_MC_params_getBlendWeight(in nbl_glsl_MC_params_t p)
+NBL_GLSL_API vec3 nbl_glsl_MC_params_getBlendWeight(in nbl_glsl_MC_params_t p)
 {
 	return p[PARAMS_WEIGHT_IX];
 }
-vec3 nbl_glsl_MC_params_getTransmittance(in nbl_glsl_MC_params_t p)
+NBL_GLSL_API vec3 nbl_glsl_MC_params_getTransmittance(in nbl_glsl_MC_params_t p)
 {
 	return p[PARAMS_TRANSMITTANCE_IX];
 }
 
 //
-nbl_glsl_MC_bxdf_spectrum_t nbl_glsl_MC_coatedDiffuse(
+NBL_GLSL_API nbl_glsl_MC_bxdf_spectrum_t nbl_glsl_MC_coatedDiffuse(
 	in nbl_glsl_MC_bxdf_spectrum_t coat,
 	in nbl_glsl_MC_bxdf_spectrum_t coated,
 	//in vec3 thickness_sigma, TODO
@@ -472,7 +472,7 @@ nbl_glsl_MC_bxdf_spectrum_t nbl_glsl_MC_coatedDiffuse(
 	return coat+coated*diffuse_weight;
 }
 //
-nbl_glsl_MC_eval_pdf_aov_t nbl_glsl_MC_instr_execute_COATING(
+NBL_GLSL_API nbl_glsl_MC_eval_pdf_aov_t nbl_glsl_MC_instr_execute_COATING(
 	in nbl_glsl_MC_eval_pdf_aov_t coat,
 	in nbl_glsl_MC_eval_pdf_aov_t coated,
 	//vec3 thickness_sigma = params_getSigmaA(params);
@@ -498,20 +498,20 @@ nbl_glsl_MC_eval_pdf_aov_t nbl_glsl_MC_instr_execute_COATING(
 	return retval;
 }
 
-void nbl_glsl_MC_instr_execute_BUMPMAP(in uint srcReg, in nbl_glsl_MC_precomputed_t precomp)
+NBL_GLSL_API void nbl_glsl_MC_instr_execute_BUMPMAP(in uint srcReg, in nbl_glsl_MC_precomputed_t precomp)
 {
 	vec3 N;
 	nbl_glsl_MC_readReg(srcReg,N);
 	nbl_glsl_MC_updateCurrInteraction(precomp,N);
 }
 
-void nbl_glsl_MC_instr_execute_SET_GEOM_NORMAL(in nbl_glsl_MC_precomputed_t precomp)
+NBL_GLSL_API void nbl_glsl_MC_instr_execute_SET_GEOM_NORMAL(in nbl_glsl_MC_precomputed_t precomp)
 {
 	nbl_glsl_MC_setCurrInteraction(precomp);
 }
 
 //
-nbl_glsl_MC_bxdf_spectrum_t nbl_glsl_MC_instr_execute_BLEND(
+NBL_GLSL_API nbl_glsl_MC_bxdf_spectrum_t nbl_glsl_MC_instr_execute_BLEND(
 	in nbl_glsl_MC_bxdf_spectrum_t srcA,
 	in nbl_glsl_MC_bxdf_spectrum_t srcB,
 	in nbl_glsl_MC_params_t params,
@@ -521,7 +521,7 @@ nbl_glsl_MC_bxdf_spectrum_t nbl_glsl_MC_instr_execute_BLEND(
 	blend_weight = nbl_glsl_MC_params_getBlendWeight(params);
 	return mix(srcA,srcB,blend_weight);
 }
-nbl_glsl_MC_eval_pdf_aov_t nbl_glsl_MC_instr_execute_BLEND(
+NBL_GLSL_API nbl_glsl_MC_eval_pdf_aov_t nbl_glsl_MC_instr_execute_BLEND(
 	in nbl_glsl_MC_eval_pdf_aov_t srcA,
 	in nbl_glsl_MC_eval_pdf_aov_t srcB,
 	in nbl_glsl_MC_params_t params
@@ -567,7 +567,7 @@ nbl_glsl_MC_eval_pdf_aov_t nbl_glsl_MC_instr_execute_BLEND(
 
 
 #ifdef TEX_PREFETCH_STREAM
-vec3 nbl_glsl_MC_fetchTex(in uvec3 texid, in vec2 uv, in mat2 dUV)
+NBL_GLSL_API vec3 nbl_glsl_MC_fetchTex(in uvec3 texid, in vec2 uv, in mat2 dUV)
 {
 	float scale = uintBitsToFloat(texid.z);
 
@@ -578,7 +578,7 @@ vec3 nbl_glsl_MC_fetchTex(in uvec3 texid, in vec2 uv, in mat2 dUV)
 #endif
 }
 
-void nbl_glsl_MC_runTexPrefetchStream(in nbl_glsl_MC_instr_stream_t stream, in vec2 uv, in mat2 dUV)
+NBL_GLSL_API void nbl_glsl_MC_runTexPrefetchStream(in nbl_glsl_MC_instr_stream_t stream, in vec2 uv, in mat2 dUV)
 {
 	for (uint i = 0u; i < stream.count; ++i)
 	{
@@ -603,7 +603,7 @@ void nbl_glsl_MC_runTexPrefetchStream(in nbl_glsl_MC_instr_stream_t stream, in v
 }
 
 #ifdef NORM_PRECOMP_STREAM
-void nbl_glsl_MC_runNormalPrecompStream(in nbl_glsl_MC_instr_stream_t stream, in nbl_glsl_MC_precomputed_t precomp)
+NBL_GLSL_API void nbl_glsl_MC_runNormalPrecompStream(in nbl_glsl_MC_instr_stream_t stream, in nbl_glsl_MC_precomputed_t precomp)
 {
 	nbl_glsl_MC_setCurrInteraction(precomp);
 	for (uint i = 0u; i < stream.count; ++i)
@@ -624,14 +624,14 @@ void nbl_glsl_MC_runNormalPrecompStream(in nbl_glsl_MC_instr_stream_t stream, in
 #endif
 
 //#include <3rdparty/glsl/material_compiler/instr_eval.glsl>
-struct nbl_glsl_MC_CookTorranceFactors
+NBL_GLSL_API struct nbl_glsl_MC_CookTorranceFactors
 {
 	float G2_over_G1; // conductor quotient sans fresnel
 	float vndf; // already includes the geometrical transform differential (reflection/refraction)
 	float aovThroughputFactor;
 };
 
-nbl_glsl_MC_CookTorranceFactors nbl_glsl_MC_instr_microfacet_common(
+NBL_GLSL_API nbl_glsl_MC_CookTorranceFactors nbl_glsl_MC_instr_microfacet_common(
 	in uint ndf,
 #ifdef ALL_ISOTROPIC_BXDFS
 	in float a2,
@@ -741,7 +741,7 @@ nbl_glsl_MC_CookTorranceFactors nbl_glsl_MC_instr_microfacet_common(
 }
 
 //
-nbl_glsl_MC_eval_pdf_aov_t nbl_glsl_MC_instr_bxdf_eval_and_pdf_common(
+NBL_GLSL_API nbl_glsl_MC_eval_pdf_aov_t nbl_glsl_MC_instr_bxdf_eval_and_pdf_common(
 	in nbl_glsl_MC_instr_t instr,
 	in uint op, in bool is_not_brdf,
 	in nbl_glsl_MC_params_t params,
@@ -900,7 +900,7 @@ nbl_glsl_MC_eval_pdf_aov_t nbl_glsl_MC_instr_bxdf_eval_and_pdf_common(
 }
 
 //
-void nbl_glsl_MC_instr_eval_and_pdf_execute(
+NBL_GLSL_API void nbl_glsl_MC_instr_eval_and_pdf_execute(
 	in nbl_glsl_MC_instr_t instr,
 	in nbl_glsl_MC_precomputed_t precomp,
 	in nbl_glsl_LightSample s,
@@ -1052,7 +1052,7 @@ nbl_glsl_MC_eval_pdf_aov_t nbl_bsdf_eval_and_pdf(
 	return retval;
 }
 
-struct nbl_glsl_MC_quot_pdf_aov_t
+NBL_GLSL_API struct nbl_glsl_MC_quot_pdf_aov_t
 {
 	// TODO: Rename all `rem`/`remainder` in Nabla GLSL to `quot`/`quotient`, bad taxonomy
 	nbl_glsl_MC_bxdf_spectrum_t quotient;
@@ -1408,7 +1408,7 @@ nbl_glsl_LightSample nbl_bsdf_cos_generate(
 	return s;
 }
 
-nbl_glsl_MC_quot_pdf_aov_t nbl_glsl_MC_runGenerateAndRemainderStream(
+NBL_GLSL_API nbl_glsl_MC_quot_pdf_aov_t nbl_glsl_MC_runGenerateAndRemainderStream(
 	in nbl_glsl_MC_precomputed_t precomp,
 	in nbl_glsl_MC_instr_stream_t gcs,
 	in nbl_glsl_MC_instr_stream_t rnps,

@@ -4,14 +4,14 @@
 #include <3rdparty/glsl/math/functions.glsl>
 
 //
-mat3 nbl_glsl_shapes_getSphericalTriangle(in mat3 vertices, in vec3 origin)
+NBL_GLSL_API mat3 nbl_glsl_shapes_getSphericalTriangle(in mat3 vertices, in vec3 origin)
 {
     // the `normalize` cannot be optimized out
     return mat3(normalize(vertices[0]-origin),normalize(vertices[1]-origin),normalize(vertices[2]-origin));
 }
 
 // returns true if pyramid degenerated into a line
-bool nbl_glsl_shapes_SphericalTrianglePyramidAngles(in mat3 sphericalVertices, out vec3& cos_sides, out vec3& csc_sides)
+NBL_GLSL_API bool nbl_glsl_shapes_SphericalTrianglePyramidAngles(in mat3 sphericalVertices, out vec3& cos_sides, out vec3& csc_sides)
 {
     // The sides are denoted by lower-case letters a, b, and c.
     // On the unit sphere their lengths are numerically equal to the radian measure of the angles that the great circle arcs subtend at the centre.
@@ -22,7 +22,7 @@ bool nbl_glsl_shapes_SphericalTrianglePyramidAngles(in mat3 sphericalVertices, o
 }
 
 // returns solid angle of a spherical triangle, this function is beyond optimized.
-float nbl_glsl_shapes_SolidAngleOfTriangle(in mat3 sphericalVertices, out vec3& cos_vertices, out vec3& sin_vertices, out float& cos_a, out float& cos_c, out float& csc_b, out float& csc_c)
+NBL_GLSL_API float nbl_glsl_shapes_SolidAngleOfTriangle(in mat3 sphericalVertices, out vec3& cos_vertices, out vec3& sin_vertices, out float& cos_a, out float& cos_c, out float& csc_b, out float& csc_c)
 {   
     vec3 cos_sides,csc_sides;
     if (nbl_glsl_shapes_SphericalTrianglePyramidAngles(sphericalVertices,cos_sides,csc_sides))
@@ -41,21 +41,21 @@ float nbl_glsl_shapes_SolidAngleOfTriangle(in mat3 sphericalVertices, out vec3& 
     // the solid angle of a triangle is the sum of its planar vertices' angles minus PI
     return nbl_glsl_getArccosSumofABC_minus_PI(cos_vertices[0],cos_vertices[1],cos_vertices[2],sin_vertices[0],sin_vertices[1],sin_vertices[2]);
 }
-float nbl_glsl_shapes_SolidAngleOfTriangle(in mat3 sphericalVertices)
+NBL_GLSL_API float nbl_glsl_shapes_SolidAngleOfTriangle(in mat3 sphericalVertices)
 {
     vec3 dummy0,dummy1;
     float dummy2,dummy3,dummy4,dummy5;
     return nbl_glsl_shapes_SolidAngleOfTriangle(sphericalVertices,dummy0,dummy1,dummy2,dummy3,dummy4,dummy5);
 }
 // returns solid angle of a triangle given by its world-space vertices and world-space viewing position
-float nbl_glsl_shapes_SolidAngleOfTriangle(in mat3 vertices, in vec3 origin)
+NBL_GLSL_API float nbl_glsl_shapes_SolidAngleOfTriangle(in mat3 vertices, in vec3 origin)
 {
     return nbl_glsl_shapes_SolidAngleOfTriangle(nbl_glsl_shapes_getSphericalTriangle(vertices,origin));
 }
 
 
 // return projected solid angle of a spherical triangle
-float nbl_glsl_shapes_ProjectedSolidAngleOfTriangle(in mat3 sphericalVertices, in vec3 receiverNormal, out vec3& cos_sides, out vec3& csc_sides, out vec3& cos_vertices)
+NBL_GLSL_API float nbl_glsl_shapes_ProjectedSolidAngleOfTriangle(in mat3 sphericalVertices, in vec3 receiverNormal, out vec3& cos_sides, out vec3& csc_sides, out vec3& cos_vertices)
 {
     if (nbl_glsl_shapes_SphericalTrianglePyramidAngles(sphericalVertices,cos_sides,csc_sides))
         return 0.f;
@@ -78,12 +78,12 @@ float nbl_glsl_shapes_ProjectedSolidAngleOfTriangle(in mat3 sphericalVertices, i
     const vec3 pyramidAngles = acos(cos_sides);
     return dot(pyramidAngles,externalProducts)/(2.f*nbl_glsl_PI);
 }
-float nbl_glsl_shapes_ProjectedSolidAngleOfTriangle(in mat3 sphericalVertices, in vec3 receiverNormal, out vec3& cos_sides, out vec3& csc_sides)
+NBL_GLSL_API float nbl_glsl_shapes_ProjectedSolidAngleOfTriangle(in mat3 sphericalVertices, in vec3 receiverNormal, out vec3& cos_sides, out vec3& csc_sides)
 {
     vec3 cos_vertices;
     return nbl_glsl_shapes_ProjectedSolidAngleOfTriangle(sphericalVertices,receiverNormal,cos_sides,csc_sides,cos_vertices);
 }
-float nbl_glsl_shapes_ProjectedSolidAngleOfTriangle(in mat3 sphericalVertices, in vec3 receiverNormal)
+NBL_GLSL_API float nbl_glsl_shapes_ProjectedSolidAngleOfTriangle(in mat3 sphericalVertices, in vec3 receiverNormal)
 {
     vec3 cos_sides,csc_sides;
     return nbl_glsl_shapes_ProjectedSolidAngleOfTriangle(sphericalVertices,receiverNormal,cos_sides,csc_sides);

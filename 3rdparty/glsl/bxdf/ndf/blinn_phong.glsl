@@ -8,12 +8,12 @@
 #include <3rdparty/glsl/math/constants.glsl>
 #include <3rdparty/glsl/bxdf/ndf/common.glsl>
 
-float nbl_glsl_blinn_phong(in float NdotH, in float n)
+NBL_GLSL_API float nbl_glsl_blinn_phong(in float NdotH, in float n)
 {
     return isinf(n) ? nbl_glsl_FLT_INF : nbl_glsl_RECIPROCAL_PI*0.5*(n+2.0) * pow(NdotH,n);
 }
 //ashikhmin-shirley ndf
-float nbl_glsl_blinn_phong(in float NdotH, in float one_minus_NdotH2_rcp, in float TdotH2, in float BdotH2, in float nx, in float ny)
+NBL_GLSL_API float nbl_glsl_blinn_phong(in float NdotH, in float one_minus_NdotH2_rcp, in float TdotH2, in float BdotH2, in float nx, in float ny)
 {
     float n = (TdotH2*ny + BdotH2*nx) * one_minus_NdotH2_rcp;
 

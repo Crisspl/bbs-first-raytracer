@@ -7,7 +7,7 @@
 
 #include <3rdparty/glsl/bxdf/brdf/diffuse/lambert.glsl>
 
-float nbl_glsl_oren_nayar_cos_rec_pi_factored_out_wo_clamps(in float _a2, in float VdotL, in float maxNdotL, in float maxNdotV)
+NBL_GLSL_API float nbl_glsl_oren_nayar_cos_rec_pi_factored_out_wo_clamps(in float _a2, in float VdotL, in float maxNdotL, in float maxNdotV)
 {
     // theta - polar angles
     // phi - azimuth angles
@@ -24,46 +24,46 @@ float nbl_glsl_oren_nayar_cos_rec_pi_factored_out_wo_clamps(in float _a2, in flo
 }
 
 
-float nbl_glsl_oren_nayar_cos_eval_wo_clamps(in float a2, in float VdotL, in float maxNdotL, in float maxNdotV)
+NBL_GLSL_API float nbl_glsl_oren_nayar_cos_eval_wo_clamps(in float a2, in float VdotL, in float maxNdotL, in float maxNdotV)
 {
     return maxNdotL*nbl_glsl_RECIPROCAL_PI*nbl_glsl_oren_nayar_cos_rec_pi_factored_out_wo_clamps(a2,VdotL,maxNdotL,maxNdotV);
 }
 
-float nbl_glsl_oren_nayar_cos_eval(in nbl_glsl_LightSample _sample, in nbl_glsl_IsotropicViewSurfaceInteraction inter, in float a2)
+NBL_GLSL_API float nbl_glsl_oren_nayar_cos_eval(in nbl_glsl_LightSample _sample, in nbl_glsl_IsotropicViewSurfaceInteraction inter, in float a2)
 {
     return nbl_glsl_oren_nayar_cos_eval_wo_clamps(a2, _sample.VdotL, max(_sample.NdotL,0.0f), max(inter.NdotV,0.0f));
 }
 
 
-nbl_glsl_LightSample nbl_glsl_oren_nayar_cos_generate_wo_clamps(in vec3 tangentSpaceV, in mat3 m, in vec2 u)
+NBL_GLSL_API nbl_glsl_LightSample nbl_glsl_oren_nayar_cos_generate_wo_clamps(in vec3 tangentSpaceV, in mat3 m, in vec2 u)
 {
     // until we find something better
     return nbl_glsl_lambertian_cos_generate_wo_clamps(tangentSpaceV, m, u);
 }
-nbl_glsl_LightSample nbl_glsl_oren_nayar_cos_generate(in nbl_glsl_AnisotropicViewSurfaceInteraction interaction, in vec2 u, in float a2)
+NBL_GLSL_API nbl_glsl_LightSample nbl_glsl_oren_nayar_cos_generate(in nbl_glsl_AnisotropicViewSurfaceInteraction interaction, in vec2 u, in float a2)
 {
     return nbl_glsl_oren_nayar_cos_generate_wo_clamps(nbl_glsl_getTangentSpaceV(interaction),nbl_glsl_getTangentFrame(interaction),u);
 }
 
 
-float nbl_glsl_oren_nayar_pdf_wo_clamps(in float maxNdotL)
+NBL_GLSL_API float nbl_glsl_oren_nayar_pdf_wo_clamps(in float maxNdotL)
 {
     return nbl_glsl_lambertian_pdf_wo_clamps(maxNdotL);
 }
 
-float nbl_glsl_oren_nayar_pdf(in nbl_glsl_LightSample s, in nbl_glsl_IsotropicViewSurfaceInteraction i)
+NBL_GLSL_API float nbl_glsl_oren_nayar_pdf(in nbl_glsl_LightSample s, in nbl_glsl_IsotropicViewSurfaceInteraction i)
 {
     return nbl_glsl_lambertian_pdf(s, i);
 }
 
 
-float nbl_glsl_oren_nayar_cos_remainder_and_pdf_wo_clamps(out float& pdf, in float a2, in float VdotL, in float maxNdotL, in float maxNdotV)
+NBL_GLSL_API float nbl_glsl_oren_nayar_cos_remainder_and_pdf_wo_clamps(out float& pdf, in float a2, in float VdotL, in float maxNdotL, in float maxNdotV)
 {
     pdf = nbl_glsl_oren_nayar_pdf_wo_clamps(maxNdotL);
     return nbl_glsl_oren_nayar_cos_rec_pi_factored_out_wo_clamps(a2,VdotL,maxNdotL,maxNdotV);
 }
 
-float nbl_glsl_oren_nayar_cos_remainder_and_pdf(out float& pdf, in nbl_glsl_LightSample s, in nbl_glsl_IsotropicViewSurfaceInteraction interaction, in float a2)
+NBL_GLSL_API float nbl_glsl_oren_nayar_cos_remainder_and_pdf(out float& pdf, in nbl_glsl_LightSample s, in nbl_glsl_IsotropicViewSurfaceInteraction interaction, in float a2)
 {
     return nbl_glsl_oren_nayar_cos_remainder_and_pdf_wo_clamps(pdf,a2,dot(interaction.V.dir,s.L), max(s.NdotL,0.0f), max(interaction.NdotV,0.0f));
 }

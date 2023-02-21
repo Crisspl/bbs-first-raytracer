@@ -4,24 +4,24 @@
 
 #include <3rdparty/glsl/culling_lod_selection/output_descriptor_set.glsl>
 
-uint nbl_glsl_culling_lod_selection_drawCallInstanceCountIncr(in uint drawCallDWORDOffset)
+NBL_GLSL_API uint nbl_glsl_culling_lod_selection_drawCallInstanceCountIncr(in uint drawCallDWORDOffset)
 {
     return atomicAdd(drawCalls.data[drawCallDWORDOffset+1u],1u);
 }
 
-void nbl_glsl_culling_lod_selection_drawCallSetDWORD(in uint DWORDOffset, in uint value)
+NBL_GLSL_API void nbl_glsl_culling_lod_selection_drawCallSetDWORD(in uint DWORDOffset, in uint value)
 {
     drawCalls.data[DWORDOffset] = value;
 }
-void nbl_glsl_culling_lod_selection_drawCallSetInstanceCount(in uint drawCallDWORDOffset, in uint instanceCount)
+NBL_GLSL_API void nbl_glsl_culling_lod_selection_drawCallSetInstanceCount(in uint drawCallDWORDOffset, in uint instanceCount)
 {
     drawCalls.data[drawCallDWORDOffset+1u] = instanceCount;
 }
-void nbl_glsl_culling_lod_selection_drawArraysSetBaseInstance(in uint drawCallDWORDOffset, in uint baseInstance)
+NBL_GLSL_API void nbl_glsl_culling_lod_selection_drawArraysSetBaseInstance(in uint drawCallDWORDOffset, in uint baseInstance)
 {
     drawCalls.data[drawCallDWORDOffset+3u] = baseInstance;
 }
-void nbl_glsl_culling_lod_selection_drawElementsSetBaseInstance(in uint drawCallDWORDOffset, in uint baseInstance)
+NBL_GLSL_API void nbl_glsl_culling_lod_selection_drawElementsSetBaseInstance(in uint drawCallDWORDOffset, in uint baseInstance)
 {
     drawCalls.data[drawCallDWORDOffset+4u] = baseInstance;
 }

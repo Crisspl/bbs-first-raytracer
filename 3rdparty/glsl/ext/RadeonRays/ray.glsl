@@ -1,7 +1,7 @@
 #ifndef _NBL_GLSL_EXT_RADEON_RAYS_RAY_INCLUDED_
 #define _NBL_GLSL_EXT_RADEON_RAYS_RAY_INCLUDED_
 
-struct nbl_glsl_ext_RadeonRays_ray
+NBL_GLSL_API struct nbl_glsl_ext_RadeonRays_ray
 {
 	vec3 origin;
 	float maxT; // nbl_glsl_FLT_MAX
@@ -12,7 +12,7 @@ struct nbl_glsl_ext_RadeonRays_ray
 	uvec2 useless_padding; // can be used to forward data
 };
 
-nbl_glsl_ext_RadeonRays_ray nbl_glsl_ext_RadeonRays_constructDefaultRay(in vec3 origin, in vec3 direction, in float maxLen, in uvec2 userData)
+NBL_GLSL_API nbl_glsl_ext_RadeonRays_ray nbl_glsl_ext_RadeonRays_constructDefaultRay(in vec3 origin, in vec3 direction, in float maxLen, in uvec2 userData)
 {
 	nbl_glsl_ext_RadeonRays_ray retval;
 	retval.origin = origin;

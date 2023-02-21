@@ -76,7 +76,7 @@ layout(push_constant) uniform PushConstants
 
 #ifndef _NBL_GLSL_EXT_RADIXSORT_GET_PARAMETERS_DEFINED_
 
-nbl_glsl_ext_RadixSort_Parameters_t nbl_glsl_ext_RadixSort_getParameters()
+NBL_GLSL_API nbl_glsl_ext_RadixSort_Parameters_t nbl_glsl_ext_RadixSort_getParameters()
 {
 	return pc.params;
 }
@@ -88,7 +88,7 @@ nbl_glsl_ext_RadixSort_Parameters_t nbl_glsl_ext_RadixSort_getParameters()
 
 #ifndef _NBL_GLSL_EXT_RADIXSORT_LOAD_GLOBAL_HISTOGRAM_DEFINED_
 
-uint nbl_glsl_ext_RadixSort_loadGlobalHistogram(in uint digit)
+NBL_GLSL_API uint nbl_glsl_ext_RadixSort_loadGlobalHistogram(in uint digit)
 {
 	uint offset;
 	if (gl_LocalInvocationIndex < _NBL_GLSL_EXT_RADIXSORT_BUCKET_COUNT_)
@@ -103,7 +103,7 @@ uint nbl_glsl_ext_RadixSort_loadGlobalHistogram(in uint digit)
 
 #ifndef _NBL_GLSL_EXT_RADIXSORT_SCATTER_GET_PADDED_DATA_DEFINED_
 
-uvec2 nbl_glsl_ext_RadixSort_getPaddedData(in uint idx)
+NBL_GLSL_API uvec2 nbl_glsl_ext_RadixSort_getPaddedData(in uint idx)
 {
 	uvec2 data = uvec2(UINT_MAX);
 	if (idx < nbl_glsl_ext_RadixSort_Parameters_t_getElementCountTotal())
@@ -117,7 +117,7 @@ uvec2 nbl_glsl_ext_RadixSort_getPaddedData(in uint idx)
 
 #ifndef _NBL_GLSL_EXT_RADIXSORT_SCATTER_SET_DATA_DEFINED_
 
-void nbl_glsl_ext_RadixSort_setData(in uint idx, in uvec2 data)
+NBL_GLSL_API void nbl_glsl_ext_RadixSort_setData(in uint idx, in uvec2 data)
 {
 	if (idx < nbl_glsl_ext_RadixSort_Parameters_t_getElementCountTotal())
 		out_values[idx] = data;
@@ -128,7 +128,7 @@ void nbl_glsl_ext_RadixSort_setData(in uint idx, in uvec2 data)
 
 #include "nbl/builtin/glsl/ext/RadixSort/radix_sort.glsl"
 
-void nbl_glsl_ext_RadixSort_defaultScatter()
+NBL_GLSL_API void nbl_glsl_ext_RadixSort_defaultScatter()
 {
 	const uvec2 data = nbl_glsl_ext_RadixSort_getPaddedData(gl_GlobalInvocationID.x);
 	const uint digit = nbl_glsl_ext_RadixSort_extractDigit(data.x);

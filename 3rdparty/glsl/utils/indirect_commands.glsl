@@ -5,7 +5,7 @@
 #define _NBL_BUILTIN_UTILS_INDIRECT_COMMANDS_GLSL_INCLUDED_
 
 
-struct nbl_glsl_DrawArraysIndirectCommand_t
+NBL_GLSL_API struct nbl_glsl_DrawArraysIndirectCommand_t
 {
     uint  count;
     uint  instanceCount;
@@ -13,7 +13,7 @@ struct nbl_glsl_DrawArraysIndirectCommand_t
     uint  baseInstance;
 };
 
-struct nbl_glsl_DrawElementsIndirectCommand_t
+NBL_GLSL_API struct nbl_glsl_DrawElementsIndirectCommand_t
 {
     uint count;
     uint instanceCount;
@@ -22,7 +22,7 @@ struct nbl_glsl_DrawElementsIndirectCommand_t
     uint baseInstance;
 };
 
-struct nbl_glsl_DispatchIndirectCommand_t
+NBL_GLSL_API struct nbl_glsl_DispatchIndirectCommand_t
 {
     uint  num_groups_x;
     uint  num_groups_y;
@@ -30,12 +30,12 @@ struct nbl_glsl_DispatchIndirectCommand_t
 };
 
 
-uint nbl_glsl_utils_computeOptimalPersistentWorkgroupDispatchSize(in uint elementCount, in uint workgroupSize, in uint workgroupSpinningProtection)
+NBL_GLSL_API uint nbl_glsl_utils_computeOptimalPersistentWorkgroupDispatchSize(in uint elementCount, in uint workgroupSize, in uint workgroupSpinningProtection)
 {
     const uint infinitelyWideDeviceWGCount = (elementCount-1u)/(workgroupSize*workgroupSpinningProtection)+1u;
     return min(infinitelyWideDeviceWGCount,NBL_GLSL_LIMIT_MAX_RESIDENT_INVOCATIONS/NBL_GLSL_LIMIT_MAX_OPTIMALLY_RESIDENT_WORKGROUP_INVOCATIONS);
 }
-uint nbl_glsl_utils_computeOptimalPersistentWorkgroupDispatchSize(in uint elementCount, in uint workgroupSize)
+NBL_GLSL_API uint nbl_glsl_utils_computeOptimalPersistentWorkgroupDispatchSize(in uint elementCount, in uint workgroupSize)
 {
     return nbl_glsl_utils_computeOptimalPersistentWorkgroupDispatchSize(elementCount,workgroupSize,1u);
 }

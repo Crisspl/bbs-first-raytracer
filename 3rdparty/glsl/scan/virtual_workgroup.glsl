@@ -7,7 +7,7 @@
 #include <3rdparty/glsl/scan/declarations.glsl>
 
 // TODO: declare nbl_glsl_scan_virtualWorkgroup{$BinopName}
-void nbl_glsl_scan_virtualWorkgroup(in uint treeLevel, in uint localWorkgroupIndex)
+NBL_GLSL_API void nbl_glsl_scan_virtualWorkgroup(in uint treeLevel, in uint localWorkgroupIndex)
 {
 	const nbl_glsl_scan_Parameters_t params = nbl_glsl_scan_getParameters();
 	const uint levelInvocationIndex = localWorkgroupIndex*_NBL_GLSL_WORKGROUP_SIZE_+gl_LocalInvocationIndex;
@@ -83,8 +83,8 @@ void nbl_glsl_scan_virtualWorkgroup(in uint treeLevel, in uint localWorkgroupInd
 
 #ifndef _NBL_GLSL_SCAN_MAIN_DEFINED_
 #include <3rdparty/glsl/scan/default_scheduler.glsl>
-nbl_glsl_scan_DefaultSchedulerParameters_t nbl_glsl_scan_getSchedulerParameters();
-void nbl_glsl_scan_main()
+NBL_GLSL_API nbl_glsl_scan_DefaultSchedulerParameters_t nbl_glsl_scan_getSchedulerParameters();
+NBL_GLSL_API void nbl_glsl_scan_main()
 {
 	const nbl_glsl_scan_DefaultSchedulerParameters_t schedulerParams = nbl_glsl_scan_getSchedulerParameters();
 	const uint topLevel = nbl_glsl_scan_getParameters().topLevel;

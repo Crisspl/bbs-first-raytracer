@@ -4,7 +4,7 @@
 #include <3rdparty/glsl/format/constants.glsl>
 #include <3rdparty/glsl/limits/numeric.glsl>
 
-uvec3 nbl_glsl_impl_sharedExponentEncodeCommon(in vec3 clamped, in int newExpBias, in int newMaxExp, in int mantissaBits, out int& shared_exp)
+NBL_GLSL_API uvec3 nbl_glsl_impl_sharedExponentEncodeCommon(in vec3 clamped, in int newExpBias, in int newMaxExp, in int mantissaBits, out int& shared_exp)
 {
 	const float maxrgb = max(max(clamped.r,clamped.g),clamped.b);
 	// TODO: optimize this
@@ -20,7 +20,7 @@ uvec3 nbl_glsl_impl_sharedExponentEncodeCommon(in vec3 clamped, in int newExpBia
 	return uvec3(clamped*scale + vec3(0.5));
 }
 
-uvec2 nbl_glsl_encodeRGB19E7(in vec3 col)
+NBL_GLSL_API uvec2 nbl_glsl_encodeRGB19E7(in vec3 col)
 {
 	const vec3 clamped = clamp(col,vec3(0.0),vec3(nbl_glsl_MAX_RGB19E7));
 
@@ -39,7 +39,7 @@ uvec2 nbl_glsl_encodeRGB19E7(in vec3 col)
 	return encoded;
 }
 
-uvec2 nbl_glsl_encodeRGB18E7S3(in vec3 col)
+NBL_GLSL_API uvec2 nbl_glsl_encodeRGB18E7S3(in vec3 col)
 {
 	const vec3 absCol = abs(col);
 	const vec3 clamped = min(absCol,vec3(nbl_glsl_MAX_RGB18E7S3));
@@ -64,7 +64,7 @@ uvec2 nbl_glsl_encodeRGB18E7S3(in vec3 col)
 }
 
 //
-uint nbl_glsl_encodeRGB10A2_UNORM(in vec4 col)
+NBL_GLSL_API uint nbl_glsl_encodeRGB10A2_UNORM(in vec4 col)
 {
 	const uvec3 rgbMask = uvec3(0x3ffu);
 	const vec4 clamped = clamp(col,vec4(0.0),vec4(1.0));
@@ -72,7 +72,7 @@ uint nbl_glsl_encodeRGB10A2_UNORM(in vec4 col)
 	quantized.gba <<= uvec3(10,20,30);
 	return quantized.r|quantized.g|quantized.b|quantized.a;
 }
-uint nbl_glsl_encodeRGB10A2_SNORM(in vec4 col)
+NBL_GLSL_API uint nbl_glsl_encodeRGB10A2_SNORM(in vec4 col)
 {
 	const ivec4 mask = ivec4(ivec3(0x3ffu),0x3u);
 	const uvec3 halfMask = uvec3(0x1ffu);
@@ -83,7 +83,7 @@ uint nbl_glsl_encodeRGB10A2_SNORM(in vec4 col)
 }
 
 // TODO: break it down into uint nbl_glsl_encode_ufloat_exponent(in float _f32) and nbl_glsl_encode_ufloat_mantissa(in float _f32, in uint mantissaBits, in bool leadingOne)
-uint nbl_glsl_encode_ufloat(in float _f32, in uint mantissaBits, in uint expBits)
+NBL_GLSL_API uint nbl_glsl_encode_ufloat(in float _f32, in uint mantissaBits, in uint expBits)
 {
 	uint minSinglePrecisionVal = floatBitsToUint(nbl_glsl_ieee754_min(expBits, mantissaBits));
 	uint maxSinglePrecisionVal = floatBitsToUint(nbl_glsl_ieee754_max(expBits, mantissaBits));
@@ -119,7 +119,7 @@ uint to10bitFloat(in float _f32)
 	return nbl_glsl_encode_ufloat(_f32, mantissaBits, 10-mantissaBits);
 }
 
-uint nbl_glsl_encodeR11G11B10(in vec4 col)
+NBL_GLSL_API uint nbl_glsl_encodeR11G11B10(in vec4 col)
 {
 	const uint r = to11bitFloat(col.r);
 	const uint g = to11bitFloat(col.g) << 11;

@@ -4,7 +4,7 @@
 #include <3rdparty/glsl/format/constants.glsl>
 #include <3rdparty/glsl/math/quaternions.glsl>
 
-vec3 nbl_glsl_decodeRGB19E7(in uvec2 x)
+NBL_GLSL_API vec3 nbl_glsl_decodeRGB19E7(in uvec2 x)
 {
 	int exp = int(bitfieldExtract(x[nbl_glsl_RGB19E7_COMPONENT_INDICES[3]], nbl_glsl_RGB19E7_COMPONENT_BITOFFSETS[3], nbl_glsl_RGB19E7_EXPONENT_BITS) - nbl_glsl_RGB19E7_EXP_BIAS - nbl_glsl_RGB19E7_MANTISSA_BITS);
 	float scale = exp2(float(exp));
@@ -22,7 +22,7 @@ vec3 nbl_glsl_decodeRGB19E7(in uvec2 x)
 	return v*scale;
 }
 
-vec3 nbl_glsl_decodeRGB18E7S3(in uvec2 x)
+NBL_GLSL_API vec3 nbl_glsl_decodeRGB18E7S3(in uvec2 x)
 {
 	int exp = int(bitfieldExtract(x[nbl_glsl_RGB18E7S3_COMPONENT_INDICES[3]], nbl_glsl_RGB18E7S3_COMPONENT_BITOFFSETS[3], nbl_glsl_RGB18E7S3_EXPONENT_BITS) - nbl_glsl_RGB18E7S3_EXP_BIAS - nbl_glsl_RGB18E7S3_MANTISSA_BITS);
 	float scale = exp2(float(exp));
@@ -45,13 +45,13 @@ vec3 nbl_glsl_decodeRGB18E7S3(in uvec2 x)
 }
 
 //
-vec4 nbl_glsl_decodeRGB10A2_UNORM(in uint x)
+NBL_GLSL_API vec4 nbl_glsl_decodeRGB10A2_UNORM(in uint x)
 {
 	const uvec3 rgbMask = uvec3(0x3ffu);
 	const uvec4 shifted = uvec4(x,uvec3(x)>>uvec3(10,20,30));
 	return vec4(vec3(shifted.rgb&rgbMask),shifted.a)/vec4(vec3(rgbMask),3.0);
 }
-vec4 nbl_glsl_decodeRGB10A2_SNORM(in uint x)
+NBL_GLSL_API vec4 nbl_glsl_decodeRGB10A2_SNORM(in uint x)
 {
 	const ivec4 shifted = ivec4(x,uvec3(x)>>uvec3(10u,20u,30u));
 	const ivec4 rgbaBias = ivec4(ivec3(0x200u), 0x2u);
@@ -61,14 +61,14 @@ vec4 nbl_glsl_decodeRGB10A2_SNORM(in uint x)
 }
 
 //
-nbl_glsl_quaternion_t nbl_glsl_decode8888Quaternion(in uint x)
+NBL_GLSL_API nbl_glsl_quaternion_t nbl_glsl_decode8888Quaternion(in uint x)
 {
 	nbl_glsl_quaternion_t quat;
 	quat.data = normalize(unpackSnorm4x8(x));
 	return quat;
 }
 
-nbl_glsl_quaternion_t nbl_glsl_decode1010102Quaternion(in uint x)
+NBL_GLSL_API nbl_glsl_quaternion_t nbl_glsl_decode1010102Quaternion(in uint x)
 {
 	const uvec3 rgbMask = uvec3(0x3ffu);
 	const uvec4 shifted = uvec4(x,uvec3(x)>>uvec3(10,20,30));

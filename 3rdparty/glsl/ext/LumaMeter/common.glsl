@@ -10,7 +10,7 @@
 
 #ifndef _NBL_GLSL_EXT_LUMA_METER_UNIFORMS_DEFINED_
 #define _NBL_GLSL_EXT_LUMA_METER_UNIFORMS_DEFINED_
-struct nbl_glsl_ext_LumaMeter_Uniforms_t
+NBL_GLSL_API struct nbl_glsl_ext_LumaMeter_Uniforms_t
 {
 	vec2 meteringWindowScale;
 	vec2 meteringWindowOffset;
@@ -275,7 +275,7 @@ layout(set=_NBL_GLSL_EXT_LUMA_METER_INPUT_IMAGE_SET_DEFINED_, binding=_NBL_GLSL_
 
 #ifndef _NBL_GLSL_EXT_LUMA_METER_IMPL_GET_MEASURED_LUMA_FUNC_DECLARED_
 #define _NBL_GLSL_EXT_LUMA_METER_IMPL_GET_MEASURED_LUMA_FUNC_DECLARED_
-float nbl_glsl_ext_LumaMeter_impl_getMeasuredLumaLog2(in nbl_glsl_ext_LumaMeter_output_SPIRV_CROSS_is_dumb_t firstPassOutput, in nbl_glsl_ext_LumaMeter_PassInfo_t info);
+NBL_GLSL_API float nbl_glsl_ext_LumaMeter_impl_getMeasuredLumaLog2(in nbl_glsl_ext_LumaMeter_output_SPIRV_CROSS_is_dumb_t firstPassOutput, in nbl_glsl_ext_LumaMeter_PassInfo_t info);
 #endif
 
 
@@ -287,7 +287,7 @@ float nbl_glsl_ext_LumaMeter_impl_getMeasuredLumaLog2(in nbl_glsl_ext_LumaMeter_
     #include <3rdparty/glsl/workgroup/shuffle.glsl>
 #endif
 
-float nbl_glsl_ext_LumaMeter_impl_getMeasuredLumaLog2(in nbl_glsl_ext_LumaMeter_output_SPIRV_CROSS_is_dumb_t firstPassOutput, in nbl_glsl_ext_LumaMeter_PassInfo_t info)
+NBL_GLSL_API float nbl_glsl_ext_LumaMeter_impl_getMeasuredLumaLog2(in nbl_glsl_ext_LumaMeter_output_SPIRV_CROSS_is_dumb_t firstPassOutput, in nbl_glsl_ext_LumaMeter_PassInfo_t info)
 {
     #if NBL_GLSL_EQUAL(_NBL_GLSL_EXT_LUMA_METER_MODE_DEFINED_,_NBL_GLSL_EXT_LUMA_METER_MODE_MEDIAN)
         uint histogramPrefix = nbl_glsl_workgroupExclusiveAdd(firstPassOutput);
@@ -309,7 +309,7 @@ float nbl_glsl_ext_LumaMeter_impl_getMeasuredLumaLog2(in nbl_glsl_ext_LumaMeter_
 
 
 
-float nbl_glsl_ext_LumaMeter_getMeasuredLumaLog2(in nbl_glsl_ext_LumaMeter_output_SPIRV_CROSS_is_dumb_t firstPassOutput, in nbl_glsl_ext_LumaMeter_PassInfo_t info)
+NBL_GLSL_API float nbl_glsl_ext_LumaMeter_getMeasuredLumaLog2(in nbl_glsl_ext_LumaMeter_output_SPIRV_CROSS_is_dumb_t firstPassOutput, in nbl_glsl_ext_LumaMeter_PassInfo_t info)
 {
     const float MinLuma = intBitsToFloat(_NBL_GLSL_EXT_LUMA_METER_MIN_LUMA_DEFINED_);
     const float MaxLuma = intBitsToFloat(_NBL_GLSL_EXT_LUMA_METER_MAX_LUMA_DEFINED_);
@@ -317,7 +317,7 @@ float nbl_glsl_ext_LumaMeter_getMeasuredLumaLog2(in nbl_glsl_ext_LumaMeter_outpu
 }
 
 
-float nbl_glsl_ext_LumaMeter_getOptiXIntensity(in float measuredLumaLog2)
+NBL_GLSL_API float nbl_glsl_ext_LumaMeter_getOptiXIntensity(in float measuredLumaLog2)
 {
     return exp2(log2(0.18)-measuredLumaLog2);
 }

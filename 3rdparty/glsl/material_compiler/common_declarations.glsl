@@ -8,7 +8,7 @@
 #include <3rdparty/glsl/virtual_texturing/extensions.glsl>
 #include <3rdparty/glsl/material_compiler/common_invariant_declarations.glsl>
 
-struct nbl_glsl_MC_bsdf_data_t
+NBL_GLSL_API struct nbl_glsl_MC_bsdf_data_t
 {
 	uvec4 data[sizeof_bsdf_data];
 };

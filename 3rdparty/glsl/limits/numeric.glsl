@@ -28,7 +28,7 @@
 #endif
 
 #ifndef nbl_glsl_FLT_INF
-#define nbl_glsl_FLT_INF (1.f/0.f)
+#define nbl_glsl_FLT_INF INFINITY
 #endif
 
 #ifndef nbl_glsl_FLT_NAN
@@ -41,15 +41,15 @@
 
 #include <3rdparty/glsl/ieee754.glsl>
 
-float nbl_glsl_numeric_limits_float_epsilon(float n)
+NBL_GLSL_API float nbl_glsl_numeric_limits_float_epsilon(float n)
 {
 	return nbl_glsl_ieee754_fast_mul_exp2(n,-24);
 }
-float nbl_glsl_numeric_limits_float_epsilon(int n)
+NBL_GLSL_API float nbl_glsl_numeric_limits_float_epsilon(int n)
 {
 	return nbl_glsl_numeric_limits_float_epsilon(float(n));
 }
-float nbl_glsl_numeric_limits_float_epsilon()
+NBL_GLSL_API float nbl_glsl_numeric_limits_float_epsilon()
 {
 	return nbl_glsl_FLT_EPSILON;
 }

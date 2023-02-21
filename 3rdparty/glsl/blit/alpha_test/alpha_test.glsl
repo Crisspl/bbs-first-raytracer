@@ -9,11 +9,11 @@
 #error _NBL_GLSL_BLIT_ALPHA_TEST_PASSED_COUNTER_DESCRIPTOR_DEFINED_ must be defined
 #endif
 
-nbl_glsl_blit_parameters_t nbl_glsl_blit_getParameters();
+NBL_GLSL_API nbl_glsl_blit_parameters_t nbl_glsl_blit_getParameters();
 
-float nbl_glsl_blit_alpha_test_getData(in uvec3 coord, in uint layerIdx);
+NBL_GLSL_API float nbl_glsl_blit_alpha_test_getData(in uvec3 coord, in uint layerIdx);
 
-void nbl_glsl_blit_alpha_test_main()
+NBL_GLSL_API void nbl_glsl_blit_alpha_test_main()
 {
 	const uvec3 inDim = nbl_glsl_blit_parameters_getInputImageDimensions();
 	const nbl_glsl_blit_parameters_t params = nbl_glsl_blit_getParameters();

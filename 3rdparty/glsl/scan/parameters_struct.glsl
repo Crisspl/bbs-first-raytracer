@@ -7,7 +7,7 @@
 #ifdef __cplusplus
 #define uint uint32_t
 #endif
-struct nbl_glsl_scan_Parameters_t
+NBL_GLSL_API struct nbl_glsl_scan_Parameters_t
 {
 	uint topLevel;
 	uint lastElement[NBL_BUILTIN_MAX_SCAN_LEVELS/2+1];

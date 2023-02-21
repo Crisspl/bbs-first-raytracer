@@ -30,34 +30,34 @@
 #endif
 
 
-uint nbl_glsl_subgroupShuffle(uint value, uint id)
+NBL_GLSL_API uint nbl_glsl_subgroupShuffle(uint value, uint id)
 {
 	_NBL_GLSL_SCRATCH_SHARED_DEFINED_[gl_LocalInvocationIndex] = value;
 	nbl_glsl_subgroupBarrier();
 	nbl_glsl_subgroupMemoryBarrierShared();
 	return _NBL_GLSL_SCRATCH_SHARED_DEFINED_[(gl_LocalInvocationIndex&(-nbl_glsl_SubgroupSize))|id];
 }
-int nbl_glsl_subgroupShuffle(int value, uint id)
+NBL_GLSL_API int nbl_glsl_subgroupShuffle(int value, uint id)
 {
 	return int(nbl_glsl_subgroupShuffle(uint(value),id));
 }
-float nbl_glsl_subgroupShuffle(float value, uint id)
+NBL_GLSL_API float nbl_glsl_subgroupShuffle(float value, uint id)
 {
 	return uintBitsToFloat(nbl_glsl_subgroupShuffle(floatBitsToUint(value),id));
 }
 
-uint nbl_glsl_subgroupShuffleXor(uint value, uint id)
+NBL_GLSL_API uint nbl_glsl_subgroupShuffleXor(uint value, uint id)
 {
 	_NBL_GLSL_SCRATCH_SHARED_DEFINED_[gl_LocalInvocationIndex] = value;
 	nbl_glsl_subgroupBarrier();
 	nbl_glsl_subgroupMemoryBarrierShared();
 	return _NBL_GLSL_SCRATCH_SHARED_DEFINED_[gl_LocalInvocationIndex^id];
 }
-int nbl_glsl_subgroupShuffleXor(int value, uint id)
+NBL_GLSL_API int nbl_glsl_subgroupShuffleXor(int value, uint id)
 {
 	return int(nbl_glsl_subgroupShuffleXor(uint(value),id));
 }
-float nbl_glsl_subgroupShuffleXor(float value, uint id)
+NBL_GLSL_API float nbl_glsl_subgroupShuffleXor(float value, uint id)
 {
 	return uintBitsToFloat(nbl_glsl_subgroupShuffleXor(floatBitsToUint(value),id));
 }

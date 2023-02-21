@@ -5,7 +5,7 @@
 #ifdef __cplusplus
 #define uint uint32_t
 #endif
-struct nbl_glsl_culling_lod_selection_PotentiallyVisibleInstanceDraw_t
+NBL_GLSL_API struct nbl_glsl_culling_lod_selection_PotentiallyVisibleInstanceDraw_t
 {
     uint perViewPerInstanceID;
     uint drawBaseInstanceDWORDOffset;

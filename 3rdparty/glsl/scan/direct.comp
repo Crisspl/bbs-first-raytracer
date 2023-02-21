@@ -21,7 +21,7 @@ layout(push_constant) uniform PushConstants
 #endif
 
 #ifndef _NBL_GLSL_SCAN_GET_PARAMETERS_DEFINED_
-nbl_glsl_scan_Parameters_t nbl_glsl_scan_getParameters()
+NBL_GLSL_API nbl_glsl_scan_Parameters_t nbl_glsl_scan_getParameters()
 {
 	return pc.scanParams;
 }
@@ -29,7 +29,7 @@ nbl_glsl_scan_Parameters_t nbl_glsl_scan_getParameters()
 #endif
 
 #ifndef _NBL_GLSL_SCAN_GET_SCHEDULER_PARAMETERS_DEFINED_
-nbl_glsl_scan_DefaultSchedulerParameters_t nbl_glsl_scan_getSchedulerParameters()
+NBL_GLSL_API nbl_glsl_scan_DefaultSchedulerParameters_t nbl_glsl_scan_getSchedulerParameters()
 {
 	return pc.schedulerParams;
 }

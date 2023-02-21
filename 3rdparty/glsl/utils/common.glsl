@@ -8,18 +8,18 @@
 #include "nbl/builtin/glsl/math/functions.glsl"
 
 
-struct nbl_glsl_SBasicViewParameters
+NBL_GLSL_API struct nbl_glsl_SBasicViewParameters
 {
     mat4 MVP;
     mat4x3 MV;
     mat4x3 NormalMatAndEyePos;
 };
 
-mat3 nbl_glsl_SBasicViewParameters_GetNormalMat(in mat4x3 _NormalMatAndEyePos)
+NBL_GLSL_API mat3 nbl_glsl_SBasicViewParameters_GetNormalMat(in mat4x3 _NormalMatAndEyePos)
 {
     return mat3(_NormalMatAndEyePos);
 }
-vec3 nbl_glsl_SBasicViewParameters_GetEyePos(in mat4x3 _NormalMatAndEyePos)
+NBL_GLSL_API vec3 nbl_glsl_SBasicViewParameters_GetEyePos(in mat4x3 _NormalMatAndEyePos)
 {
     return _NormalMatAndEyePos[3];
 }

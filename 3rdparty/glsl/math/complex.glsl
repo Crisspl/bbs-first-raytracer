@@ -15,52 +15,52 @@
 #define nbl_glsl_cvec3 mat3x2
 #define nbl_glsl_cvec4 mat4x2
 
-nbl_glsl_complex nbl_glsl_expImaginary(in float _theta)
+NBL_GLSL_API nbl_glsl_complex nbl_glsl_expImaginary(in float _theta)
 {
     return vec2(cos(_theta),sin(_theta));
 }
 
-nbl_glsl_complex nbl_glsl_complex_mul(in nbl_glsl_complex rhs, in nbl_glsl_complex lhs)
+NBL_GLSL_API nbl_glsl_complex nbl_glsl_complex_mul(in nbl_glsl_complex rhs, in nbl_glsl_complex lhs)
 {
     float r = rhs.x * lhs.x - rhs.y * lhs.y;
     float i = rhs.x * lhs.y + rhs.y * lhs.x;
     return vec2(r, i);
 }
 
-nbl_glsl_complex nbl_glsl_complex_add(in nbl_glsl_complex rhs, in nbl_glsl_complex lhs)
+NBL_GLSL_API nbl_glsl_complex nbl_glsl_complex_add(in nbl_glsl_complex rhs, in nbl_glsl_complex lhs)
 {
     return rhs + lhs;
 }
 
-nbl_glsl_complex16_t nbl_glsl_complex16_t_conjugate(in nbl_glsl_complex16_t complex) {
+NBL_GLSL_API nbl_glsl_complex16_t nbl_glsl_complex16_t_conjugate(in nbl_glsl_complex16_t complex) {
     return complex^0x80000000u;
 }
-nbl_glsl_complex nbl_glsl_complex_conjugate(in nbl_glsl_complex complex) {
+NBL_GLSL_API nbl_glsl_complex nbl_glsl_complex_conjugate(in nbl_glsl_complex complex) {
     return nbl_glsl_complex(complex.x,-complex.y);
 }
 
 
 // FFT
-nbl_glsl_complex nbl_glsl_FFT_twiddle(in uint k, in float N)
+NBL_GLSL_API nbl_glsl_complex nbl_glsl_FFT_twiddle(in uint k, in float N)
 {
     nbl_glsl_complex retval;
     retval.x = cos(-2.f*nbl_glsl_PI*float(k)/N);
     retval.y = sqrt(1.f-retval.x*retval.x); // twiddle is always half the range, so no conditional -1.f needed
     return retval;
 }
-nbl_glsl_complex nbl_glsl_FFT_twiddle(in uint k, in uint logTwoN)
+NBL_GLSL_API nbl_glsl_complex nbl_glsl_FFT_twiddle(in uint k, in uint logTwoN)
 {
     return nbl_glsl_FFT_twiddle(k,float(1<<logTwoN));
 }
 
-nbl_glsl_complex nbl_glsl_FFT_twiddle(in bool is_inverse, in uint k, in float N)
+NBL_GLSL_API nbl_glsl_complex nbl_glsl_FFT_twiddle(in bool is_inverse, in uint k, in float N)
 {
     nbl_glsl_complex twiddle = nbl_glsl_FFT_twiddle(k,N);
     if (is_inverse)
         return nbl_glsl_complex_conjugate(twiddle);
     return twiddle;
 }
-nbl_glsl_complex nbl_glsl_FFT_twiddle(in bool is_inverse, in uint k, in uint logTwoN)
+NBL_GLSL_API nbl_glsl_complex nbl_glsl_FFT_twiddle(in bool is_inverse, in uint k, in uint logTwoN)
 {
     return nbl_glsl_FFT_twiddle(is_inverse,k,float(1<<logTwoN));
 }
@@ -68,7 +68,7 @@ nbl_glsl_complex nbl_glsl_FFT_twiddle(in bool is_inverse, in uint k, in uint log
 
 
 // decimation in time
-void nbl_glsl_FFT_DIT_radix2(in nbl_glsl_complex twiddle, inout nbl_glsl_complex& lo, inout nbl_glsl_complex& hi)
+NBL_GLSL_API void nbl_glsl_FFT_DIT_radix2(in nbl_glsl_complex twiddle, inout nbl_glsl_complex& lo, inout nbl_glsl_complex& hi)
 {
     nbl_glsl_complex wHi = nbl_glsl_complex_mul(hi,twiddle);
     hi = lo-wHi;
@@ -76,7 +76,7 @@ void nbl_glsl_FFT_DIT_radix2(in nbl_glsl_complex twiddle, inout nbl_glsl_complex
 }
 
 // decimation in frequency
-void nbl_glsl_FFT_DIF_radix2(in nbl_glsl_complex twiddle, inout nbl_glsl_complex& lo, inout nbl_glsl_complex& hi)
+NBL_GLSL_API void nbl_glsl_FFT_DIF_radix2(in nbl_glsl_complex twiddle, inout nbl_glsl_complex& lo, inout nbl_glsl_complex& hi)
 {
     nbl_glsl_complex diff = lo-hi;
     lo += hi;

@@ -16,32 +16,32 @@
 #define nbl_glsl_ADDR_LAYER_SHIFT 8u
 #endif //!_NBL_PHYSICAL_ADDR_SPEC_DEFINED_
 
-vec3 nbl_glsl_unpackPageID(in uint pageID)
+NBL_GLSL_API vec3 nbl_glsl_unpackPageID(in uint pageID)
 {
     // this is optimal, don't touch
     uvec2 pageXY = uvec2(pageID, pageID >> nbl_glsl_ADDR_Y_SHIFT)& uvec2(nbl_glsl_ADDR_X_MASK, nbl_glsl_ADDR_Y_MASK);
     return vec3(vec2(pageXY), float(pageID >> nbl_glsl_ADDR_LAYER_SHIFT));
 }
-uvec2 nbl_glsl_unpackWrapModes(in uvec2 texData)
+NBL_GLSL_API uvec2 nbl_glsl_unpackWrapModes(in uvec2 texData)
 {
     return (texData >> uvec2(28u, 30u))& uvec2(0x03u);
 }
-uint nbl_glsl_unpackMaxMipInVT(in uvec2 texData)
+NBL_GLSL_API uint nbl_glsl_unpackMaxMipInVT(in uvec2 texData)
 {
     return bitfieldExtract(texData.y,24,4);
 }
-vec3 nbl_glsl_unpackVirtualUV(in uvec2 texData)
+NBL_GLSL_API vec3 nbl_glsl_unpackVirtualUV(in uvec2 texData)
 {
     // assert that _NBL_VT_IMPL_PAGE_SZ_LOG2<8 , or change the line to uvec3(texData.yy<<uvec2(_NBL_VT_IMPL_PAGE_SZ_LOG2,_NBL_VT_IMPL_PAGE_SZ_LOG2-8u),texData.y>>16u)
     uvec3 unnormCoords = uvec3(texData.y<<_NBL_VT_IMPL_PAGE_SZ_LOG2, texData.yy >> uvec2(8u-_NBL_VT_IMPL_PAGE_SZ_LOG2, 16u))& uvec3(uvec2(0xffu)<<_NBL_VT_IMPL_PAGE_SZ_LOG2, 0xffu);
     return vec3(unnormCoords);
 }
-vec2 nbl_glsl_unpackSize(in uvec2 texData)
+NBL_GLSL_API vec2 nbl_glsl_unpackSize(in uvec2 texData)
 {
     return vec2(texData.x & 0xffffu, texData.x >> 16u);
 }
 
-float nbl_glsl_wrapTexCoord(float tc, in uint mode)
+NBL_GLSL_API float nbl_glsl_wrapTexCoord(float tc, in uint mode)
 {
     switch (mode)
     {
@@ -57,7 +57,7 @@ float nbl_glsl_wrapTexCoord(float tc, in uint mode)
   #error "You need to define nbl_glsl_VT_getPgTabSzLog2(),nbl_glsl_VT_getPhysPgTexSzRcp(uint layer),nbl_glsl_VT_getVTexSzRcp(),nbl_glsl_VT_layer2pid(uint layer) before including this header"
 #endif
 
-vec3 nbl_glsl_vTexture_helper(in uint formatID, in vec3 virtualUV, in int clippedLoD, in int levelInTail)
+NBL_GLSL_API vec3 nbl_glsl_vTexture_helper(in uint formatID, in vec3 virtualUV, in int clippedLoD, in int levelInTail)
 {
     uvec2 pageID = textureLod(pageTable,virtualUV,clippedLoD).xy;
 
@@ -86,7 +86,7 @@ vec3 nbl_glsl_vTexture_helper(in uint formatID, in vec3 virtualUV, in int clippe
 
 #if _NBL_VT_FLOAT_VIEWS_COUNT
 // textureGrad emulation
-vec4 nbl_glsl_vTextureGrad_impl(in uint formatID, in vec3 virtualUV, in mat2 dOriginalScaledUV, in uint originalMaxFullMip)
+NBL_GLSL_API vec4 nbl_glsl_vTextureGrad_impl(in uint formatID, in vec3 virtualUV, in mat2 dOriginalScaledUV, in uint originalMaxFullMip)
 {
 	// returns what would have been `textureGrad(originalTexture,gOriginalUV[0],gOriginalUV[1])
 	// https://www.khronos.org/registry/vulkan/specs/1.2-extensions/html/chap15.html#textures-normalized-operations
@@ -172,7 +172,7 @@ vec4 nbl_glsl_vTextureGrad_impl(in uint formatID, in vec3 virtualUV, in mat2 dOr
     return hiMip_retval;
 }
 
-vec4 nbl_glsl_vTextureGrad(in uvec2 _texData, in vec2 uv, in mat2 dUV)
+NBL_GLSL_API vec4 nbl_glsl_vTextureGrad(in uvec2 _texData, in vec2 uv, in mat2 dUV)
 {
     vec2 originalSz = nbl_glsl_unpackSize(_texData);
 	dUV[0] *= originalSz;
@@ -194,7 +194,7 @@ vec4 nbl_glsl_vTextureGrad(in uvec2 _texData, in vec2 uv, in mat2 dUV)
 #endif //_NBL_VT_FLOAT_VIEWS_COUNT
 
 #if _NBL_VT_INT_VIEWS_COUNT
-ivec4 nbl_glsl_iVTextureLod_impl(in uint formatID, in vec3 virtualUV, in uint lod, in uint originalMaxFullMip)
+NBL_GLSL_API ivec4 nbl_glsl_iVTextureLod_impl(in uint formatID, in vec3 virtualUV, in uint lod, in uint originalMaxFullMip)
 {
     const int clippedLoD = originalMaxFullMip!=0u ? min(lod,originalMaxFullMip):0u;
     const int levelInTail = lod-clippedLoD;
@@ -217,7 +217,7 @@ ivec4 nbl_glsl_iVTextureLod_impl(in uint formatID, in vec3 virtualUV, in uint lo
     return retval;
 #endif
 }
-ivec4 nbl_glsl_iVTextureLod(in uvec2 _texData, in vec2 uv, in uint lod)
+NBL_GLSL_API ivec4 nbl_glsl_iVTextureLod(in uvec2 _texData, in vec2 uv, in uint lod)
 {
     vec2 originalSz = nbl_glsl_unpackSize(_texData);
 	
@@ -235,7 +235,7 @@ ivec4 nbl_glsl_iVTextureLod(in uvec2 _texData, in vec2 uv, in uint lod)
 #endif //_NBL_VT_INT_VIEWS_COUNT
 
 #if _NBL_VT_UINT_VIEWS_COUNT
-uvec4 nbl_glsl_uVTextureLod_impl(in uint formatID, in vec3 virtualUV, in uint lod, in uint originalMaxFullMip)
+NBL_GLSL_API uvec4 nbl_glsl_uVTextureLod_impl(in uint formatID, in vec3 virtualUV, in uint lod, in uint originalMaxFullMip)
 {
     const int clippedLoD = originalMaxFullMip!=0u ? min(lod,originalMaxFullMip):0u;
     const int levelInTail = lod-clippedLoD;
@@ -258,7 +258,7 @@ uvec4 nbl_glsl_uVTextureLod_impl(in uint formatID, in vec3 virtualUV, in uint lo
     return retval;
 #endif
 }
-uvec4 nbl_glsl_uVTextureLod(in uvec2 _texData, in vec2 uv, in uint lod)
+NBL_GLSL_API uvec4 nbl_glsl_uVTextureLod(in uvec2 _texData, in vec2 uv, in uint lod)
 {
     vec2 originalSz = nbl_glsl_unpackSize(_texData);
 	

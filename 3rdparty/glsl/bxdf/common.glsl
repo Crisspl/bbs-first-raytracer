@@ -10,21 +10,21 @@
 #include <3rdparty/glsl/math/functions.glsl>
 
 // do not use this struct in SSBO or UBO, its wasteful on memory
-struct nbl_glsl_DirAndDifferential
+NBL_GLSL_API struct nbl_glsl_DirAndDifferential
 {
    vec3 dir;
    // TODO: investigate covariance rendering and maybe kill this struct
 };
 
 // do not use this struct in SSBO or UBO, its wasteful on memory
-struct nbl_glsl_IsotropicViewSurfaceInteraction
+NBL_GLSL_API struct nbl_glsl_IsotropicViewSurfaceInteraction
 {
    nbl_glsl_DirAndDifferential V; // outgoing direction, NOT NORMALIZED; V.dir can have undef value for lambertian BSDF
    vec3 N; // surface normal, NOT NORMALIZED
    float NdotV;
    float NdotV_squared; // TODO: rename to NdotV2
 };
-struct nbl_glsl_AnisotropicViewSurfaceInteraction
+NBL_GLSL_API struct nbl_glsl_AnisotropicViewSurfaceInteraction
 {
     nbl_glsl_IsotropicViewSurfaceInteraction isotropic;
     vec3 T;
@@ -33,17 +33,17 @@ struct nbl_glsl_AnisotropicViewSurfaceInteraction
     float BdotV;
 };
 
-vec3 nbl_glsl_getTangentSpaceV(in nbl_glsl_AnisotropicViewSurfaceInteraction interaction)
+NBL_GLSL_API vec3 nbl_glsl_getTangentSpaceV(in nbl_glsl_AnisotropicViewSurfaceInteraction interaction)
 {
     return vec3(interaction.TdotV,interaction.BdotV,interaction.isotropic.NdotV);
 }
-mat3 nbl_glsl_getTangentFrame(in nbl_glsl_AnisotropicViewSurfaceInteraction interaction)
+NBL_GLSL_API mat3 nbl_glsl_getTangentFrame(in nbl_glsl_AnisotropicViewSurfaceInteraction interaction)
 {
     return mat3(interaction.T,interaction.B,interaction.isotropic.N);
 }
 
 
-struct nbl_glsl_LightSample
+NBL_GLSL_API struct nbl_glsl_LightSample
 {
     vec3 L;  // incoming direction, normalized
     float VdotL;
@@ -55,7 +55,7 @@ struct nbl_glsl_LightSample
 };
 
 // require tangentSpaceL already be normalized and in tangent space (tangentSpaceL==vec3(TdotL,BdotL,NdotL))
-nbl_glsl_LightSample nbl_glsl_createLightSampleTangentSpace(in vec3 tangentSpaceV, in vec3 tangentSpaceL, in mat3 tangentFrame)
+NBL_GLSL_API nbl_glsl_LightSample nbl_glsl_createLightSampleTangentSpace(in vec3 tangentSpaceV, in vec3 tangentSpaceL, in mat3 tangentFrame)
 {
     nbl_glsl_LightSample s;
 
@@ -71,7 +71,7 @@ nbl_glsl_LightSample nbl_glsl_createLightSampleTangentSpace(in vec3 tangentSpace
 }
 
 //
-nbl_glsl_LightSample nbl_glsl_createLightSample(in vec3 L, in float VdotL, in vec3 N)
+NBL_GLSL_API nbl_glsl_LightSample nbl_glsl_createLightSample(in vec3 L, in float VdotL, in vec3 N)
 {
     nbl_glsl_LightSample s;
 
@@ -85,11 +85,11 @@ nbl_glsl_LightSample nbl_glsl_createLightSample(in vec3 L, in float VdotL, in ve
 
     return s;
 }
-nbl_glsl_LightSample nbl_glsl_createLightSample(in vec3 L, in nbl_glsl_IsotropicViewSurfaceInteraction interaction)
+NBL_GLSL_API nbl_glsl_LightSample nbl_glsl_createLightSample(in vec3 L, in nbl_glsl_IsotropicViewSurfaceInteraction interaction)
 {
     return nbl_glsl_createLightSample(L,dot(interaction.V.dir,L),interaction.N);
 }
-nbl_glsl_LightSample nbl_glsl_createLightSample(in vec3 L, in float VdotL, in vec3 T, in vec3 B, in vec3 N)
+NBL_GLSL_API nbl_glsl_LightSample nbl_glsl_createLightSample(in vec3 L, in float VdotL, in vec3 T, in vec3 B, in vec3 N)
 {
     nbl_glsl_LightSample s;
 
@@ -103,17 +103,17 @@ nbl_glsl_LightSample nbl_glsl_createLightSample(in vec3 L, in float VdotL, in ve
 
     return s;
 }
-nbl_glsl_LightSample nbl_glsl_createLightSample(in vec3 L, in nbl_glsl_AnisotropicViewSurfaceInteraction interaction)
+NBL_GLSL_API nbl_glsl_LightSample nbl_glsl_createLightSample(in vec3 L, in nbl_glsl_AnisotropicViewSurfaceInteraction interaction)
 {
     return nbl_glsl_createLightSample(L,dot(interaction.isotropic.V.dir,L),interaction.T,interaction.B,interaction.isotropic.N);
 }
 
-vec3 nbl_glsl_getTangentSpaceL(in nbl_glsl_LightSample s)
+NBL_GLSL_API vec3 nbl_glsl_getTangentSpaceL(in nbl_glsl_LightSample s)
 {
     return vec3(s.TdotL, s.BdotL, s.NdotL);
 }
 
-nbl_glsl_IsotropicViewSurfaceInteraction nbl_glsl_calcSurfaceInteractionFromViewVector(in vec3 _View, in vec3 _Normal)
+NBL_GLSL_API nbl_glsl_IsotropicViewSurfaceInteraction nbl_glsl_calcSurfaceInteractionFromViewVector(in vec3 _View, in vec3 _Normal)
 {
     nbl_glsl_IsotropicViewSurfaceInteraction interaction;
     interaction.V.dir = _View;
@@ -126,13 +126,13 @@ nbl_glsl_IsotropicViewSurfaceInteraction nbl_glsl_calcSurfaceInteractionFromView
     interaction.NdotV_squared = interaction.NdotV * interaction.NdotV;
     return interaction;
 }
-nbl_glsl_IsotropicViewSurfaceInteraction nbl_glsl_calcSurfaceInteraction(in vec3 _CamPos, in vec3 _SurfacePos, in vec3 _Normal)
+NBL_GLSL_API nbl_glsl_IsotropicViewSurfaceInteraction nbl_glsl_calcSurfaceInteraction(in vec3 _CamPos, in vec3 _SurfacePos, in vec3 _Normal)
 {
     vec3 V = _CamPos - _SurfacePos;
     return nbl_glsl_calcSurfaceInteractionFromViewVector(V, _Normal);
 }
 
-nbl_glsl_AnisotropicViewSurfaceInteraction nbl_glsl_calcAnisotropicInteraction(in nbl_glsl_IsotropicViewSurfaceInteraction isotropic, in vec3 T, in vec3 B)
+NBL_GLSL_API nbl_glsl_AnisotropicViewSurfaceInteraction nbl_glsl_calcAnisotropicInteraction(in nbl_glsl_IsotropicViewSurfaceInteraction isotropic, in vec3 T, in vec3 B)
 {
     nbl_glsl_AnisotropicViewSurfaceInteraction inter;
     inter.isotropic = isotropic;
@@ -143,11 +143,11 @@ nbl_glsl_AnisotropicViewSurfaceInteraction nbl_glsl_calcAnisotropicInteraction(i
 
     return inter;
 }
-nbl_glsl_AnisotropicViewSurfaceInteraction nbl_glsl_calcAnisotropicInteraction(in nbl_glsl_IsotropicViewSurfaceInteraction isotropic, in vec3 T)
+NBL_GLSL_API nbl_glsl_AnisotropicViewSurfaceInteraction nbl_glsl_calcAnisotropicInteraction(in nbl_glsl_IsotropicViewSurfaceInteraction isotropic, in vec3 T)
 {
     return nbl_glsl_calcAnisotropicInteraction(isotropic, T, cross(isotropic.N,T));
 }
-nbl_glsl_AnisotropicViewSurfaceInteraction nbl_glsl_calcAnisotropicInteraction(in nbl_glsl_IsotropicViewSurfaceInteraction isotropic)
+NBL_GLSL_API nbl_glsl_AnisotropicViewSurfaceInteraction nbl_glsl_calcAnisotropicInteraction(in nbl_glsl_IsotropicViewSurfaceInteraction isotropic)
 {
     mat2x3 TB = nbl_glsl_frisvad(isotropic.N);
     return nbl_glsl_calcAnisotropicInteraction(isotropic, TB[0], TB[1]);
@@ -155,7 +155,7 @@ nbl_glsl_AnisotropicViewSurfaceInteraction nbl_glsl_calcAnisotropicInteraction(i
 
 
 // do not use this struct in SSBO or UBO, its wasteful on memory
-struct nbl_glsl_IsotropicMicrofacetCache
+NBL_GLSL_API struct nbl_glsl_IsotropicMicrofacetCache
 {
     float VdotH;
     float LdotH;
@@ -164,20 +164,20 @@ struct nbl_glsl_IsotropicMicrofacetCache
 };
 
 // do not use this struct in SSBO or UBO, its wasteful on memory
-struct nbl_glsl_AnisotropicMicrofacetCache
+NBL_GLSL_API struct nbl_glsl_AnisotropicMicrofacetCache
 {
     nbl_glsl_IsotropicMicrofacetCache isotropic;
     float TdotH;
     float BdotH;
 };
 
-bool nbl_glsl_isValidVNDFMicrofacet(in nbl_glsl_IsotropicMicrofacetCache microfacet, in bool is_bsdf, in bool transmission, in float VdotL, in float eta, in float rcp_eta)
+NBL_GLSL_API bool nbl_glsl_isValidVNDFMicrofacet(in nbl_glsl_IsotropicMicrofacetCache microfacet, in bool is_bsdf, in bool transmission, in float VdotL, in float eta, in float rcp_eta)
 {
     return microfacet.NdotH >= 0.0 && !(is_bsdf && transmission && (VdotL > -min(eta, rcp_eta)));
 }
 
 // returns if the configuration of V and L can be achieved 
-bool nbl_glsl_calcIsotropicMicrofacetCache(out nbl_glsl_IsotropicMicrofacetCache& _cache, in bool transmitted, in vec3 V, in vec3 L, in vec3 N, in float NdotL, in float VdotL, in float orientedEta, in float rcpOrientedEta, out vec3& H)
+NBL_GLSL_API bool nbl_glsl_calcIsotropicMicrofacetCache(out nbl_glsl_IsotropicMicrofacetCache& _cache, in bool transmitted, in vec3 V, in vec3 L, in vec3 N, in float NdotL, in float VdotL, in float orientedEta, in float rcpOrientedEta, out vec3& H)
 {
     H = nbl_glsl_computeMicrofacetNormal(transmitted, V, L, orientedEta);
     
@@ -189,7 +189,7 @@ bool nbl_glsl_calcIsotropicMicrofacetCache(out nbl_glsl_IsotropicMicrofacetCache
     // not coming from the medium and exiting at the macro scale AND ( (not L outside the cone of possible directions given IoR with constraint VdotH*LdotH<0.0) OR (microfacet not facing toward the macrosurface, i.e. non heightfield profile of microsurface) ) 
     return !(transmitted && (VdotL > -min(orientedEta,rcpOrientedEta) || _cache.NdotH < 0.0));
 }
-bool nbl_glsl_calcIsotropicMicrofacetCache(out nbl_glsl_IsotropicMicrofacetCache& _cache, in nbl_glsl_IsotropicViewSurfaceInteraction interaction, in nbl_glsl_LightSample _sample, in float eta)
+NBL_GLSL_API bool nbl_glsl_calcIsotropicMicrofacetCache(out nbl_glsl_IsotropicMicrofacetCache& _cache, in nbl_glsl_IsotropicViewSurfaceInteraction interaction, in nbl_glsl_LightSample _sample, in float eta)
 {
     const float NdotV = interaction.NdotV;
     const float NdotL = _sample.NdotL;
@@ -205,7 +205,7 @@ bool nbl_glsl_calcIsotropicMicrofacetCache(out nbl_glsl_IsotropicMicrofacetCache
     return nbl_glsl_calcIsotropicMicrofacetCache(_cache,transmitted,V,L,interaction.N,NdotL,VdotL,orientedEta,rcpOrientedEta,dummy);
 }
 // always valid because its specialized for the reflective case
-nbl_glsl_IsotropicMicrofacetCache nbl_glsl_calcIsotropicMicrofacetCache(in float NdotV, in float NdotL, in float VdotL, out float& LplusV_rcpLen)
+NBL_GLSL_API nbl_glsl_IsotropicMicrofacetCache nbl_glsl_calcIsotropicMicrofacetCache(in float NdotV, in float NdotL, in float VdotL, out float& LplusV_rcpLen)
 {
     nbl_glsl_IsotropicMicrofacetCache _cache;
 
@@ -218,14 +218,14 @@ nbl_glsl_IsotropicMicrofacetCache nbl_glsl_calcIsotropicMicrofacetCache(in float
 
     return _cache;
 }
-nbl_glsl_IsotropicMicrofacetCache nbl_glsl_calcIsotropicMicrofacetCache(in nbl_glsl_IsotropicViewSurfaceInteraction interaction, in nbl_glsl_LightSample _sample)
+NBL_GLSL_API nbl_glsl_IsotropicMicrofacetCache nbl_glsl_calcIsotropicMicrofacetCache(in nbl_glsl_IsotropicViewSurfaceInteraction interaction, in nbl_glsl_LightSample _sample)
 {
     float dummy;
     return nbl_glsl_calcIsotropicMicrofacetCache(interaction.NdotV,_sample.NdotL,_sample.VdotL,dummy);
 }
 
 // get extra stuff for anisotropy, here we actually require T and B to be normalized
-bool nbl_glsl_calcAnisotropicMicrofacetCache(out nbl_glsl_AnisotropicMicrofacetCache& _cache, in bool transmitted, in vec3 V, in vec3 L, in vec3 T, in vec3 B, in vec3 N, in float NdotL, in float VdotL, in float orientedEta, in float rcpOrientedEta)
+NBL_GLSL_API bool nbl_glsl_calcAnisotropicMicrofacetCache(out nbl_glsl_AnisotropicMicrofacetCache& _cache, in bool transmitted, in vec3 V, in vec3 L, in vec3 T, in vec3 B, in vec3 N, in float NdotL, in float VdotL, in float orientedEta, in float rcpOrientedEta)
 {
     vec3 H;
     const bool valid = nbl_glsl_calcIsotropicMicrofacetCache(_cache.isotropic,transmitted,V,L,N,NdotL,VdotL,orientedEta,rcpOrientedEta,H);
@@ -235,7 +235,7 @@ bool nbl_glsl_calcAnisotropicMicrofacetCache(out nbl_glsl_AnisotropicMicrofacetC
 
     return valid;
 }
-bool nbl_glsl_calcAnisotropicMicrofacetCache(out nbl_glsl_AnisotropicMicrofacetCache& _cache, in nbl_glsl_AnisotropicViewSurfaceInteraction interaction, in nbl_glsl_LightSample _sample, in float eta)
+NBL_GLSL_API bool nbl_glsl_calcAnisotropicMicrofacetCache(out nbl_glsl_AnisotropicMicrofacetCache& _cache, in nbl_glsl_AnisotropicViewSurfaceInteraction interaction, in nbl_glsl_LightSample _sample, in float eta)
 {
     const float NdotV = interaction.isotropic.NdotV;
     const float NdotL = _sample.NdotL;
@@ -250,7 +250,7 @@ bool nbl_glsl_calcAnisotropicMicrofacetCache(out nbl_glsl_AnisotropicMicrofacetC
     return nbl_glsl_calcAnisotropicMicrofacetCache(_cache,transmitted,V,L,interaction.T,interaction.B,interaction.isotropic.N,NdotL,VdotL,orientedEta,rcpOrientedEta);
 }
 // always valid because its for the reflective case
-nbl_glsl_AnisotropicMicrofacetCache nbl_glsl_calcAnisotropicMicrofacetCache(in nbl_glsl_AnisotropicViewSurfaceInteraction interaction, in nbl_glsl_LightSample _sample)
+NBL_GLSL_API nbl_glsl_AnisotropicMicrofacetCache nbl_glsl_calcAnisotropicMicrofacetCache(in nbl_glsl_AnisotropicViewSurfaceInteraction interaction, in nbl_glsl_LightSample _sample)
 {
     nbl_glsl_AnisotropicMicrofacetCache _cache;
 
@@ -263,7 +263,7 @@ nbl_glsl_AnisotropicMicrofacetCache nbl_glsl_calcAnisotropicMicrofacetCache(in n
    return _cache;
 }
 
-void nbl_glsl_calcAnisotropicMicrofacetCache_common(out nbl_glsl_AnisotropicMicrofacetCache& _cache, in vec3 tangentSpaceV, in vec3 tangentSpaceH)
+NBL_GLSL_API void nbl_glsl_calcAnisotropicMicrofacetCache_common(out nbl_glsl_AnisotropicMicrofacetCache& _cache, in vec3 tangentSpaceV, in vec3 tangentSpaceH)
 {
     _cache.isotropic.VdotH = dot(tangentSpaceV,tangentSpaceH);
 
@@ -273,7 +273,7 @@ void nbl_glsl_calcAnisotropicMicrofacetCache_common(out nbl_glsl_AnisotropicMicr
     _cache.BdotH = tangentSpaceH.y;
 }
 // always valid, by construction
-nbl_glsl_AnisotropicMicrofacetCache nbl_glsl_calcAnisotropicMicrofacetCache(in vec3 tangentSpaceV, in vec3 tangentSpaceH, out vec3& tangentSpaceL)
+NBL_GLSL_API nbl_glsl_AnisotropicMicrofacetCache nbl_glsl_calcAnisotropicMicrofacetCache(in vec3 tangentSpaceV, in vec3 tangentSpaceH, out vec3& tangentSpaceL)
 {
     nbl_glsl_AnisotropicMicrofacetCache _cache;
     nbl_glsl_calcAnisotropicMicrofacetCache_common(_cache,tangentSpaceV,tangentSpaceH);
@@ -283,7 +283,7 @@ nbl_glsl_AnisotropicMicrofacetCache nbl_glsl_calcAnisotropicMicrofacetCache(in v
 
     return _cache;
 }
-nbl_glsl_AnisotropicMicrofacetCache nbl_glsl_calcAnisotropicMicrofacetCache(in bool transmitted, in vec3 tangentSpaceV, in vec3 tangentSpaceH, out vec3& tangentSpaceL, in float rcpOrientedEta, in float rcpOrientedEta2)
+NBL_GLSL_API nbl_glsl_AnisotropicMicrofacetCache nbl_glsl_calcAnisotropicMicrofacetCache(in bool transmitted, in vec3 tangentSpaceV, in vec3 tangentSpaceH, out vec3& tangentSpaceL, in float rcpOrientedEta, in float rcpOrientedEta2)
 {
     nbl_glsl_AnisotropicMicrofacetCache _cache;
     nbl_glsl_calcAnisotropicMicrofacetCache_common(_cache,tangentSpaceV,tangentSpaceH);
@@ -295,11 +295,11 @@ nbl_glsl_AnisotropicMicrofacetCache nbl_glsl_calcAnisotropicMicrofacetCache(in b
     return _cache;
 }
 
-float nbl_glsl_bxdf_remainder_to_eval(in float remainder, in float pdf)
+NBL_GLSL_API float nbl_glsl_bxdf_remainder_to_eval(in float remainder, in float pdf)
 {
     return remainder * pdf;
 }
-vec3 nbl_glsl_bxdf_remainder_to_eval(in vec3 remainder, in float pdf)
+NBL_GLSL_API vec3 nbl_glsl_bxdf_remainder_to_eval(in vec3 remainder, in float pdf)
 {
     return remainder * pdf;
 }

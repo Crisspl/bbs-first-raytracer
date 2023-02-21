@@ -9,7 +9,7 @@
 #include <3rdparty/glsl/shapes/rectangle.glsl>
 
 // Code from https://www.arnoldrenderer.com/research/egsr2013_spherical_rectangle.pdf
-vec2 nbl_glsl_sampling_generateSphericalRectangleSample(vec3 r0, in vec2 rectangleExtents, in vec2 uv, out float& S)
+NBL_GLSL_API vec2 nbl_glsl_sampling_generateSphericalRectangleSample(vec3 r0, in vec2 rectangleExtents, in vec2 uv, out float& S)
 {
     const vec4 denorm_n_z = vec4(-r0.y, r0.x+rectangleExtents.x, r0.y+rectangleExtents.y, -r0.x);
     const vec4 n_z = denorm_n_z*inversesqrt(vec4(r0.z*r0.z)+denorm_n_z*denorm_n_z);

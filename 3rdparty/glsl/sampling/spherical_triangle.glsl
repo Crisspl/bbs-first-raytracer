@@ -7,7 +7,7 @@
 
 // WARNING: can and will return NAN if one or three of the triangle edges are near zero length
 // this function could use some more optimizing
-vec3 nbl_glsl_sampling_generateSphericalTriangleSample(in float solidAngle, in vec3 cos_vertices, in vec3 sin_vertices, in float cos_a, in float cos_c, in float csc_b, in float csc_c, in mat3 sphericalVertices, in vec2 u)
+NBL_GLSL_API vec3 nbl_glsl_sampling_generateSphericalTriangleSample(in float solidAngle, in vec3 cos_vertices, in vec3 sin_vertices, in float cos_a, in float cos_c, in float csc_b, in float csc_c, in mat3 sphericalVertices, in vec2 u)
 {
     // this part literally cannot be optimized further
     float negSinSubSolidAngle,negCosSubSolidAngle;
@@ -40,7 +40,7 @@ vec3 nbl_glsl_sampling_generateSphericalTriangleSample(in float solidAngle, in v
     }
     return retval;
 }
-vec3 nbl_glsl_sampling_generateSphericalTriangleSample(out float& rcpPdf, in mat3 sphericalVertices, in vec2 u)
+NBL_GLSL_API vec3 nbl_glsl_sampling_generateSphericalTriangleSample(out float& rcpPdf, in mat3 sphericalVertices, in vec2 u)
 {
     // for angles between view-to-vertex vectors
     float cos_a,cos_c,csc_b,csc_c;
@@ -51,14 +51,14 @@ vec3 nbl_glsl_sampling_generateSphericalTriangleSample(out float& rcpPdf, in mat
 
     return nbl_glsl_sampling_generateSphericalTriangleSample(rcpPdf,cos_vertices,sin_vertices,cos_a,cos_c,csc_b,csc_c,sphericalVertices,u);
 }
-vec3 nbl_glsl_sampling_generateSphericalTriangleSample(out float& rcpPdf, in mat3 vertices, in vec3 origin, in vec2 u)
+NBL_GLSL_API vec3 nbl_glsl_sampling_generateSphericalTriangleSample(out float& rcpPdf, in mat3 vertices, in vec3 origin, in vec2 u)
 {
     return nbl_glsl_sampling_generateSphericalTriangleSample(rcpPdf,nbl_glsl_shapes_getSphericalTriangle(vertices,origin),u);
 }
 
 
 //
-vec2 nbl_glsl_sampling_generateSphericalTriangleSampleInverse(out float& pdf, in float solidAngle, in vec3 cos_vertices, in vec3 sin_vertices, in float cos_a, in float cos_c, in float csc_b, in float csc_c, in mat3 sphericalVertices, in vec3 L)
+NBL_GLSL_API vec2 nbl_glsl_sampling_generateSphericalTriangleSampleInverse(out float& pdf, in float solidAngle, in vec3 cos_vertices, in vec3 sin_vertices, in float cos_a, in float cos_c, in float csc_b, in float csc_c, in mat3 sphericalVertices, in vec3 L)
 {
     pdf = 1.0/solidAngle;
 
@@ -84,7 +84,7 @@ vec2 nbl_glsl_sampling_generateSphericalTriangleSampleInverse(out float& pdf, in
 
     return vec2(u,v);
 }
-vec2 nbl_glsl_sampling_generateSphericalTriangleSampleInverse(out float& pdf, in mat3 sphericalVertices, in vec3 L)
+NBL_GLSL_API vec2 nbl_glsl_sampling_generateSphericalTriangleSampleInverse(out float& pdf, in mat3 sphericalVertices, in vec3 L)
 {
     // for angles between view-to-vertex vectors
     float cos_a,cos_c,csc_b,csc_c;

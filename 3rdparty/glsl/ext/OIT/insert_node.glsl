@@ -5,7 +5,7 @@ layout(early_fragment_tests) in;
 
 #include <3rdparty/glsl/ext/OIT/oit.glsl>
 
-void nbl_glsl_oit_swap_node(inout float& a_vis, inout uint& a_depth, inout uint& a_col, inout float& b_vis, inout uint& b_depth, inout uint& b_col)
+NBL_GLSL_API void nbl_glsl_oit_swap_node(inout float& a_vis, inout uint& a_depth, inout uint& a_col, inout float& b_vis, inout uint& b_depth, inout uint& b_col)
 {
 	float t_vis = a_vis;
 	uint t_depth = a_depth;
@@ -20,7 +20,7 @@ void nbl_glsl_oit_swap_node(inout float& a_vis, inout uint& a_depth, inout uint&
 	b_col = t_col;
 }
 
-void nbl_glsl_oit_insert_node(in ivec2 coord, in uint mydepth, in float myvis, in uint mycolor)
+NBL_GLSL_API void nbl_glsl_oit_insert_node(in ivec2 coord, in uint mydepth, in float myvis, in uint mycolor)
 {
 	nbl_glsl_oit_color_nodes_t color;
 	nbl_glsl_oit_depth_nodes_t depth;

@@ -2,7 +2,7 @@
 #define _NBL_GLSL_LOD_LIBRARY_STRUCTS_GLSL_INCLUDED_
 
 
-struct nbl_glsl_lod_library_DrawcallInfo
+NBL_GLSL_API struct nbl_glsl_lod_library_DrawcallInfo
 {
 	uvec2 aabbMinRGB18E7S3;
 	uvec2 aabbMaxRGB18E7S3;
@@ -12,13 +12,13 @@ struct nbl_glsl_lod_library_DrawcallInfo
 #define NBL_GLSL_LOD_LIBRARY_DRAWCALL_INFO_SIZE 24
 #define NBL_GLSL_LOD_LIBRARY_DRAWCALL_INFO_UVEC2_SIZE (NBL_GLSL_LOD_LIBRARY_DRAWCALL_INFO_SIZE>>3)
 
-struct nbl_glsl_lod_library_LoDInfoBase
+NBL_GLSL_API struct nbl_glsl_lod_library_LoDInfoBase
 {
 	uint drawcallInfoCountAndTotalBoneCount;
 };
 #define NBL_GLSL_LOD_LIBRARY_LOD_INFO_BASE_SIZE 4
 
-struct nbl_glsl_lod_library_DefaultLoDChoiceParams
+NBL_GLSL_API struct nbl_glsl_lod_library_DefaultLoDChoiceParams
 {
 	float distanceSqAtReferenceFoV;
 };
@@ -27,7 +27,7 @@ struct nbl_glsl_lod_library_DefaultLoDChoiceParams
 
 /*
 #ifdef nbl_glsl_lod_library_LoDChoiceParams_t
-struct nbl_glsl_LoDInfo
+NBL_GLSL_API struct nbl_glsl_LoDInfo
 {
 	nbl_glsl_lod_library_LoDInfoBase base;
 	nbl_glsl_lod_library_LoDChoiceParams_t choiceParams;
@@ -37,7 +37,7 @@ struct nbl_glsl_LoDInfo
 #endif
 */
 
-struct nbl_glsl_lod_library_LoDTable
+NBL_GLSL_API struct nbl_glsl_lod_library_LoDTable
 {
 	vec3 aabbMin;
 	uint levelCount;

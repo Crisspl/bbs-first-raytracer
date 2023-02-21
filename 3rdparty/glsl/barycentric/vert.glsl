@@ -8,7 +8,7 @@
 
 
 // forward declaration is useful for offline compilers to not moan until the end
-void nbl_glsl_barycentric_vert_set(in vec3 pos);
+NBL_GLSL_API void nbl_glsl_barycentric_vert_set(in vec3 pos);
 
 
 
@@ -16,7 +16,7 @@ void nbl_glsl_barycentric_vert_set(in vec3 pos);
 #ifdef NBL_GL_NV_fragment_shader_barycentric
 
 
-void nbl_glsl_barycentric_vert_set(in vec3 pos) {} // noop
+NBL_GLSL_API void nbl_glsl_barycentric_vert_set(in vec3 pos) {} // noop
 
 
 #else
@@ -40,7 +40,7 @@ layout(location = NBL_GLSL_BARYCENTRIC_VERT_POS_OUTPUT_LOC) out vec3& nbl_glsl_b
     layout(location = NBL_GLSL_BARYCENTRIC_VERT_PROVOKINGPOS_OUTPUT_LOC) flat out vec3& nbl_glsl_barycentric_vert_provokingPos;
 #endif
 
-void nbl_glsl_barycentric_vert_set(in vec3 pos)
+NBL_GLSL_API void nbl_glsl_barycentric_vert_set(in vec3 pos)
 {
     nbl_glsl_barycentric_vert_pos = pos;
     nbl_glsl_barycentric_vert_provokingPos = pos;

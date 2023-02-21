@@ -6,7 +6,7 @@
 
 #include "nbl/builtin/glsl/transform_tree/relative_transform_update_descriptor_set.glsl"
 
-void nbl_glsl_transform_tree_relativeTransformUpdate_noStamp(in nbl_glsl_transform_tree_modification_request_range_t requestRange)
+NBL_GLSL_API void nbl_glsl_transform_tree_relativeTransformUpdate_noStamp(in nbl_glsl_transform_tree_modification_request_range_t requestRange)
 {
     mat4x3 updatedTransform;
     // slight optimization

@@ -23,7 +23,7 @@
 
 #ifdef _NBL_GLSL_BLIT_SOFTWARE_ENCODE_FORMAT_
 
-uvec4 nbl_glsl_blit_encode(in vec4 value)
+NBL_GLSL_API uvec4 nbl_glsl_blit_encode(in vec4 value)
 {
 #if _NBL_GLSL_BLIT_SOFTWARE_ENCODE_FORMAT_==EF_R32G32_SFLOAT
 	return uvec4(floatBitsToUint(value.r), floatBitsToUint(value.g), 0u, 0u);

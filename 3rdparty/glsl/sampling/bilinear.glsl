@@ -4,7 +4,7 @@
 #include <3rdparty/glsl/sampling/linear.glsl>
 
 // The square's vertex values are defined in Z-order, so indices 0,1,2,3 (xyzw) correspond to (0,0),(1,0),(0,1),(1,1)
-vec2 nbl_glsl_sampling_generateBilinearSample(out float& rcpPdf, in vec4 bilinearCoeffs, vec2 u)
+NBL_GLSL_API vec2 nbl_glsl_sampling_generateBilinearSample(out float& rcpPdf, in vec4 bilinearCoeffs, vec2 u)
 {
     const vec2 twiceAreasUnderXCurve = vec2(bilinearCoeffs[0]+bilinearCoeffs[1],bilinearCoeffs[2]+bilinearCoeffs[3]);
     u.y = nbl_glsl_sampling_generateLinearSample(twiceAreasUnderXCurve,u.y);
@@ -17,7 +17,7 @@ vec2 nbl_glsl_sampling_generateBilinearSample(out float& rcpPdf, in vec4 bilinea
     return u;
 }
 
-float nbl_glsl_sampling_probBilinearSample(in vec4 bilinearCoeffs, vec2 u)
+NBL_GLSL_API float nbl_glsl_sampling_probBilinearSample(in vec4 bilinearCoeffs, vec2 u)
 {
     return 4.0*mix(mix(bilinearCoeffs[0],bilinearCoeffs[1],u.x),mix(bilinearCoeffs[2],bilinearCoeffs[3],u.x),u.y)/(bilinearCoeffs[0]+bilinearCoeffs[1]+bilinearCoeffs[2]+bilinearCoeffs[3]);
 }

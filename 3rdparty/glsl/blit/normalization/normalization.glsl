@@ -19,14 +19,14 @@ uint integerDivide_64_32_32(in uint dividendMsb, in uint dividendLsb, in uint di
 #define scratchShared _NBL_GLSL_SCRATCH_SHARED_DEFINED_
 
 #include <3rdparty/glsl/blit/parameters.glsl>
-nbl_glsl_blit_parameters_t nbl_glsl_blit_getParameters();
+NBL_GLSL_API nbl_glsl_blit_parameters_t nbl_glsl_blit_getParameters();
 
-vec4 nbl_glsl_blit_normalization_getData(in uvec3 coord, in uint layerIdx);
-void nbl_glsl_blit_normalization_setData(in vec4 data, in uvec3 coord, in uint layerIdx);
-uint nbl_glsl_blit_normalization_getAlphaHistogramData(in uint index, in uint layerIdx);
-uint nbl_glsl_blit_normalization_getPassedInputPixelCount(in uint layerIdx);
+NBL_GLSL_API vec4 nbl_glsl_blit_normalization_getData(in uvec3 coord, in uint layerIdx);
+NBL_GLSL_API void nbl_glsl_blit_normalization_setData(in vec4 data, in uvec3 coord, in uint layerIdx);
+NBL_GLSL_API uint nbl_glsl_blit_normalization_getAlphaHistogramData(in uint index, in uint layerIdx);
+NBL_GLSL_API uint nbl_glsl_blit_normalization_getPassedInputPixelCount(in uint layerIdx);
 
-void nbl_glsl_blit_normalization_main()
+NBL_GLSL_API void nbl_glsl_blit_normalization_main()
 {
 	const nbl_glsl_blit_parameters_t params = nbl_glsl_blit_getParameters();
 

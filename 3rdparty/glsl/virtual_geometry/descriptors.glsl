@@ -29,7 +29,7 @@
 
 #if _NBL_VG_UINT_BUFFERS_COUNT
 layout(set = _NBL_VG_DESCRIPTOR_SET, binding = _NBL_VG_UINT_BUFFERS_BINDING) uniform usamplerBuffer MeshPackedDataUintSample[_NBL_VG_UINT_BUFFERS_COUNT];
-uint nbl_glsl_VG_fetchTriangleVertexIndex(in uint baseVertex, in uint triangleVx)
+NBL_GLSL_API uint nbl_glsl_VG_fetchTriangleVertexIndex(in uint baseVertex, in uint triangleVx)
 {
     return texelFetch(MeshPackedDataUintSample[_NBL_VG_UINT_BUFFERS_COUNT-1u],int(baseVertex+triangleVx)).x;
 }
@@ -108,7 +108,7 @@ layout(set = _NBL_VG_SSBO_DESCRIPTOR_SET, binding = _NBL_VG_SSBO_INDEX_BINDING, 
 {
     uint indices[];
 } trianglePackedData;
-uint nbl_glsl_VG_fetchTriangleVertexIndex(in uint baseVertex, in uint triangleVx)
+NBL_GLSL_API uint nbl_glsl_VG_fetchTriangleVertexIndex(in uint baseVertex, in uint triangleVx)
 {
     uint realIndex = baseVertex + triangleVx;
     uint packedData = trianglePackedData.indices[realIndex>>1u];

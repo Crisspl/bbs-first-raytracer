@@ -1,7 +1,7 @@
 #ifndef _NBL_EXT_RADEON_RAYS_INTERSECTION_INCLUDED_
 #define _NBL_EXT_RADEON_RAYS_INTERSECTION_INCLUDED_
 
-struct nbl_glsl_ext_RadeonRays_Intersection
+NBL_GLSL_API struct nbl_glsl_ext_RadeonRays_Intersection
 {
 	// Shape ID
 	int shapeid;

@@ -24,7 +24,7 @@
 
 #ifndef _NBL_GLSL_EXT_LUMA_METER_GET_COLOR_DECLARED_
 #define _NBL_GLSL_EXT_LUMA_METER_GET_COLOR_DECLARED_
-vec3 nbl_glsl_ext_LumaMeter_getColor(bool wgExecutionMask);
+NBL_GLSL_API vec3 nbl_glsl_ext_LumaMeter_getColor(bool wgExecutionMask);
 #endif
 
 #ifndef _NBL_GLSL_EXT_LUMA_METER_GET_COLOR_DEFINED_
@@ -33,10 +33,10 @@ vec3 nbl_glsl_ext_LumaMeter_getColor(bool wgExecutionMask);
 
 #ifndef _NBL_GLSL_EXT_LUMA_METER_IMPL_DECLARED_
 #define _NBL_GLSL_EXT_LUMA_METER_IMPL_DECLARED_
-void nbl_glsl_ext_LumaMeter(in bool wgExecutionMask);
+NBL_GLSL_API void nbl_glsl_ext_LumaMeter(in bool wgExecutionMask);
 #endif
 
-float nbl_glsl_ext_LumaMeter_local_process(in bool wgExecutionMask, in vec3 color)
+NBL_GLSL_API float nbl_glsl_ext_LumaMeter_local_process(in bool wgExecutionMask, in vec3 color)
 {
 	float scaledLogLuma = 0.f; // this default kind-of makes sense
 	// linearize
@@ -76,7 +76,7 @@ float nbl_glsl_ext_LumaMeter_local_process(in bool wgExecutionMask, in vec3 colo
 #include "nbl/builtin/glsl/workgroup/arithmetic.glsl"
 #endif
 
-nbl_glsl_ext_LumaMeter_WriteOutValue_t nbl_glsl_ext_LumaMeter_workgroup_process(in float scaledLogLuma)
+NBL_GLSL_API nbl_glsl_ext_LumaMeter_WriteOutValue_t nbl_glsl_ext_LumaMeter_workgroup_process(in float scaledLogLuma)
 {
 	#if _NBL_GLSL_EXT_LUMA_METER_MODE_DEFINED_==_NBL_GLSL_EXT_LUMA_METER_MODE_MEDIAN
 		// join the histograms across workgroups
@@ -91,7 +91,7 @@ nbl_glsl_ext_LumaMeter_WriteOutValue_t nbl_glsl_ext_LumaMeter_workgroup_process(
 
 #ifndef _NBL_GLSL_EXT_LUMA_METER_IMPL_DEFINED_
 #define _NBL_GLSL_EXT_LUMA_METER_IMPL_DEFINED_
-void nbl_glsl_ext_LumaMeter(in bool wgExecutionMask)
+NBL_GLSL_API void nbl_glsl_ext_LumaMeter(in bool wgExecutionMask)
 {
 	vec3 color = nbl_glsl_ext_LumaMeter_getColor(wgExecutionMask);
 	#if _NBL_GLSL_EXT_LUMA_METER_MODE_DEFINED_==_NBL_GLSL_EXT_LUMA_METER_MODE_MEDIAN

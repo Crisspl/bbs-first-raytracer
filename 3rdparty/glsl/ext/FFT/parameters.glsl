@@ -20,51 +20,51 @@
 
 #ifndef _NBL_GLSL_EXT_FFT_GET_PARAMETERS_DECLARED_
 #define _NBL_GLSL_EXT_FFT_GET_PARAMETERS_DECLARED_
-nbl_glsl_ext_FFT_Parameters_t nbl_glsl_ext_FFT_getParameters();
+NBL_GLSL_API nbl_glsl_ext_FFT_Parameters_t nbl_glsl_ext_FFT_getParameters();
 #endif
 
 
 #ifndef _NBL_GLSL_EXT_FFT_PARAMETERS_METHODS_DECLARED_
 #define _NBL_GLSL_EXT_FFT_PARAMETERS_METHODS_DECLARED_
-uvec3 nbl_glsl_ext_FFT_Parameters_t_getDimensions()
+NBL_GLSL_API uvec3 nbl_glsl_ext_FFT_Parameters_t_getDimensions()
 {
     nbl_glsl_ext_FFT_Parameters_t params = nbl_glsl_ext_FFT_getParameters();
     return params.input_dimensions.xyz;
 }
 
-bool nbl_glsl_ext_FFT_Parameters_t_getIsInverse()
+NBL_GLSL_API bool nbl_glsl_ext_FFT_Parameters_t_getIsInverse()
 {
     nbl_glsl_ext_FFT_Parameters_t params = nbl_glsl_ext_FFT_getParameters();
     return bool(params.input_dimensions.w>>31u);
 }
-uint nbl_glsl_ext_FFT_Parameters_t_getDirection()
+NBL_GLSL_API uint nbl_glsl_ext_FFT_Parameters_t_getDirection()
 {
     nbl_glsl_ext_FFT_Parameters_t params = nbl_glsl_ext_FFT_getParameters();
     return (params.input_dimensions.w>>28u)&0x3u;
 }
-uint nbl_glsl_ext_FFT_Parameters_t_getMaxChannel()
+NBL_GLSL_API uint nbl_glsl_ext_FFT_Parameters_t_getMaxChannel()
 {
     nbl_glsl_ext_FFT_Parameters_t params = nbl_glsl_ext_FFT_getParameters();
     return (params.input_dimensions.w>>26u)&0x3u;
 }
-uint nbl_glsl_ext_FFT_Parameters_t_getLog2FFTSize()
+NBL_GLSL_API uint nbl_glsl_ext_FFT_Parameters_t_getLog2FFTSize()
 {
     nbl_glsl_ext_FFT_Parameters_t params = nbl_glsl_ext_FFT_getParameters();
     return (params.input_dimensions.w>>3u)&0x1fu;
 }
-uint nbl_glsl_ext_FFT_Parameters_t_getPaddingType()
+NBL_GLSL_API uint nbl_glsl_ext_FFT_Parameters_t_getPaddingType()
 {
     nbl_glsl_ext_FFT_Parameters_t params = nbl_glsl_ext_FFT_getParameters();
     return params.input_dimensions.w&0x7u;
 }
 
-uvec4 nbl_glsl_ext_FFT_Parameters_t_getInputStrides()
+NBL_GLSL_API uvec4 nbl_glsl_ext_FFT_Parameters_t_getInputStrides()
 {
     nbl_glsl_ext_FFT_Parameters_t params = nbl_glsl_ext_FFT_getParameters();
     return params.input_strides;
 }
 
-uvec4 nbl_glsl_ext_FFT_Parameters_t_getOutputStrides()
+NBL_GLSL_API uvec4 nbl_glsl_ext_FFT_Parameters_t_getOutputStrides()
 {
     nbl_glsl_ext_FFT_Parameters_t params = nbl_glsl_ext_FFT_getParameters();
     return params.output_strides;

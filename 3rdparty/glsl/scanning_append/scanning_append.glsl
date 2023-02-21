@@ -11,7 +11,7 @@
 #define nbl_glsl_scanning_append_counter_t uvec2
 #endif
 
-struct nbl_glsl_scanning_append_result_t
+NBL_GLSL_API struct nbl_glsl_scanning_append_result_t
 {
    uint outIndex;
    uint exclusivePrefix;

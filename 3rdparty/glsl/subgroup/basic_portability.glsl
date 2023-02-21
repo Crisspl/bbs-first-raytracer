@@ -100,14 +100,14 @@
 #define nbl_glsl_HalfSubgroupSize (nbl_glsl_SubgroupSize>>1)
 
 
-void nbl_glsl_subgroupBarrier()
+NBL_GLSL_API void nbl_glsl_subgroupBarrier()
 {
 	#ifdef NBL_GL_KHR_shader_subgroup_basic
 	subgroupBarrier();
 	#endif
 }
 
-void nbl_glsl_subgroupMemoryBarrier()
+NBL_GLSL_API void nbl_glsl_subgroupMemoryBarrier()
 {
 	#ifdef NBL_GL_KHR_shader_subgroup_basic
 	subgroupMemoryBarrier();
@@ -116,7 +116,7 @@ void nbl_glsl_subgroupMemoryBarrier()
 	#endif
 }
 
-void nbl_glsl_subgroupMemoryBarrierBuffer()
+NBL_GLSL_API void nbl_glsl_subgroupMemoryBarrierBuffer()
 {
 	#ifdef NBL_GL_KHR_shader_subgroup_basic
 	subgroupMemoryBarrierBuffer();
@@ -125,7 +125,7 @@ void nbl_glsl_subgroupMemoryBarrierBuffer()
 	#endif
 }
 
-void nbl_glsl_subgroupMemoryBarrierShared()
+NBL_GLSL_API void nbl_glsl_subgroupMemoryBarrierShared()
 {
 	#ifdef NBL_GL_KHR_shader_subgroup_basic
 	subgroupMemoryBarrierShared();
@@ -134,7 +134,7 @@ void nbl_glsl_subgroupMemoryBarrierShared()
 	#endif
 }
 
-void nbl_glsl_subgroupMemoryBarrierImage()
+NBL_GLSL_API void nbl_glsl_subgroupMemoryBarrierImage()
 {
 	#ifdef NBL_GL_KHR_shader_subgroup_basic
 	subgroupMemoryBarrierImage();
@@ -144,13 +144,13 @@ void nbl_glsl_subgroupMemoryBarrierImage()
 }
 
 /* 
-bool nbl_glsl_largeSubgroupElect()
+NBL_GLSL_API bool nbl_glsl_largeSubgroupElect()
 {
 }
-bool nbl_glsl_smallSubgroupElect()
+NBL_GLSL_API bool nbl_glsl_smallSubgroupElect()
 {
 }
-bool nbl_glsl_subgroupElect()
+NBL_GLSL_API bool nbl_glsl_subgroupElect()
 {
 	#ifdef NBL_GL_KHR_shader_subgroup_basic_subgroup_elect
 	return subgroupElect();

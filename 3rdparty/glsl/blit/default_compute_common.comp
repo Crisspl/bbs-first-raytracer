@@ -27,7 +27,7 @@
 #endif
 
 #ifndef _NBL_GLSL_BLIT_ALPHA_STATISTICS_DEFINED_
-struct nbl_glsl_blit_AlphaStatistics_t
+NBL_GLSL_API struct nbl_glsl_blit_AlphaStatistics_t
 {
 	uint passedPixelCount;
 	uint histogram[_NBL_GLSL_BLIT_ALPHA_BIN_COUNT_];
@@ -60,7 +60,7 @@ layout (push_constant) uniform Block
 } pc;
 
 #ifndef _NBL_GLSL_BLIT_GET_PARAMETERS_DEFINED_
-nbl_glsl_blit_parameters_t nbl_glsl_blit_getParameters()
+NBL_GLSL_API nbl_glsl_blit_parameters_t nbl_glsl_blit_getParameters()
 {
 	return pc.params;
 }

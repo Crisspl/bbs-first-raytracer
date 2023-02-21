@@ -20,15 +20,15 @@
 
 /** TODO @Hazardu or @Przemog you can express all of them in terms of the uint variants to safe yourself the trouble of repeated code, this could also be a recruitment task.
 
-bool nbl_glsl_workgroupShuffleUp(in bool val, in uint delta);
-float nbl_glsl_workgroupShuffleUp(in float val, in uint delta);
-uint nbl_glsl_workgroupShuffleUp(in uint val, in uint delta);
-int nbl_glsl_workgroupShuffleUp(in int val, in uint delta);
+NBL_GLSL_API bool nbl_glsl_workgroupShuffleUp(in bool val, in uint delta);
+NBL_GLSL_API float nbl_glsl_workgroupShuffleUp(in float val, in uint delta);
+NBL_GLSL_API uint nbl_glsl_workgroupShuffleUp(in uint val, in uint delta);
+NBL_GLSL_API int nbl_glsl_workgroupShuffleUp(in int val, in uint delta);
 
-bool nbl_glsl_workgroupShuffleDown(in bool val, in uint delta);
-float nbl_glsl_workgroupShuffleDown(in float val, in uint delta);
-uint nbl_glsl_workgroupShuffleDown(in uint val, in uint delta);
-int nbl_glsl_workgroupShuffleDown(in int val, in uint delta);
+NBL_GLSL_API bool nbl_glsl_workgroupShuffleDown(in bool val, in uint delta);
+NBL_GLSL_API float nbl_glsl_workgroupShuffleDown(in float val, in uint delta);
+NBL_GLSL_API uint nbl_glsl_workgroupShuffleDown(in uint val, in uint delta);
+NBL_GLSL_API int nbl_glsl_workgroupShuffleDown(in int val, in uint delta);
 
 BONUS: Make fuctions with suffix "Wraparound" which dont return undefined values when `gl_LocalInvocationIndex+/-delta` is outside the valid invocationID range
 */

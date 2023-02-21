@@ -19,20 +19,20 @@ layout(
     uint data[];
 } drawCalls;
 
-uint nbl_glsl_culling_lod_selection_drawCallGetDWORD(in uint DWORDOffset)
+NBL_GLSL_API uint nbl_glsl_culling_lod_selection_drawCallGetDWORD(in uint DWORDOffset)
 {
     return drawCalls.data[DWORDOffset];
 }
 
-uint nbl_glsl_culling_lod_selection_drawCallGetInstanceCount(in uint drawCallDWORDOffset)
+NBL_GLSL_API uint nbl_glsl_culling_lod_selection_drawCallGetInstanceCount(in uint drawCallDWORDOffset)
 {
     return nbl_glsl_culling_lod_selection_drawCallGetDWORD(drawCallDWORDOffset+1u);
 }
-uint nbl_glsl_culling_lod_selection_drawArraysGetBaseInstance(in uint drawCallDWORDOffset)
+NBL_GLSL_API uint nbl_glsl_culling_lod_selection_drawArraysGetBaseInstance(in uint drawCallDWORDOffset)
 {
     return nbl_glsl_culling_lod_selection_drawCallGetDWORD(drawCallDWORDOffset+3u);
 }
-uint nbl_glsl_culling_lod_selection_drawElementsGetBaseInstance(in uint drawCallDWORDOffset)
+NBL_GLSL_API uint nbl_glsl_culling_lod_selection_drawElementsGetBaseInstance(in uint drawCallDWORDOffset)
 {
     return nbl_glsl_culling_lod_selection_drawCallGetDWORD(drawCallDWORDOffset+4u);
 }

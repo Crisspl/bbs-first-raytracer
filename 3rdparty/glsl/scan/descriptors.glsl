@@ -33,7 +33,7 @@ layout(set=_NBL_GLSL_SCAN_DESCRIPTOR_SET_DEFINED_, binding=_NBL_GLSL_SCAN_SCRATC
 
 #ifndef _NBL_GLSL_SCAN_GET_PADDED_DATA_DEFINED_
 #include <3rdparty/glsl/scan/declarations.glsl>
-void nbl_glsl_scan_getData(
+NBL_GLSL_API void nbl_glsl_scan_getData(
 	inout nbl_glsl_scan_Storage_t& data,
 	in uint levelInvocationIndex,
 	in uint localWorkgroupIndex,
@@ -82,7 +82,7 @@ void nbl_glsl_scan_getData(
 
 #ifndef _NBL_GLSL_SCAN_SET_DATA_DEFINED_
 #include <3rdparty/glsl/scan/declarations.glsl>
-void nbl_glsl_scan_setData(
+NBL_GLSL_API void nbl_glsl_scan_setData(
 	in nbl_glsl_scan_Storage_t data,
 	in uint levelInvocationIndex,
 	in uint localWorkgroupIndex,

@@ -7,8 +7,8 @@
 
 #ifndef _NBL_BUILTIN_GLSL_BUMP_MAPPING_DERIVATIVES_DECLARED_
 #ifndef _NBL_BUILTIN_GLSL_BUMP_MAPPING_DERIVATIVES_DECLARED_
-mat2x3 nbl_glsl_perturbNormal_dPdSomething();
-mat2 nbl_glsl_perturbNormal_dUVdSomething();
+NBL_GLSL_API mat2x3 nbl_glsl_perturbNormal_dPdSomething();
+NBL_GLSL_API mat2 nbl_glsl_perturbNormal_dUVdSomething();
 #endif
 
 #endif

@@ -13,7 +13,7 @@
 
 //depr
 /*
-vec3 nbl_glsl_ggx_height_correlated_aniso_cos_eval(in nbl_glsl_BSDFAnisotropicParams params, in nbl_glsl_AnisotropicViewSurfaceInteraction inter, in mat2x3 ior, in float a2, in vec2 atb, in float aniso)
+NBL_GLSL_API vec3 nbl_glsl_ggx_height_correlated_aniso_cos_eval(in nbl_glsl_BSDFAnisotropicParams params, in nbl_glsl_AnisotropicViewSurfaceInteraction inter, in mat2x3 ior, in float a2, in vec2 atb, in float aniso)
 {
     float g = nbl_glsl_ggx_smith_height_correlated_aniso_wo_numerator(atb.x, atb.y, params.TdotL, interaction.TdotV, params.BdotL, interaction.BdotV, params.isotropic.NdotL, interaction.isotropic.NdotV);
     float ndf = nbl_glsl_ggx_burley_aniso(aniso, a2, params.TdotH, params.BdotH, params.isotropic.NdotH);
@@ -23,7 +23,7 @@ vec3 nbl_glsl_ggx_height_correlated_aniso_cos_eval(in nbl_glsl_BSDFAnisotropicPa
 }
 */
 //defined using NDF function with better API (compared to burley used above) and new impl of correlated smith
-float nbl_glsl_ggx_height_correlated_aniso_cos_eval_DG_wo_clamps(in float NdotH2, in float TdotH2, in float BdotH2, in float maxNdotL, in float NdotL2, in float TdotL2, in float BdotL2, in float maxNdotV, in float NdotV2, in float TdotV2, in float BdotV2, in float ax, in float ax2, in float ay, in float ay2)
+NBL_GLSL_API float nbl_glsl_ggx_height_correlated_aniso_cos_eval_DG_wo_clamps(in float NdotH2, in float TdotH2, in float BdotH2, in float maxNdotL, in float NdotL2, in float TdotL2, in float BdotL2, in float maxNdotV, in float NdotV2, in float TdotV2, in float BdotV2, in float ax, in float ax2, in float ay, in float ay2)
 {
     float NG = nbl_glsl_ggx_aniso(TdotH2,BdotH2,NdotH2, ax, ay, ax2, ay2);
     if (ax>nbl_glsl_FLT_MIN || ay>nbl_glsl_FLT_MIN)
@@ -38,7 +38,7 @@ float nbl_glsl_ggx_height_correlated_aniso_cos_eval_DG_wo_clamps(in float NdotH2
     return NG;
 }
 
-vec3 nbl_glsl_ggx_height_correlated_aniso_cos_eval_wo_clamps(in float NdotH2, in float TdotH2, in float BdotH2, in float maxNdotL, in float NdotL2, in float TdotL2, in float BdotL2, in float maxNdotV, in float NdotV2, in float TdotV2, in float BdotV2, in float VdotH, in mat2x3 ior, in float ax, in float ax2, in float ay, in float ay2)
+NBL_GLSL_API vec3 nbl_glsl_ggx_height_correlated_aniso_cos_eval_wo_clamps(in float NdotH2, in float TdotH2, in float BdotH2, in float maxNdotL, in float NdotL2, in float TdotL2, in float BdotL2, in float maxNdotV, in float NdotV2, in float TdotV2, in float BdotV2, in float VdotH, in mat2x3 ior, in float ax, in float ax2, in float ay, in float ay2)
 {
     float NG_already_in_reflective_dL_measure = nbl_glsl_ggx_height_correlated_aniso_cos_eval_DG_wo_clamps(NdotH2,TdotH2,BdotH2,maxNdotL,NdotL2,TdotL2,BdotL2,maxNdotV,NdotV2,TdotV2,BdotV2,ax,ax2,ay,ay2);
 
@@ -46,7 +46,7 @@ vec3 nbl_glsl_ggx_height_correlated_aniso_cos_eval_wo_clamps(in float NdotH2, in
     return fr*nbl_glsl_ggx_microfacet_to_light_measure_transform(NG_already_in_reflective_dL_measure,maxNdotL);
 }
 
-vec3 nbl_glsl_ggx_height_correlated_aniso_cos_eval(in nbl_glsl_LightSample _sample, in nbl_glsl_AnisotropicViewSurfaceInteraction interaction, in nbl_glsl_AnisotropicMicrofacetCache _cache, in mat2x3 ior, in float ax, in float ay)
+NBL_GLSL_API vec3 nbl_glsl_ggx_height_correlated_aniso_cos_eval(in nbl_glsl_LightSample _sample, in nbl_glsl_AnisotropicViewSurfaceInteraction interaction, in nbl_glsl_AnisotropicMicrofacetCache _cache, in mat2x3 ior, in float ax, in float ay)
 {
     if (_sample.NdotL>nbl_glsl_FLT_MIN && interaction.isotropic.NdotV>nbl_glsl_FLT_MIN)
     {
@@ -65,7 +65,7 @@ vec3 nbl_glsl_ggx_height_correlated_aniso_cos_eval(in nbl_glsl_LightSample _samp
 }
 
 
-float nbl_glsl_ggx_height_correlated_cos_eval_DG_wo_clamps(in float NdotH2, in float maxNdotL, in float NdotL2, in float maxNdotV, in float NdotV2, in float a2)
+NBL_GLSL_API float nbl_glsl_ggx_height_correlated_cos_eval_DG_wo_clamps(in float NdotH2, in float maxNdotL, in float NdotL2, in float maxNdotV, in float NdotV2, in float a2)
 {
     float NG = nbl_glsl_ggx_trowbridge_reitz(a2, NdotH2);
     if (a2>nbl_glsl_FLT_MIN)
@@ -74,7 +74,7 @@ float nbl_glsl_ggx_height_correlated_cos_eval_DG_wo_clamps(in float NdotH2, in f
     return NG;
 }
 
-vec3 nbl_glsl_ggx_height_correlated_cos_eval_wo_clamps(in float NdotH2, in float maxNdotL, in float NdotL2, in float maxNdotV, in float NdotV2, in float VdotH, in mat2x3 ior, in float a2)
+NBL_GLSL_API vec3 nbl_glsl_ggx_height_correlated_cos_eval_wo_clamps(in float NdotH2, in float maxNdotL, in float NdotL2, in float maxNdotV, in float NdotV2, in float VdotH, in mat2x3 ior, in float a2)
 {
     float NG_already_in_reflective_dL_measure = nbl_glsl_ggx_height_correlated_cos_eval_DG_wo_clamps(NdotH2, maxNdotL, NdotL2, maxNdotV, NdotV2, a2);
 
@@ -83,7 +83,7 @@ vec3 nbl_glsl_ggx_height_correlated_cos_eval_wo_clamps(in float NdotH2, in float
     return fr*nbl_glsl_ggx_microfacet_to_light_measure_transform(NG_already_in_reflective_dL_measure,maxNdotL);
 }
 
-vec3 nbl_glsl_ggx_height_correlated_cos_eval(in nbl_glsl_LightSample _sample, in nbl_glsl_IsotropicViewSurfaceInteraction interaction, in nbl_glsl_IsotropicMicrofacetCache _cache, in mat2x3 ior, in float a2)
+NBL_GLSL_API vec3 nbl_glsl_ggx_height_correlated_cos_eval(in nbl_glsl_LightSample _sample, in nbl_glsl_IsotropicViewSurfaceInteraction interaction, in nbl_glsl_IsotropicMicrofacetCache _cache, in mat2x3 ior, in float a2)
 {
     if (_sample.NdotL>nbl_glsl_FLT_MIN && interaction.NdotV>nbl_glsl_FLT_MIN)
         return nbl_glsl_ggx_height_correlated_cos_eval_wo_clamps(_cache.NdotH2,max(_sample.NdotL,0.0),_sample.NdotL2, max(interaction.NdotV,0.0), interaction.NdotV_squared, _cache.VdotH,ior,a2);
@@ -94,7 +94,7 @@ vec3 nbl_glsl_ggx_height_correlated_cos_eval(in nbl_glsl_LightSample _sample, in
 
 
 //Heitz's 2018 paper "Sampling the GGX Distribution of Visible Normals"
-vec3 nbl_glsl_ggx_cos_generate(in vec3 localV, in vec2 u, in float _ax, in float _ay)
+NBL_GLSL_API vec3 nbl_glsl_ggx_cos_generate(in vec3 localV, in vec2 u, in float _ax, in float _ay)
 {
     vec3 V = normalize(vec3(_ax*localV.x, _ay*localV.y, localV.z));//stretch view vector so that we're sampling as if roughness=1.0
 
@@ -117,7 +117,7 @@ vec3 nbl_glsl_ggx_cos_generate(in vec3 localV, in vec2 u, in float _ax, in float
 }
 
 // TODO: unifty the two following functions into `nbl_glsl_microfacet_BRDF_cos_generate_wo_clamps(vec3 H,...)` and `nbl_glsl_microfacet_BRDF_cos_generate` or at least a auto declaration macro in lieu of a template
-nbl_glsl_LightSample nbl_glsl_ggx_cos_generate_wo_clamps(in vec3 localV, in mat3 m, in vec2 u, in float _ax, in float _ay, out nbl_glsl_AnisotropicMicrofacetCache& _cache)
+NBL_GLSL_API nbl_glsl_LightSample nbl_glsl_ggx_cos_generate_wo_clamps(in vec3 localV, in mat3 m, in vec2 u, in float _ax, in float _ay, out nbl_glsl_AnisotropicMicrofacetCache& _cache)
 {
     const vec3 H = nbl_glsl_ggx_cos_generate(localV,u,_ax,_ay);
     
@@ -127,7 +127,7 @@ nbl_glsl_LightSample nbl_glsl_ggx_cos_generate_wo_clamps(in vec3 localV, in mat3
     return nbl_glsl_createLightSampleTangentSpace(localV,localL,m);
 }
 
-nbl_glsl_LightSample nbl_glsl_ggx_cos_generate(in nbl_glsl_AnisotropicViewSurfaceInteraction interaction, in vec2 u, in float _ax, in float _ay, out nbl_glsl_AnisotropicMicrofacetCache& _cache)
+NBL_GLSL_API nbl_glsl_LightSample nbl_glsl_ggx_cos_generate(in nbl_glsl_AnisotropicViewSurfaceInteraction interaction, in vec2 u, in float _ax, in float _ay, out nbl_glsl_AnisotropicMicrofacetCache& _cache)
 {
     const vec3 localV = nbl_glsl_getTangentSpaceV(interaction);
     const mat3 m = nbl_glsl_getTangentFrame(interaction);
@@ -136,11 +136,11 @@ nbl_glsl_LightSample nbl_glsl_ggx_cos_generate(in nbl_glsl_AnisotropicViewSurfac
 
 
 
-float nbl_glsl_ggx_pdf_wo_clamps(in float ndf, in float devsh_v, in float maxNdotV)
+NBL_GLSL_API float nbl_glsl_ggx_pdf_wo_clamps(in float ndf, in float devsh_v, in float maxNdotV)
 {
     return nbl_glsl_smith_VNDF_pdf_wo_clamps(ndf,nbl_glsl_GGXSmith_G1_wo_numerator(maxNdotV,devsh_v));
 }
-float nbl_glsl_ggx_pdf_wo_clamps(in float NdotH2, in float maxNdotV, in float NdotV2, in float a2)
+NBL_GLSL_API float nbl_glsl_ggx_pdf_wo_clamps(in float NdotH2, in float maxNdotV, in float NdotV2, in float a2)
 {
     const float ndf = nbl_glsl_ggx_trowbridge_reitz(a2, NdotH2);
     const float devsh_v = nbl_glsl_smith_ggx_devsh_part(NdotV2, a2, 1.0-a2);
@@ -148,7 +148,7 @@ float nbl_glsl_ggx_pdf_wo_clamps(in float NdotH2, in float maxNdotV, in float Nd
     return nbl_glsl_ggx_pdf_wo_clamps(ndf, devsh_v, maxNdotV);
 }
 
-float nbl_glsl_ggx_pdf_wo_clamps(in float NdotH2, in float TdotH2, in float BdotH2, in float maxNdotV, in float NdotV2, in float TdotV2, in float BdotV2, in float ax, in float ay, in float ax2, in float ay2)
+NBL_GLSL_API float nbl_glsl_ggx_pdf_wo_clamps(in float NdotH2, in float TdotH2, in float BdotH2, in float maxNdotV, in float NdotV2, in float TdotV2, in float BdotV2, in float ax, in float ay, in float ax2, in float ay2)
 {
     const float ndf = nbl_glsl_ggx_aniso(TdotH2,BdotH2,NdotH2, ax, ay, ax2, ay2);
     const float devsh_v = nbl_glsl_smith_ggx_devsh_part(TdotV2, BdotV2, NdotV2, ax2, ay2);
@@ -157,7 +157,7 @@ float nbl_glsl_ggx_pdf_wo_clamps(in float NdotH2, in float TdotH2, in float Bdot
 }
 
 
-vec3 nbl_glsl_ggx_cos_remainder_and_pdf_wo_clamps(out float& pdf, in float ndf, in float maxNdotL, in float NdotL2, in float maxNdotV, in float NdotV2, in vec3 reflectance, in float a2)
+NBL_GLSL_API vec3 nbl_glsl_ggx_cos_remainder_and_pdf_wo_clamps(out float& pdf, in float ndf, in float maxNdotL, in float NdotL2, in float maxNdotV, in float NdotV2, in vec3 reflectance, in float a2)
 {
     const float one_minus_a2 = 1.0 - a2;
     const float devsh_v = nbl_glsl_smith_ggx_devsh_part(NdotV2, a2, one_minus_a2);
@@ -168,7 +168,7 @@ vec3 nbl_glsl_ggx_cos_remainder_and_pdf_wo_clamps(out float& pdf, in float ndf, 
     return reflectance * G2_over_G1;
 }
 
-vec3 nbl_glsl_ggx_cos_remainder_and_pdf(out float& pdf, in nbl_glsl_LightSample _sample, in nbl_glsl_IsotropicViewSurfaceInteraction interaction, in nbl_glsl_IsotropicMicrofacetCache _cache, in mat2x3 ior, in float a2)
+NBL_GLSL_API vec3 nbl_glsl_ggx_cos_remainder_and_pdf(out float& pdf, in nbl_glsl_LightSample _sample, in nbl_glsl_IsotropicViewSurfaceInteraction interaction, in nbl_glsl_IsotropicMicrofacetCache _cache, in mat2x3 ior, in float a2)
 {    
     const float one_minus_a2 = 1.0 - a2;
     const float ndf = nbl_glsl_ggx_trowbridge_reitz(a2, _cache.NdotH2);
@@ -187,7 +187,7 @@ vec3 nbl_glsl_ggx_cos_remainder_and_pdf(out float& pdf, in nbl_glsl_LightSample 
 }
 
 
-vec3 nbl_glsl_ggx_aniso_cos_remainder_and_pdf_wo_clamps(out float& pdf, in float ndf, in float maxNdotL, in float NdotL2, in float TdotL2, in float BdotL2, in float maxNdotV, in float TdotV2, in float BdotV2, in float NdotV2, in vec3 reflectance, in float ax2,in float ay2)
+NBL_GLSL_API vec3 nbl_glsl_ggx_aniso_cos_remainder_and_pdf_wo_clamps(out float& pdf, in float ndf, in float maxNdotL, in float NdotL2, in float TdotL2, in float BdotL2, in float maxNdotV, in float TdotV2, in float BdotV2, in float NdotV2, in vec3 reflectance, in float ax2,in float ay2)
 {
     const float devsh_v = nbl_glsl_smith_ggx_devsh_part(TdotV2, BdotV2, NdotV2, ax2, ay2);
     pdf = nbl_glsl_ggx_pdf_wo_clamps(ndf, devsh_v, maxNdotV);
@@ -201,7 +201,7 @@ vec3 nbl_glsl_ggx_aniso_cos_remainder_and_pdf_wo_clamps(out float& pdf, in float
     return reflectance * G2_over_G1;
 }
 
-vec3 nbl_glsl_ggx_aniso_cos_remainder_and_pdf(out float& pdf, in nbl_glsl_LightSample _sample, in nbl_glsl_AnisotropicViewSurfaceInteraction interaction, in nbl_glsl_AnisotropicMicrofacetCache _cache, in mat2x3 ior, in float ax, in float ay)
+NBL_GLSL_API vec3 nbl_glsl_ggx_aniso_cos_remainder_and_pdf(out float& pdf, in nbl_glsl_LightSample _sample, in nbl_glsl_AnisotropicViewSurfaceInteraction interaction, in nbl_glsl_AnisotropicMicrofacetCache _cache, in mat2x3 ior, in float ax, in float ay)
 {
     const float ax2 = ax * ax;
     const float ay2 = ay * ay;

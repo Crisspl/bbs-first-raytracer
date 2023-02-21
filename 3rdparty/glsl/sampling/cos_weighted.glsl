@@ -7,7 +7,7 @@
 
 #include <3rdparty/glsl/sampling/concentric_mapping.glsl>
 
-vec3 nbl_glsl_projected_hemisphere_generate(in vec2 _sample)
+NBL_GLSL_API vec3 nbl_glsl_projected_hemisphere_generate(in vec2 _sample)
 {
     vec2 p = nbl_glsl_concentricMapping(_sample*0.99999f+0.000005f);
     
@@ -16,22 +16,22 @@ vec3 nbl_glsl_projected_hemisphere_generate(in vec2 _sample)
     return vec3(p.x,p.y,z);
 }
 
-float nbl_glsl_projected_hemisphere_pdf(in float L_z)
+NBL_GLSL_API float nbl_glsl_projected_hemisphere_pdf(in float L_z)
 {
     return L_z * nbl_glsl_RECIPROCAL_PI;
 }
 
-float nbl_glsl_projected_hemisphere_remainder_and_pdf(out float& pdf, in float L_z)
+NBL_GLSL_API float nbl_glsl_projected_hemisphere_remainder_and_pdf(out float& pdf, in float L_z)
 {
 	pdf = nbl_glsl_projected_hemisphere_pdf(L_z);
 	return 1.0f;
 }
-float nbl_glsl_projected_hemisphere_remainder_and_pdf(out float& pdf, in vec3 L)
+NBL_GLSL_API float nbl_glsl_projected_hemisphere_remainder_and_pdf(out float& pdf, in vec3 L)
 {
 	return nbl_glsl_projected_hemisphere_remainder_and_pdf(pdf,L.z);
 }
 
-vec3 nbl_glsl_projected_sphere_generate(vec3& _sample)
+NBL_GLSL_API vec3 nbl_glsl_projected_sphere_generate(vec3& _sample)
 {
     vec3 retval = nbl_glsl_projected_hemisphere_generate(vec2(_sample));
     const bool chooseLower = _sample.z>0.5f;
@@ -42,18 +42,18 @@ vec3 nbl_glsl_projected_sphere_generate(vec3& _sample)
     return retval;
 }
 
-float nbl_glsl_projected_sphere_remainder_and_pdf(out float& pdf, in float L_z)
+NBL_GLSL_API float nbl_glsl_projected_sphere_remainder_and_pdf(out float& pdf, in float L_z)
 {
     float retval = nbl_glsl_projected_hemisphere_remainder_and_pdf(pdf,L_z);
     pdf *= 0.5f;
 	return retval;
 }
-float nbl_glsl_projected_sphere_remainder_and_pdf(out float& pdf, in vec3 L)
+NBL_GLSL_API float nbl_glsl_projected_sphere_remainder_and_pdf(out float& pdf, in vec3 L)
 {
     return nbl_glsl_projected_sphere_remainder_and_pdf(pdf,L.z);
 }
 
-float nbl_glsl_projected_sphere_pdf(in float L_z)
+NBL_GLSL_API float nbl_glsl_projected_sphere_pdf(in float L_z)
 {
     return 0.5f*nbl_glsl_projected_hemisphere_pdf(L_z);
 }

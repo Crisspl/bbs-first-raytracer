@@ -20,7 +20,7 @@
 #endif
 
 
-bool nbl_glsl_workgroupAll_noBarriers(in bool value)
+NBL_GLSL_API bool nbl_glsl_workgroupAll_noBarriers(in bool value)
 {
 	// TODO: Optimization using subgroupAll in an ifdef NBL_GL_something (need to do feature mapping first), probably only first 2 lines need to change
 	_NBL_GLSL_SCRATCH_SHARED_DEFINED_[0u] = 1u;
@@ -31,7 +31,7 @@ bool nbl_glsl_workgroupAll_noBarriers(in bool value)
 
 	return _NBL_GLSL_SCRATCH_SHARED_DEFINED_[0u]!=0u;
 }
-bool nbl_glsl_workgroupAll(in bool value)
+NBL_GLSL_API bool nbl_glsl_workgroupAll(in bool value)
 {
 	barrier();
 	memoryBarrierShared();
@@ -40,7 +40,7 @@ bool nbl_glsl_workgroupAll(in bool value)
 	return retval;
 }
 
-bool nbl_glsl_workgroupAny_noBarriers(in bool value)
+NBL_GLSL_API bool nbl_glsl_workgroupAny_noBarriers(in bool value)
 {
 	// TODO: Optimization using subgroupAny in an ifdef NBL_GL_something (need to do feature mapping first), probably only first 2 lines need to change
 	_NBL_GLSL_SCRATCH_SHARED_DEFINED_[0u] = 0u;
@@ -51,7 +51,7 @@ bool nbl_glsl_workgroupAny_noBarriers(in bool value)
 
 	return _NBL_GLSL_SCRATCH_SHARED_DEFINED_[0u]!=0u;
 }
-bool nbl_glsl_workgroupAny(in bool value)
+NBL_GLSL_API bool nbl_glsl_workgroupAny(in bool value)
 {
 	barrier();
 	memoryBarrierShared();
@@ -61,10 +61,10 @@ bool nbl_glsl_workgroupAny(in bool value)
 }
 
 /** TODO: Recruitment task or Intern
-bool nbl_glsl_workgroupAllEqual(in bool val);
-float nbl_glsl_workgroupAllEqual(in float val);
-uint nbl_glsl_workgroupAllEqual(in uint val);
-int nbl_glsl_workgroupAllEqual(in int val);
+NBL_GLSL_API bool nbl_glsl_workgroupAllEqual(in bool val);
+NBL_GLSL_API float nbl_glsl_workgroupAllEqual(in float val);
+NBL_GLSL_API uint nbl_glsl_workgroupAllEqual(in uint val);
+NBL_GLSL_API int nbl_glsl_workgroupAllEqual(in int val);
 **/
 
 

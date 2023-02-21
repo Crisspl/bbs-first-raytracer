@@ -40,7 +40,7 @@ layout(
 } debugAABB;
 #endif
 
-struct nbl_glsl_skinning_DebugData_t
+NBL_GLSL_API struct nbl_glsl_skinning_DebugData_t
 {
 	uint skinOffset;
 	uint aabbOffset;

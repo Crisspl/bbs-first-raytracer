@@ -1,7 +1,7 @@
 #ifndef _NBL_GLSL_PROPERTY_POOL_TRANSFER_GLSL_INCLUDED_
 #define _NBL_GLSL_PROPERTY_POOL_TRANSFER_GLSL_INCLUDED_
 
-struct nbl_glsl_property_pool_transfer_t
+NBL_GLSL_API struct nbl_glsl_property_pool_transfer_t
 {
 	int propertyDWORDsize_flags;
     int elementCount;

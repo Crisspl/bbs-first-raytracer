@@ -7,14 +7,14 @@
 
 #include <3rdparty/glsl/shapes/aabb.glsl>
 
-struct nbl_glsl_shapes_Frustum_t
+NBL_GLSL_API struct nbl_glsl_shapes_Frustum_t
 {
     mat3x4 minPlanes;
     mat3x4 maxPlanes;
 };
 
 // will place planes which correspond to the bounds in NDC
-nbl_glsl_shapes_Frustum_t nbl_glsl_shapes_Frustum_extract(in mat4 proj, in nbl_glsl_shapes_AABB_t bounds)
+NBL_GLSL_API nbl_glsl_shapes_Frustum_t nbl_glsl_shapes_Frustum_extract(in mat4 proj, in nbl_glsl_shapes_AABB_t bounds)
 {
     const mat4 pTpose = transpose(proj);
 
@@ -25,7 +25,7 @@ nbl_glsl_shapes_Frustum_t nbl_glsl_shapes_Frustum_extract(in mat4 proj, in nbl_g
 }
 
 // assuming an NDC of [-1,1]^2 x [0,1]
-nbl_glsl_shapes_Frustum_t nbl_glsl_shapes_Frustum_extract(in mat4 proj)
+NBL_GLSL_API nbl_glsl_shapes_Frustum_t nbl_glsl_shapes_Frustum_extract(in mat4 proj)
 {
     nbl_glsl_shapes_AABB_t bounds;
     bounds.minVx = vec3(-1.f,-1.f,0.f);
@@ -34,7 +34,7 @@ nbl_glsl_shapes_Frustum_t nbl_glsl_shapes_Frustum_extract(in mat4 proj)
 }
 
 // gives false negatives
-bool nbl_glsl_shapes_Frustum_fastestDoesNotIntersectAABB(in nbl_glsl_shapes_Frustum_t frust, in nbl_glsl_shapes_AABB_t aabb)
+NBL_GLSL_API bool nbl_glsl_shapes_Frustum_fastestDoesNotIntersectAABB(in nbl_glsl_shapes_Frustum_t frust, in nbl_glsl_shapes_AABB_t aabb)
 {
 #define getClosestDP(R) (dot(nbl_glsl_shapes_AABB_getFarthestPointInFront(aabb,R.xyz),R.xyz)+R.w)
     if (getClosestDP(frust.minPlanes[0])<=0.f)

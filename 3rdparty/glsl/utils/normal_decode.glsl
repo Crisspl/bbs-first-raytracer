@@ -4,7 +4,7 @@
 #include "nbl/builtin/glsl/math/constants.glsl"
 
 #include "nbl/builtin/glsl/utils/compressed_normal_matrix_t.glsl"
-mat3 nbl_glsl_CompressedNormalMatrix_t_decode(in nbl_glsl_CompressedNormalMatrix_t compr)
+NBL_GLSL_API mat3 nbl_glsl_CompressedNormalMatrix_t_decode(in nbl_glsl_CompressedNormalMatrix_t compr)
 {
     mat3 m;
 
@@ -23,7 +23,7 @@ mat3 nbl_glsl_CompressedNormalMatrix_t_decode(in nbl_glsl_CompressedNormalMatrix
     return m;
 }
 
-vec3 nbl_glsl_NormalDecode_signedSpherical(in vec2 enc)
+NBL_GLSL_API vec3 nbl_glsl_NormalDecode_signedSpherical(in vec2 enc)
 {
 	float ang = enc.x*nbl_glsl_PI;
     return vec3(vec2(cos(ang),sin(ang))*sqrt(1.0-enc.y*enc.y), enc.y);

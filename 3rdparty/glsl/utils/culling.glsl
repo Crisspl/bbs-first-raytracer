@@ -9,14 +9,14 @@
 #include <3rdparty/glsl/shapes/frustum.glsl>
 
 // gives false negatives
-bool nbl_glsl_fastestFrustumCullAABB(in mat4 proj, in nbl_glsl_shapes_AABB_t aabb)
+NBL_GLSL_API bool nbl_glsl_fastestFrustumCullAABB(in mat4 proj, in nbl_glsl_shapes_AABB_t aabb)
 {
     const nbl_glsl_shapes_Frustum_t frust = nbl_glsl_shapes_Frustum_extract(proj);
     return nbl_glsl_shapes_Frustum_fastestDoesNotIntersectAABB(frust,aabb);
 }
 
 // gives very few false negatives
-bool nbl_glsl_fastFrustumCullAABB(in mat4 proj, in mat4 invProj, in nbl_glsl_shapes_AABB_t aabb)
+NBL_GLSL_API bool nbl_glsl_fastFrustumCullAABB(in mat4 proj, in mat4 invProj, in nbl_glsl_shapes_AABB_t aabb)
 {
     if (nbl_glsl_fastestFrustumCullAABB(proj,aabb))
         return true;
@@ -29,7 +29,7 @@ bool nbl_glsl_fastFrustumCullAABB(in mat4 proj, in mat4 invProj, in nbl_glsl_sha
 }
 
 // perfect Separating Axis Theorem, needed for Clustered/Tiled Lighting
-bool nbl_glsl_preciseFrustumCullAABB(in mat4 proj, in mat4 invProj, in nbl_glsl_shapes_AABB_t aabb)
+NBL_GLSL_API bool nbl_glsl_preciseFrustumCullAABB(in mat4 proj, in mat4 invProj, in nbl_glsl_shapes_AABB_t aabb)
 {
     const nbl_glsl_shapes_Frustum_t viewFrust = nbl_glsl_shapes_Frustum_extract(proj);
     if (nbl_glsl_shapes_Frustum_fastestDoesNotIntersectAABB(viewFrust,aabb))

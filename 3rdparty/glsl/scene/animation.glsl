@@ -5,14 +5,14 @@
 #include <3rdparty/glsl/math/keyframe.glsl>
 
 
-struct nbl_glsl_scene_Animation_t
+NBL_GLSL_API struct nbl_glsl_scene_Animation_t
 {
 	uint keyframeOffset; // same offset for timestamps and keyframes
 	uint keyframesCount_interpolationMode; // 2 bits for interpolation mode
 };
 
 // TODO: Design for this
-struct nbl_glsl_scene_AnimationBlend_t
+NBL_GLSL_API struct nbl_glsl_scene_AnimationBlend_t
 {
 	uint nodeTargetID;
 	uint desiredTimestamp;

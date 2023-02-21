@@ -4,7 +4,7 @@
 // samples are quantized 3 dimensions at a time
 #define nbl_glsl_sampling_quantized3D uvec2
 
-vec3 nbl_glsl_sampling_decodeSample3Dimensions(in nbl_glsl_sampling_quantized3D quant3D, in uvec3 scrambleKey)
+NBL_GLSL_API vec3 nbl_glsl_sampling_decodeSample3Dimensions(in nbl_glsl_sampling_quantized3D quant3D, in uvec3 scrambleKey)
 {
 	// We don't even need to mask off the lower bits of X and Y, since they get lost upon the FP32 multiplication
 	const uvec3 seqVal = uvec3(

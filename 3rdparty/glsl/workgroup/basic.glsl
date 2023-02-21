@@ -7,7 +7,7 @@
 
 
 //! all functions must be called in uniform control flow (all workgroup invocations active)
-bool nbl_glsl_workgroupElect()
+NBL_GLSL_API bool nbl_glsl_workgroupElect()
 {
 	return gl_LocalInvocationIndex==0u;
 }

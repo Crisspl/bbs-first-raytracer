@@ -6,13 +6,13 @@
 #define _NBL_GLSL_EXT_TONE_MAPPER_OPERATORS_INCLUDED_
 
 
-struct nbl_glsl_ext_ToneMapper_ReinhardParams_t
+NBL_GLSL_API struct nbl_glsl_ext_ToneMapper_ReinhardParams_t
 {
 	float keyAndManualLinearExposure;
 	float rcpWhite2;
 };
 
-struct nbl_glsl_ext_ToneMapper_ACESParams_t
+NBL_GLSL_API struct nbl_glsl_ext_ToneMapper_ACESParams_t
 {
 	float gamma; // 1.0
 	float exposure; // actualExposure+midGrayLog2
@@ -23,14 +23,14 @@ struct nbl_glsl_ext_ToneMapper_ACESParams_t
 #define _NBL_GLSL_EXT_TONE_MAPPER_ACES_OPERATOR 1
 
 
-vec3 nbl_glsl_ext_ToneMapper_Reinhard(in nbl_glsl_ext_ToneMapper_ReinhardParams_t params, in vec3 rawCIEXYZcolor)
+NBL_GLSL_API vec3 nbl_glsl_ext_ToneMapper_Reinhard(in nbl_glsl_ext_ToneMapper_ReinhardParams_t params, in vec3 rawCIEXYZcolor)
 {
 	float exposureFactors = params.keyAndManualLinearExposure;
 	float exposedLuma = rawCIEXYZcolor.y*exposureFactors;
 	return rawCIEXYZcolor*exposureFactors*(1.0+exposedLuma*params.rcpWhite2)/(1.0+exposedLuma);
 }
 
-vec3 nbl_glsl_ext_ToneMapper_ACES(in nbl_glsl_ext_ToneMapper_ACESParams_t params, inout vec3& rawCIEXYZcolor)
+NBL_GLSL_API vec3 nbl_glsl_ext_ToneMapper_ACES(in nbl_glsl_ext_ToneMapper_ACESParams_t params, inout vec3& rawCIEXYZcolor)
 {
 	vec3 tonemapped = rawCIEXYZcolor;
 	if (tonemapped.y>1.175494351e-38)

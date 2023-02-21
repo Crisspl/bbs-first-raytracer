@@ -26,7 +26,7 @@
 #define nbl_glsl_MC_params_t mat2x3
 #define nbl_glsl_MC_bxdf_spectrum_t vec3
 
-struct nbl_glsl_MC_instr_stream_t
+NBL_GLSL_API struct nbl_glsl_MC_instr_stream_t
 {
 	uint offset;
 	uint count;
@@ -35,7 +35,7 @@ struct nbl_glsl_MC_instr_stream_t
 // all vectors (and dot products) have untouched orientation relatively to shader inputs
 // therefore MC_precomputed_t::NdotV can be used to determine if we are inside a material
 // (in case of precomp.NdotV<0.0, currInteraction will be set with -precomp.N)
-struct nbl_glsl_MC_precomputed_t
+NBL_GLSL_API struct nbl_glsl_MC_precomputed_t
 {
 	// TODO: shadingN and geomN
 	vec3 N;
@@ -53,26 +53,26 @@ struct nbl_glsl_MC_precomputed_t
 
 #define NBL_GLSL_MC_ALPHA_EPSILON 1.0e-8
 
-struct nbl_glsl_MC_interaction_t
+NBL_GLSL_API struct nbl_glsl_MC_interaction_t
 {
 	nbl_glsl_AnisotropicViewSurfaceInteraction inner;
 	float TdotV2;
 	float BdotV2;
 };
-void nbl_glsl_MC_finalizeInteraction(inout nbl_glsl_MC_interaction_t& i)
+NBL_GLSL_API void nbl_glsl_MC_finalizeInteraction(inout nbl_glsl_MC_interaction_t& i)
 {
 	i.TdotV2 = i.inner.TdotV * i.inner.TdotV;
 	i.BdotV2 = i.inner.BdotV * i.inner.BdotV;
 }
 
-struct nbl_glsl_MC_microfacet_t
+NBL_GLSL_API struct nbl_glsl_MC_microfacet_t
 {
 	nbl_glsl_AnisotropicMicrofacetCache inner;
 	float TdotH2;
 	float BdotH2;
 };
 
-void nbl_glsl_MC_finalizeMicrofacet(inout nbl_glsl_MC_microfacet_t& mf)
+NBL_GLSL_API void nbl_glsl_MC_finalizeMicrofacet(inout nbl_glsl_MC_microfacet_t& mf)
 {
 	mf.TdotH2 = mf.inner.TdotH * mf.inner.TdotH;
 	mf.BdotH2 = mf.inner.BdotH * mf.inner.BdotH;
@@ -80,7 +80,7 @@ void nbl_glsl_MC_finalizeMicrofacet(inout nbl_glsl_MC_microfacet_t& mf)
 
 #include <3rdparty/glsl/format/decode.glsl>
 
-struct nbl_glsl_MC_oriented_material_t
+NBL_GLSL_API struct nbl_glsl_MC_oriented_material_t
 {
 	uvec2 emissive;
 	// TODO: derive/define upper bounds for instruction counts and bitpack them!
@@ -91,38 +91,38 @@ struct nbl_glsl_MC_oriented_material_t
 	uint nprecomp_count;
 	uint genchoice_count;
 };
-vec3 nbl_glsl_MC_oriented_material_t_getEmissive(in nbl_glsl_MC_oriented_material_t orientedMaterial)
+NBL_GLSL_API vec3 nbl_glsl_MC_oriented_material_t_getEmissive(in nbl_glsl_MC_oriented_material_t orientedMaterial)
 {
 	return nbl_glsl_decodeRGB19E7(orientedMaterial.emissive);
 }
 //rem'n'pdf and eval use the same instruction stream
-nbl_glsl_MC_instr_stream_t nbl_glsl_MC_oriented_material_t_getEvalStream(in nbl_glsl_MC_oriented_material_t orientedMaterial)
+NBL_GLSL_API nbl_glsl_MC_instr_stream_t nbl_glsl_MC_oriented_material_t_getEvalStream(in nbl_glsl_MC_oriented_material_t orientedMaterial)
 {
 	return nbl_glsl_MC_instr_stream_t( orientedMaterial.instr_offset,orientedMaterial.rem_pdf_count );
 }
-nbl_glsl_MC_instr_stream_t nbl_glsl_MC_oriented_material_t_getRemAndPdfStream(in nbl_glsl_MC_oriented_material_t orientedMaterial)
+NBL_GLSL_API nbl_glsl_MC_instr_stream_t nbl_glsl_MC_oriented_material_t_getRemAndPdfStream(in nbl_glsl_MC_oriented_material_t orientedMaterial)
 {
 	return nbl_glsl_MC_instr_stream_t( orientedMaterial.instr_offset,orientedMaterial.rem_pdf_count );
 }
-nbl_glsl_MC_instr_stream_t nbl_glsl_MC_oriented_material_t_getGenChoiceStream(in nbl_glsl_MC_oriented_material_t orientedMaterial)
+NBL_GLSL_API nbl_glsl_MC_instr_stream_t nbl_glsl_MC_oriented_material_t_getGenChoiceStream(in nbl_glsl_MC_oriented_material_t orientedMaterial)
 {
 	return nbl_glsl_MC_instr_stream_t( orientedMaterial.instr_offset+orientedMaterial.rem_pdf_count,orientedMaterial.genchoice_count );
 }
-nbl_glsl_MC_instr_stream_t nbl_glsl_MC_oriented_material_t_getTexPrefetchStream(in nbl_glsl_MC_oriented_material_t orientedMaterial)
+NBL_GLSL_API nbl_glsl_MC_instr_stream_t nbl_glsl_MC_oriented_material_t_getTexPrefetchStream(in nbl_glsl_MC_oriented_material_t orientedMaterial)
 {
 	return nbl_glsl_MC_instr_stream_t( orientedMaterial.prefetch_offset,orientedMaterial.prefetch_count );
 }
-nbl_glsl_MC_instr_stream_t nbl_glsl_MC_oriented_material_t_getNormalPrecompStream(in nbl_glsl_MC_oriented_material_t orientedMaterial)
+NBL_GLSL_API nbl_glsl_MC_instr_stream_t nbl_glsl_MC_oriented_material_t_getNormalPrecompStream(in nbl_glsl_MC_oriented_material_t orientedMaterial)
 {
 	return nbl_glsl_MC_instr_stream_t( orientedMaterial.instr_offset+orientedMaterial.rem_pdf_count+orientedMaterial.genchoice_count,orientedMaterial.nprecomp_count );
 }
 
-struct nbl_glsl_MC_material_data_t
+NBL_GLSL_API struct nbl_glsl_MC_material_data_t
 {
 	nbl_glsl_MC_oriented_material_t front;
 	nbl_glsl_MC_oriented_material_t back;
 };
-nbl_glsl_MC_oriented_material_t nbl_glsl_MC_material_data_t_getOriented(in nbl_glsl_MC_material_data_t material, in bool frontface)
+NBL_GLSL_API nbl_glsl_MC_oriented_material_t nbl_glsl_MC_material_data_t_getOriented(in nbl_glsl_MC_material_data_t material, in bool frontface)
 {
 	return frontface ? material.front:material.back;
 }

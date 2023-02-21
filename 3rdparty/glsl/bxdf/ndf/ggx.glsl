@@ -8,13 +8,13 @@
 #include <3rdparty/glsl/math/constants.glsl>
 #include <3rdparty/glsl/bxdf/ndf/common.glsl>
 
-float nbl_glsl_ggx_trowbridge_reitz(in float a2, in float NdotH2)
+NBL_GLSL_API float nbl_glsl_ggx_trowbridge_reitz(in float a2, in float NdotH2)
 {
     float denom = NdotH2 * (a2 - 1.0) + 1.0;
     return a2* nbl_glsl_RECIPROCAL_PI / (denom*denom);
 }
 
-float nbl_glsl_ggx_burley_aniso(float anisotropy, float a2, float TdotH, float BdotH, float NdotH)
+NBL_GLSL_API float nbl_glsl_ggx_burley_aniso(float anisotropy, float a2, float TdotH, float BdotH, float NdotH)
 {
 	float antiAniso = 1.0-anisotropy;
 	float atab = a2*antiAniso;
@@ -24,7 +24,7 @@ float nbl_glsl_ggx_burley_aniso(float anisotropy, float a2, float TdotH, float B
 	return w2*w2*atab * nbl_glsl_RECIPROCAL_PI;
 }
 
-float nbl_glsl_ggx_aniso(in float TdotH2, in float BdotH2, in float NdotH2, in float ax, in float ay, in float ax2, in float ay2)
+NBL_GLSL_API float nbl_glsl_ggx_aniso(in float TdotH2, in float BdotH2, in float NdotH2, in float ax, in float ay, in float ax2, in float ay2)
 {
 	float a2 = ax*ay;
 	float denom = TdotH2/ax2 + BdotH2/ay2 + NdotH2;

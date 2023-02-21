@@ -4,7 +4,7 @@
 #include "nbl/builtin/glsl/math/constants.glsl"
 
 #include "nbl/builtin/glsl/utils/compressed_normal_matrix_t.glsl"
-nbl_glsl_CompressedNormalMatrix_t nbl_glsl_CompressedNormalMatrix_t_encode(in uint signFlipMask, mat3 m)
+NBL_GLSL_API nbl_glsl_CompressedNormalMatrix_t nbl_glsl_CompressedNormalMatrix_t_encode(in uint signFlipMask, mat3 m)
 {
     const vec3 colmax = max(max(abs(m[0]),abs(m[1])),abs(m[2]));
     m /= uintBitsToFloat(floatBitsToUint(max(max(colmax.x,colmax.y),colmax.z))^signFlipMask);
@@ -28,7 +28,7 @@ nbl_glsl_CompressedNormalMatrix_t nbl_glsl_CompressedNormalMatrix_t_encode(in ui
     return compr;
 }
 
-vec2 nbl_glsl_NormalEncode_signedSpherical(in vec3 n)
+NBL_GLSL_API vec2 nbl_glsl_NormalEncode_signedSpherical(in vec3 n)
 {
     return vec2(atan(n.y,n.x)/nbl_glsl_PI, n.z);
 }

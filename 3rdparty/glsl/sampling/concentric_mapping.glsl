@@ -3,7 +3,7 @@
 
 #include <3rdparty/glsl/math/functions.glsl>
 
-vec2 nbl_glsl_concentricMapping(in vec2 _u)
+NBL_GLSL_API vec2 nbl_glsl_concentricMapping(in vec2 _u)
 {
     //map [0;1]^2 to [-1;1]^2
     vec2 u = 2.0f*_u - 1.0f;

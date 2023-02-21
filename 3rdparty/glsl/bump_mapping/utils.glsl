@@ -6,7 +6,7 @@
 #define _NBL_BUILTIN_GLSL_BUMP_MAPPING_UTILS_INCLUDED_
 
 
-vec3 nbl_glsl_perturbNormal_heightMap(in vec3 vtxN, in vec2 dhdUV, in mat2x3 dPdUV)
+NBL_GLSL_API vec3 nbl_glsl_perturbNormal_heightMap(in vec3 vtxN, in vec2 dhdUV, in mat2x3 dPdUV)
 {
     // no idea if this is correct, but seems to work
     const vec3 r1 = cross(vtxN,dPdUV[1]);
@@ -24,7 +24,7 @@ vec3 nbl_glsl_perturbNormal_heightMap(in vec3 vtxN, in vec2 dhdUV, in mat2x3 dPd
     return vtxN;
 }
 
-vec3 nbl_glsl_perturbNormal_derivativeMap(in vec3 vtxN, in vec2 dhdUV, in mat2x3 dPdQ, mat2 dUVdQ)
+NBL_GLSL_API vec3 nbl_glsl_perturbNormal_derivativeMap(in vec3 vtxN, in vec2 dhdUV, in mat2x3 dPdQ, mat2 dUVdQ)
 {
     // apply the chain rule in reverse
 	dUVdQ /= abs(determinant(dUVdQ)); // abs is important to protect against UV coordinate mirroring
@@ -35,7 +35,7 @@ vec3 nbl_glsl_perturbNormal_derivativeMap(in vec3 vtxN, in vec2 dhdUV, in mat2x3
 }
 
 #ifdef _NBL_BUILTIN_GLSL_BUMP_MAPPING_DERIVATIVES_DECLARED_
-vec3 nbl_glsl_perturbNormal_derivativeMap(in vec3 vtxN, in vec2 dhdUV)
+NBL_GLSL_API vec3 nbl_glsl_perturbNormal_derivativeMap(in vec3 vtxN, in vec2 dhdUV)
 {
     return nbl_glsl_perturbNormal_derivativeMap(vtxN,dhdUV,nbl_glsl_perturbNormal_dPdSomething(),nbl_glsl_perturbNormal_dUVdSomething());
 }

@@ -5,7 +5,7 @@
 #ifndef _NBL_BUILTIN_GLSL_MTL_LOADER_COMMON_INCLUDED_
 #define _NBL_BUILTIN_GLSL_MTL_LOADER_COMMON_INCLUDED_
 
-struct nbl_glsl_MTLMaterialParameters
+NBL_GLSL_API struct nbl_glsl_MTLMaterialParameters
 {
     vec3 Ka;
     vec3 Kd;

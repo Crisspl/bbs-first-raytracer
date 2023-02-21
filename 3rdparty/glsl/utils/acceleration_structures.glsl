@@ -5,7 +5,7 @@
 #define _NBL_BUILTIN_GLSL_UTILS_ACCELERATION_STRUCTURES_INCLUDED_
 
 // Use for Indirect Builds
-struct nbl_glsl_BuildRangeInfo {
+NBL_GLSL_API struct nbl_glsl_BuildRangeInfo {
     uint    primitiveCount;
     uint    primitiveOffset;
     uint    firstVertex;

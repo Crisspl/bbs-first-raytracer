@@ -10,7 +10,7 @@
 //! Warnings: 
 //! - You don't need to consider this using in your raytracing shaders if you apply the forward transformation to your projection matrix.
 //! - Be aware that almost always you'd want to do a single transform in your rendering pipeline.
-ivec2 nbl_glsl_surface_transform_applyInverseToScreenSpaceCoordinate(in uint swapchainTransform, in ivec2 coord, in ivec2 screenSize) {
+NBL_GLSL_API ivec2 nbl_glsl_surface_transform_applyInverseToScreenSpaceCoordinate(in uint swapchainTransform, in ivec2 coord, in ivec2 screenSize) {
     ivec2 lastTexel = screenSize - ivec2(1);
     switch (swapchainTransform) 
     {
@@ -39,7 +39,7 @@ ivec2 nbl_glsl_surface_transform_applyInverseToScreenSpaceCoordinate(in uint swa
 //! Usecase = [Scatter]:
 //!   When directly writing to your swapchain using `imageStore` in order to match the orientation of the device relative to it's natural orientation. 
 //! Warning: Be aware that almost always you'd want to do a single transform in your rendering pipeline.
-ivec2 nbl_glsl_surface_transform_applyToScreenSpaceCoordinate(in uint swapchainTransform, in ivec2 coord, in ivec2 screenSize) {
+NBL_GLSL_API ivec2 nbl_glsl_surface_transform_applyToScreenSpaceCoordinate(in uint swapchainTransform, in ivec2 coord, in ivec2 screenSize) {
     ivec2 lastTexel = screenSize - ivec2(1);
     switch (swapchainTransform) 
     {
@@ -66,7 +66,7 @@ ivec2 nbl_glsl_surface_transform_applyToScreenSpaceCoordinate(in uint swapchainT
 
 //! [width,height] might switch to [height, width] in orientations such as 90°CW
 //! Usecase: Currently none in the shaders
-ivec2 nbl_glsl_surface_transform_transformedExtents(in uint swapchainTransform, in ivec2 screenSize) {
+NBL_GLSL_API ivec2 nbl_glsl_surface_transform_transformedExtents(in uint swapchainTransform, in ivec2 screenSize) {
     switch (swapchainTransform) 
     {
     case NBL_GLSL_SURFACE_TRANSFORM_E_IDENTITY:
@@ -89,22 +89,22 @@ ivec2 nbl_glsl_surface_transform_transformedExtents(in uint swapchainTransform, 
 // If rendering directly to the swapchain, dFdx/dFdy operations may be incorrect due to the swapchain
 // transform. Use these helper functions to transform the dFdx or dFdy accordingly.
 
-vec2 nbl_glsl_surface_transform_transformedDerivatives(in uint swapchainTransform, in vec2 ddxDdy) {
+NBL_GLSL_API vec2 nbl_glsl_surface_transform_transformedDerivatives(in uint swapchainTransform, in vec2 ddxDdy) {
     #define OUTPUT_TYPE vec2
     #include "nbl/builtin/glsl/utils/surface_transform_transformedDerivatives.glsl"
     #undef OUTPUT_TYPE
 }
-mat2 nbl_glsl_surface_transform_transformedDerivatives(in uint swapchainTransform, in mat2 ddxDdy) {
+NBL_GLSL_API mat2 nbl_glsl_surface_transform_transformedDerivatives(in uint swapchainTransform, in mat2 ddxDdy) {
     #define OUTPUT_TYPE mat2
     #include "nbl/builtin/glsl/utils/surface_transform_transformedDerivatives.glsl"
     #undef OUTPUT_TYPE
 }
-mat2x3 nbl_glsl_surface_transform_transformedDerivatives(in uint swapchainTransform, in mat2x3 ddxDdy) {
+NBL_GLSL_API mat2x3 nbl_glsl_surface_transform_transformedDerivatives(in uint swapchainTransform, in mat2x3 ddxDdy) {
     #define OUTPUT_TYPE mat2x3
     #include "nbl/builtin/glsl/utils/surface_transform_transformedDerivatives.glsl"
     #undef OUTPUT_TYPE
 }
-mat2x4 nbl_glsl_surface_transform_transformedDerivatives(in uint swapchainTransform, in mat2x4 ddxDdy) {
+NBL_GLSL_API mat2x4 nbl_glsl_surface_transform_transformedDerivatives(in uint swapchainTransform, in mat2x4 ddxDdy) {
     #define OUTPUT_TYPE mat2x4
     #include "nbl/builtin/glsl/utils/surface_transform_transformedDerivatives.glsl"
     #undef OUTPUT_TYPE
@@ -114,7 +114,7 @@ mat2x4 nbl_glsl_surface_transform_transformedDerivatives(in uint swapchainTransf
 //! If rendering to the swapchain, you may use this function to transform the NDC coordinates directly
 //! to be fed into gl_Position in vertex shading
 //! Warning: Be aware that almost always you'd want to do a single transform in your rendering pipeline.
-vec2 nbl_glsl_surface_transform_applyToNDC(in uint swapchainTransform, in vec2 ndc) {
+NBL_GLSL_API vec2 nbl_glsl_surface_transform_applyToNDC(in uint swapchainTransform, in vec2 ndc) {
     const float sin90 = 1.0, cos90 = 0.0,
         sin180 = 0.0, cos180 = -1.0,
         sin270 = -1.0, cos270 = 0.0;

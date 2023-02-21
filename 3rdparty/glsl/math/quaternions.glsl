@@ -7,13 +7,13 @@
 
 
 
-struct nbl_glsl_quaternion_t
+NBL_GLSL_API struct nbl_glsl_quaternion_t
 {
     vec4 data;
 };
 
 
-nbl_glsl_quaternion_t nbl_glsl_quaternion_t_constructFromTruncated(in vec3 first3Components)
+NBL_GLSL_API nbl_glsl_quaternion_t nbl_glsl_quaternion_t_constructFromTruncated(in vec3 first3Components)
 {
     nbl_glsl_quaternion_t quat;
     quat.data.xyz = first3Components;
@@ -21,7 +21,7 @@ nbl_glsl_quaternion_t nbl_glsl_quaternion_t_constructFromTruncated(in vec3 first
     return quat;
 }
 
-nbl_glsl_quaternion_t nbl_glsl_quaternion_t_lerp(in nbl_glsl_quaternion_t start, in nbl_glsl_quaternion_t end, in float fraction, in float totalPseudoAngle)
+NBL_GLSL_API nbl_glsl_quaternion_t nbl_glsl_quaternion_t_lerp(in nbl_glsl_quaternion_t start, in nbl_glsl_quaternion_t end, in float fraction, in float totalPseudoAngle)
 {
     const uint negationMask = floatBitsToUint(totalPseudoAngle)&0x80000000u;
     const vec4 adjEnd = uintBitsToFloat(floatBitsToUint(end.data)^negationMask);
@@ -30,12 +30,12 @@ nbl_glsl_quaternion_t nbl_glsl_quaternion_t_lerp(in nbl_glsl_quaternion_t start,
     quat.data = mix(start.data,adjEnd,fraction);
     return quat;
 }
-nbl_glsl_quaternion_t nbl_glsl_quaternion_t_lerp(in nbl_glsl_quaternion_t start, in nbl_glsl_quaternion_t end, in float fraction)
+NBL_GLSL_API nbl_glsl_quaternion_t nbl_glsl_quaternion_t_lerp(in nbl_glsl_quaternion_t start, in nbl_glsl_quaternion_t end, in float fraction)
 {
     return nbl_glsl_quaternion_t_lerp(start,end,fraction,dot(start.data,end.data));
 }
 
-float nbl_glsl_quaternion_t_flerp_impl_adj_interpolant(in float angle, in float fraction, in float interpolantPrecalcTerm2, in float interpolantPrecalcTerm3)
+NBL_GLSL_API float nbl_glsl_quaternion_t_flerp_impl_adj_interpolant(in float angle, in float fraction, in float interpolantPrecalcTerm2, in float interpolantPrecalcTerm3)
 {
     const float A = 1.0904f + angle * (-3.2452f + angle * (3.55645f - angle * 1.43519f));
     const float B = 0.848013f + angle * (-1.06021f + angle * 0.215638f);
@@ -43,7 +43,7 @@ float nbl_glsl_quaternion_t_flerp_impl_adj_interpolant(in float angle, in float 
     return fraction+interpolantPrecalcTerm3*k;
 }
 
-nbl_glsl_quaternion_t nbl_glsl_quaternion_t_flerp(in nbl_glsl_quaternion_t start, in nbl_glsl_quaternion_t end, in float fraction)
+NBL_GLSL_API nbl_glsl_quaternion_t nbl_glsl_quaternion_t_flerp(in nbl_glsl_quaternion_t start, in nbl_glsl_quaternion_t end, in float fraction)
 {
     const float pseudoAngle = dot(start.data,end.data);
 
@@ -55,7 +55,7 @@ nbl_glsl_quaternion_t nbl_glsl_quaternion_t_flerp(in nbl_glsl_quaternion_t start
     return quat;
 }
 
-mat3 nbl_glsl_quaternion_t_constructMatrix(in nbl_glsl_quaternion_t quat)
+NBL_GLSL_API mat3 nbl_glsl_quaternion_t_constructMatrix(in nbl_glsl_quaternion_t quat)
 {
     mat3 mat;
     mat[0] = quat.data.yzx*quat.data.ywz+quat.data.zxy*quat.data.zyw*vec3( 1.f, 1.f,-1.f);
@@ -69,7 +69,7 @@ mat3 nbl_glsl_quaternion_t_constructMatrix(in nbl_glsl_quaternion_t quat)
 }
 
 
-vec3 nbl_glsl_slerp_delta_impl(in vec3 start, in vec3 preScaledWaypoint, in float cosAngleFromStart)
+NBL_GLSL_API vec3 nbl_glsl_slerp_delta_impl(in vec3 start, in vec3 preScaledWaypoint, in float cosAngleFromStart)
 {
     vec3 planeNormal = cross(start,preScaledWaypoint);
     
@@ -83,7 +83,7 @@ vec3 nbl_glsl_slerp_delta_impl(in vec3 start, in vec3 preScaledWaypoint, in floa
     return precompPart*cosAngle+cross(planeNormal,precompPart);
 }
 
-vec3 nbl_glsl_slerp_impl_impl(in vec3 start, in vec3 preScaledWaypoint, in float cosAngleFromStart)
+NBL_GLSL_API vec3 nbl_glsl_slerp_impl_impl(in vec3 start, in vec3 preScaledWaypoint, in float cosAngleFromStart)
 {
     return start+nbl_glsl_slerp_delta_impl(start,preScaledWaypoint,cosAngleFromStart);
 }

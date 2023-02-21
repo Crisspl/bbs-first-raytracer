@@ -11,7 +11,7 @@
 #include <3rdparty/glsl/bxdf/brdf/specular/ggx.glsl>
 
 
-float nbl_glsl_ggx_height_correlated_aniso_dielectric_cos_eval_wo_clamps(
+NBL_GLSL_API float nbl_glsl_ggx_height_correlated_aniso_dielectric_cos_eval_wo_clamps(
     in float NdotH2, in float TdotH2, in float BdotH2,
     in float absNdotL, in float NdotL2, in float TdotL2, in float BdotL2,
     in float absNdotV, in float NdotV2, in float TdotV2, in float BdotV2,
@@ -27,7 +27,7 @@ float nbl_glsl_ggx_height_correlated_aniso_dielectric_cos_eval_wo_clamps(
 }
 
 // before calling you must ensure that `nbl_glsl_AnisotropicMicrofacetCache` is valid (if a given V vector can "see" the L vector)
-float nbl_glsl_ggx_height_correlated_aniso_dielectric_cos_eval(in nbl_glsl_LightSample _sample, in nbl_glsl_AnisotropicViewSurfaceInteraction interaction, in nbl_glsl_AnisotropicMicrofacetCache _cache, in float eta, in float ax, in float ay)
+NBL_GLSL_API float nbl_glsl_ggx_height_correlated_aniso_dielectric_cos_eval(in nbl_glsl_LightSample _sample, in nbl_glsl_AnisotropicViewSurfaceInteraction interaction, in nbl_glsl_AnisotropicMicrofacetCache _cache, in float eta, in float ax, in float ay)
 {
     const float TdotH2 = _cache.TdotH*_cache.TdotH;
     const float BdotH2 = _cache.BdotH*_cache.BdotH;
@@ -57,7 +57,7 @@ float nbl_glsl_ggx_height_correlated_aniso_dielectric_cos_eval(in nbl_glsl_Light
 }
 
 
-float nbl_glsl_ggx_height_correlated_dielectric_cos_eval_wo_clamps(
+NBL_GLSL_API float nbl_glsl_ggx_height_correlated_dielectric_cos_eval_wo_clamps(
     in float NdotH2, in float absNdotL, in float NdotL2,
     in float absNdotV, in float NdotV2,
     in bool transmitted, in float VdotH, in float LdotH, in float VdotHLdotH,
@@ -71,7 +71,7 @@ float nbl_glsl_ggx_height_correlated_dielectric_cos_eval_wo_clamps(
 }
 
 // before calling you must ensure that `nbl_glsl_AnisotropicMicrofacetCache` is valid (if a given V vector can "see" the L vector)
-float nbl_glsl_ggx_height_correlated_dielectric_cos_eval(in nbl_glsl_LightSample _sample, in nbl_glsl_IsotropicViewSurfaceInteraction interaction, in nbl_glsl_IsotropicMicrofacetCache _cache, in float eta, in float a2)
+NBL_GLSL_API float nbl_glsl_ggx_height_correlated_dielectric_cos_eval(in nbl_glsl_LightSample _sample, in nbl_glsl_IsotropicViewSurfaceInteraction interaction, in nbl_glsl_IsotropicMicrofacetCache _cache, in float eta, in float a2)
 {
     float orientedEta, dummy;
     const bool backside = nbl_glsl_getOrientedEtas(orientedEta, dummy, _cache.VdotH, eta);
@@ -88,7 +88,7 @@ float nbl_glsl_ggx_height_correlated_dielectric_cos_eval(in nbl_glsl_LightSample
 }
 
 // TODO: unifty the two following functions into `nbl_glsl_microfacet_BSDF_cos_generate_wo_clamps(vec3 H,...)` and `nbl_glsl_microfacet_BSDF_cos_generate` or at least a auto declaration macro in lieu of a template
-nbl_glsl_LightSample nbl_glsl_ggx_dielectric_cos_generate_wo_clamps(in vec3 localV, in bool backside, in vec3 upperHemisphereLocalV, in mat3 m, inout vec3& u, in float _ax, in float _ay, in float rcpOrientedEta, in float orientedEta2, in float rcpOrientedEta2, out nbl_glsl_AnisotropicMicrofacetCache& _cache)
+NBL_GLSL_API nbl_glsl_LightSample nbl_glsl_ggx_dielectric_cos_generate_wo_clamps(in vec3 localV, in bool backside, in vec3 upperHemisphereLocalV, in mat3 m, inout vec3& u, in float _ax, in float _ay, in float rcpOrientedEta, in float orientedEta2, in float rcpOrientedEta2, out nbl_glsl_AnisotropicMicrofacetCache& _cache)
 {
     // thanks to this manouvre the H will always be in the upper hemisphere (NdotH>0.0)
     const vec3 H = nbl_glsl_ggx_cos_generate(upperHemisphereLocalV,u.xy,_ax,_ay);
@@ -105,7 +105,7 @@ nbl_glsl_LightSample nbl_glsl_ggx_dielectric_cos_generate_wo_clamps(in vec3 loca
     return nbl_glsl_createLightSampleTangentSpace(localV,localL,m);
 }
 
-nbl_glsl_LightSample nbl_glsl_ggx_dielectric_cos_generate(in nbl_glsl_AnisotropicViewSurfaceInteraction interaction, inout vec3& u, in float ax, in float ay, in float eta, out nbl_glsl_AnisotropicMicrofacetCache& _cache)
+NBL_GLSL_API nbl_glsl_LightSample nbl_glsl_ggx_dielectric_cos_generate(in nbl_glsl_AnisotropicViewSurfaceInteraction interaction, inout vec3& u, in float ax, in float ay, in float eta, out nbl_glsl_AnisotropicMicrofacetCache& _cache)
 {
     const vec3 localV = nbl_glsl_getTangentSpaceV(interaction);
     
@@ -120,11 +120,11 @@ nbl_glsl_LightSample nbl_glsl_ggx_dielectric_cos_generate(in nbl_glsl_Anisotropi
 
 
 
-float nbl_glsl_ggx_dielectric_pdf_wo_clamps(in bool transmitted, in float reflectance, in float ndf, in float devsh_v, in float absNdotV, in float VdotH, in float LdotH, in float VdotHLdotH, in float orientedEta)
+NBL_GLSL_API float nbl_glsl_ggx_dielectric_pdf_wo_clamps(in bool transmitted, in float reflectance, in float ndf, in float devsh_v, in float absNdotV, in float VdotH, in float LdotH, in float VdotHLdotH, in float orientedEta)
 {
     return nbl_glsl_smith_VNDF_pdf_wo_clamps(ndf,nbl_glsl_GGXSmith_G1_wo_numerator(absNdotV,devsh_v),absNdotV,transmitted,VdotH,LdotH,VdotHLdotH,orientedEta,reflectance);
 }
-float nbl_glsl_ggx_dielectric_pdf_wo_clamps(in bool transmitted, in float reflectance, in float NdotH2, in float absNdotV, in float NdotV2, in float VdotH, in float LdotH, in float VdotHLdotH, in float a2, in float orientedEta)
+NBL_GLSL_API float nbl_glsl_ggx_dielectric_pdf_wo_clamps(in bool transmitted, in float reflectance, in float NdotH2, in float absNdotV, in float NdotV2, in float VdotH, in float LdotH, in float VdotHLdotH, in float a2, in float orientedEta)
 {
     const float ndf = nbl_glsl_ggx_trowbridge_reitz(a2, NdotH2);
     const float devsh_v = nbl_glsl_smith_ggx_devsh_part(NdotV2, a2, 1.0-a2);
@@ -132,7 +132,7 @@ float nbl_glsl_ggx_dielectric_pdf_wo_clamps(in bool transmitted, in float reflec
     return nbl_glsl_ggx_dielectric_pdf_wo_clamps(transmitted,reflectance, ndf,devsh_v, absNdotV, VdotH,LdotH,VdotHLdotH, orientedEta);
 }
 
-float nbl_glsl_ggx_dielectric_pdf_wo_clamps(in bool transmitted, in float reflectance, in float NdotH2, in float TdotH2, in float BdotH2, in float absNdotV, in float NdotV2, in float TdotV2, in float BdotV2, in float VdotH, in float LdotH, in float VdotHLdotH, in float ax, in float ay, in float ax2, in float ay2, in float orientedEta)
+NBL_GLSL_API float nbl_glsl_ggx_dielectric_pdf_wo_clamps(in bool transmitted, in float reflectance, in float NdotH2, in float TdotH2, in float BdotH2, in float absNdotV, in float NdotV2, in float TdotV2, in float BdotV2, in float VdotH, in float LdotH, in float VdotHLdotH, in float ax, in float ay, in float ax2, in float ay2, in float orientedEta)
 {
     const float ndf = nbl_glsl_ggx_aniso(TdotH2,BdotH2,NdotH2, ax, ay, ax2, ay2);
     const float devsh_v = nbl_glsl_smith_ggx_devsh_part(TdotV2, BdotV2, NdotV2, ax2, ay2);
@@ -140,7 +140,7 @@ float nbl_glsl_ggx_dielectric_pdf_wo_clamps(in bool transmitted, in float reflec
     return nbl_glsl_ggx_dielectric_pdf_wo_clamps(transmitted,reflectance, ndf,devsh_v, absNdotV, VdotH,LdotH,VdotHLdotH, orientedEta);
 }
 
-float nbl_glsl_ggx_dielectric_cos_remainder_and_pdf_wo_clamps(out float& pdf, in float ndf, in bool transmitted, in float absNdotL, in float NdotL2, in float absNdotV, in float NdotV2, in float VdotH, in float LdotH, in float VdotHLdotH, in float reflectance, in float orientedEta, in float a2)
+NBL_GLSL_API float nbl_glsl_ggx_dielectric_cos_remainder_and_pdf_wo_clamps(out float& pdf, in float ndf, in bool transmitted, in float absNdotL, in float NdotL2, in float absNdotV, in float NdotV2, in float VdotH, in float LdotH, in float VdotHLdotH, in float reflectance, in float orientedEta, in float a2)
 {
     const float one_minus_a2 = 1.0 - a2;
     const float devsh_v = nbl_glsl_smith_ggx_devsh_part(NdotV2, a2, one_minus_a2);
@@ -149,7 +149,7 @@ float nbl_glsl_ggx_dielectric_cos_remainder_and_pdf_wo_clamps(out float& pdf, in
     return nbl_glsl_ggx_smith_G2_over_G1_devsh(absNdotL, NdotL2, absNdotV, devsh_v, a2, one_minus_a2);
 }
 
-float nbl_glsl_ggx_dielectric_cos_remainder_and_pdf(out float& pdf, in nbl_glsl_LightSample _sample, in nbl_glsl_IsotropicViewSurfaceInteraction interaction, in nbl_glsl_IsotropicMicrofacetCache _cache, in float eta, in float a2)
+NBL_GLSL_API float nbl_glsl_ggx_dielectric_cos_remainder_and_pdf(out float& pdf, in nbl_glsl_LightSample _sample, in nbl_glsl_IsotropicViewSurfaceInteraction interaction, in nbl_glsl_IsotropicMicrofacetCache _cache, in float eta, in float a2)
 {    
     const float ndf = nbl_glsl_ggx_trowbridge_reitz(a2, _cache.NdotH2);
     
@@ -167,7 +167,7 @@ float nbl_glsl_ggx_dielectric_cos_remainder_and_pdf(out float& pdf, in nbl_glsl_
 }
 
 
-float nbl_glsl_ggx_aniso_dielectric_cos_remainder_and_pdf_wo_clamps(out float& pdf, in float ndf, in bool transmitted, in float absNdotL, in float NdotL2, in float TdotL2, in float BdotL2, in float absNdotV, in float TdotV2, in float BdotV2, in float NdotV2, in float VdotH, in float LdotH, in float VdotHLdotH, in float reflectance, in float orientedEta, in float ax2,in float ay2)
+NBL_GLSL_API float nbl_glsl_ggx_aniso_dielectric_cos_remainder_and_pdf_wo_clamps(out float& pdf, in float ndf, in bool transmitted, in float absNdotL, in float NdotL2, in float TdotL2, in float BdotL2, in float absNdotV, in float TdotV2, in float BdotV2, in float NdotV2, in float VdotH, in float LdotH, in float VdotHLdotH, in float reflectance, in float orientedEta, in float ax2,in float ay2)
 {
     const float devsh_v = nbl_glsl_smith_ggx_devsh_part(TdotV2, BdotV2, NdotV2, ax2, ay2);
     pdf = nbl_glsl_ggx_dielectric_pdf_wo_clamps(transmitted,reflectance, ndf,devsh_v, absNdotV, VdotH,LdotH,VdotHLdotH, orientedEta);
@@ -179,7 +179,7 @@ float nbl_glsl_ggx_aniso_dielectric_cos_remainder_and_pdf_wo_clamps(out float& p
     );
 }
 
-float nbl_glsl_ggx_aniso_dielectric_cos_remainder_and_pdf(out float& pdf, in nbl_glsl_LightSample _sample, in nbl_glsl_AnisotropicViewSurfaceInteraction interaction, in nbl_glsl_AnisotropicMicrofacetCache _cache, in float eta, in float ax, in float ay)
+NBL_GLSL_API float nbl_glsl_ggx_aniso_dielectric_cos_remainder_and_pdf(out float& pdf, in nbl_glsl_LightSample _sample, in nbl_glsl_AnisotropicViewSurfaceInteraction interaction, in nbl_glsl_AnisotropicMicrofacetCache _cache, in float eta, in float ax, in float ay)
 {
     const float ax2 = ax*ax;
     const float ay2 = ay*ay;

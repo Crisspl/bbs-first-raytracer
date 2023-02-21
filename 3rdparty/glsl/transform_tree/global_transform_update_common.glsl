@@ -8,12 +8,12 @@ layout(local_size_x=NBL_GLSL_LIMIT_MAX_OPTIMALLY_RESIDENT_WORKGROUP_INVOCATIONS)
 
 #include "nbl/builtin/glsl/utils/transform.glsl"
 #include "nbl/builtin/glsl/utils/normal_encode.glsl"
-void nbl_glsl_transform_tree_globalTransformUpdate_updateNormalMatrix(in uint nodeID, in mat4x3 globalTransform);
+NBL_GLSL_API void nbl_glsl_transform_tree_globalTransformUpdate_updateNormalMatrix(in uint nodeID, in mat4x3 globalTransform);
 
 // TODO: figure out which& `memoryBarrierBuffer();` can be removed
 
 // there isn't any lock so there's no mutual exclusion here, we can, and we will end up doing duplicate work
-void nbl_glsl_transform_tree_globalTransformUpdate_impl(in uint nodeID, in mat4x3 updatedTransform, in uint expectedTimestamp)
+NBL_GLSL_API void nbl_glsl_transform_tree_globalTransformUpdate_impl(in uint nodeID, in mat4x3 updatedTransform, in uint expectedTimestamp)
 {
     memoryBarrierBuffer();
     // these data races are completely fine, all threads will write the same value
@@ -26,7 +26,7 @@ void nbl_glsl_transform_tree_globalTransformUpdate_impl(in uint nodeID, in mat4x
     nbl_glsl_transform_tree_globalTransformUpdate_updateNormalMatrix(nodeID,updatedTransform);
 }
 
-mat4x3 nbl_glsl_transform_tree_globalTransformUpdate_root(in uint nodeID)
+NBL_GLSL_API mat4x3 nbl_glsl_transform_tree_globalTransformUpdate_root(in uint nodeID)
 {
     const uint expectedTimestamp = nodeUpdatedTimestamp.data[nodeID];
     const mat4x3 retval = nodeRelativeTransforms.data[nodeID];
@@ -37,7 +37,7 @@ mat4x3 nbl_glsl_transform_tree_globalTransformUpdate_root(in uint nodeID)
     // relative transform == global transform for a root node
     return retval;
 }
-void nbl_glsl_transform_tree_globalTransformUpdate_child(inout mat4x3& accumulatedTransform, in uint nodeID)
+NBL_GLSL_API void nbl_glsl_transform_tree_globalTransformUpdate_child(inout mat4x3& accumulatedTransform, in uint nodeID)
 {
     const uint expectedTimestamp = nodeUpdatedTimestamp.data[nodeID];
     memoryBarrierBuffer();

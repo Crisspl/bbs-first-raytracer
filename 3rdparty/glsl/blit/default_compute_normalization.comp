@@ -14,7 +14,7 @@ layout (local_size_x = _NBL_GLSL_WORKGROUP_SIZE_X_, local_size_y = _NBL_GLSL_WOR
 #error _NBL_GLSL_BLIT_NORMALIZATION_IN_IMAGE_DESCRIPTOR_DEFINED_ must be defined
 #endif
 
-vec4 nbl_glsl_blit_normalization_getData(in uvec3 coord, in uint layerIdx)
+NBL_GLSL_API vec4 nbl_glsl_blit_normalization_getData(in uvec3 coord, in uint layerIdx)
 {
 #if NBL_GLSL_EQUAL(_NBL_GLSL_BLIT_DIM_COUNT_, 1)
 	return texelFetch(_NBL_GLSL_BLIT_NORMALIZATION_IN_IMAGE_DESCRIPTOR_DEFINED_, ivec2(coord.x, layerIdx));
@@ -36,12 +36,12 @@ vec4 nbl_glsl_blit_normalization_getData(in uvec3 coord, in uint layerIdx)
 #error _NBL_GLSL_BLIT_NORMALIZATION_OUT_IMAGE_DESCRIPTOR_DEFINED_ must be defined
 #endif
 
-vec4 nbl_glsl_blit_formats_encode(in vec4 value)
+NBL_GLSL_API vec4 nbl_glsl_blit_formats_encode(in vec4 value)
 {
 	return value;
 }
 
-void nbl_glsl_blit_normalization_setData(in vec4 value, in uvec3 coord, in uint layerIdx)
+NBL_GLSL_API void nbl_glsl_blit_normalization_setData(in vec4 value, in uvec3 coord, in uint layerIdx)
 {
 #if NBL_GLSL_EQUAL(_NBL_GLSL_BLIT_DIM_COUNT_, 1)
 	imageStore(_NBL_GLSL_BLIT_NORMALIZATION_OUT_IMAGE_DESCRIPTOR_DEFINED_, ivec2(coord.x, layerIdx), nbl_glsl_blit_formats_encode(value));
@@ -61,7 +61,7 @@ void nbl_glsl_blit_normalization_setData(in vec4 value, in uvec3 coord, in uint 
 #error _NBL_GLSL_BLIT_NORMALIZATION_PASSED_COUNTER_ALPHA_HISTOGRAM_DESCRIPTOR_DEFINED_ must be defined
 #endif
 
-uint nbl_glsl_blit_normalization_getAlphaHistogramData(in uint index, in uint layerIdx)
+NBL_GLSL_API uint nbl_glsl_blit_normalization_getAlphaHistogramData(in uint index, in uint layerIdx)
 {
 	return _NBL_GLSL_BLIT_NORMALIZATION_PASSED_COUNTER_ALPHA_HISTOGRAM_DESCRIPTOR_DEFINED_.data[layerIdx].histogram[index];
 }
@@ -74,7 +74,7 @@ uint nbl_glsl_blit_normalization_getAlphaHistogramData(in uint index, in uint la
 #error _NBL_GLSL_BLIT_NORMALIZATION_PASSED_COUNTER_ALPHA_HISTOGRAM_DESCRIPTOR_DEFINED_ must be defined
 #endif
 
-uint nbl_glsl_blit_normalization_getPassedInputPixelCount(in uint layerIdx)
+NBL_GLSL_API uint nbl_glsl_blit_normalization_getPassedInputPixelCount(in uint layerIdx)
 {
 	return _NBL_GLSL_BLIT_NORMALIZATION_PASSED_COUNTER_ALPHA_HISTOGRAM_DESCRIPTOR_DEFINED_.data[layerIdx].passedPixelCount;
 }

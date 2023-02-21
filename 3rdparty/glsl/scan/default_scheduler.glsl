@@ -6,7 +6,7 @@
 #ifdef __cplusplus
 #define uint uint32_t
 #endif
-struct nbl_glsl_scan_DefaultSchedulerParameters_t
+NBL_GLSL_API struct nbl_glsl_scan_DefaultSchedulerParameters_t
 {
 	uint finishedFlagOffset[NBL_BUILTIN_MAX_SCAN_LEVELS-1];
 	uint cumulativeWorkgroupCount[NBL_BUILTIN_MAX_SCAN_LEVELS];
@@ -15,7 +15,7 @@ struct nbl_glsl_scan_DefaultSchedulerParameters_t
 #undef uint
 #else
 
-void nbl_glsl_scan_scheduler_computeParameters(in uint elementCount, out nbl_glsl_scan_Parameters_t& _scanParams, out nbl_glsl_scan_DefaultSchedulerParameters_t& _schedulerParams)
+NBL_GLSL_API void nbl_glsl_scan_scheduler_computeParameters(in uint elementCount, out nbl_glsl_scan_Parameters_t& _scanParams, out nbl_glsl_scan_DefaultSchedulerParameters_t& _schedulerParams)
 {
 	_scanParams.lastElement[0] = elementCount-1u;
 	_scanParams.topLevel = findMSB(_scanParams.lastElement[0])/_NBL_GLSL_WORKGROUP_SIZE_LOG2_;
@@ -81,7 +81,7 @@ void nbl_glsl_scan_scheduler_computeParameters(in uint elementCount, out nbl_gls
 #undef WorkgroupCount
 }
 
-bool nbl_glsl_scan_scheduler_getWork(in nbl_glsl_scan_DefaultSchedulerParameters_t params, in uint topLevel, out uint& treeLevel, out uint& localWorkgroupIndex)
+NBL_GLSL_API bool nbl_glsl_scan_scheduler_getWork(in nbl_glsl_scan_DefaultSchedulerParameters_t params, in uint topLevel, out uint& treeLevel, out uint& localWorkgroupIndex)
 {
 	if (gl_LocalInvocationIndex==0u)
 		_NBL_GLSL_SCRATCH_SHARED_DEFINED_[gl_LocalInvocationIndex] = atomicAdd(scanScratch.workgroupsStarted,1u);
@@ -134,7 +134,7 @@ bool nbl_glsl_scan_scheduler_getWork(in nbl_glsl_scan_DefaultSchedulerParameters
 	return false;
 }
 
-void nbl_glsl_scan_scheduler_markComplete(in nbl_glsl_scan_DefaultSchedulerParameters_t params, in uint topLevel, in uint treeLevel, in uint localWorkgroupIndex)
+NBL_GLSL_API void nbl_glsl_scan_scheduler_markComplete(in nbl_glsl_scan_DefaultSchedulerParameters_t params, in uint topLevel, in uint treeLevel, in uint localWorkgroupIndex)
 {
 	memoryBarrierBuffer(); // must complete writing the data before flags itself as complete
 	if (gl_LocalInvocationIndex==0u)

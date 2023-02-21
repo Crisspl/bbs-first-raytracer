@@ -4,7 +4,7 @@
 
 #include <3rdparty/glsl/material_compiler/common_invariant_declarations.glsl>
 
-struct nbl_glsl_ext_Mitsuba_Loader_instance_data_t
+NBL_GLSL_API struct nbl_glsl_ext_Mitsuba_Loader_instance_data_t
 {
 	mat4x3 tform;
 	vec3 normalMatrixRow0;

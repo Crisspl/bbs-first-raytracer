@@ -37,11 +37,11 @@ layout(push_constant) uniform PushConstants
 } pc;
 
 #include <3rdparty/glsl/utils/culling.glsl>
-mat4 nbl_glsl_culling_lod_selection_getMVP(in uint pvInstanceID)
+NBL_GLSL_API mat4 nbl_glsl_culling_lod_selection_getMVP(in uint pvInstanceID)
 {
     return perViewPerInstance.data[pvInstanceID].mvp;
 }
-mat4 nbl_glsl_culling_lod_selection_getInverseMVP(in uint pvInstanceID)
+NBL_GLSL_API mat4 nbl_glsl_culling_lod_selection_getInverseMVP(in uint pvInstanceID)
 {
     // this should actually be faster than loading an extra 4x3 matrix, inverting it and multiplying it with a 4x4
     return inverse(nbl_glsl_culling_lod_selection_getMVP(pvInstanceID));

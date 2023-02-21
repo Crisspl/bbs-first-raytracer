@@ -17,12 +17,12 @@
 
 #ifndef _NBL_GLSL_EXT_FFT_SET_DATA_DECLARED_
 #define _NBL_GLSL_EXT_FFT_SET_DATA_DECLARED_
-void nbl_glsl_ext_FFT_setData(in uvec3 coordinate, in uint channel, in vec2 complex_value);
+NBL_GLSL_API void nbl_glsl_ext_FFT_setData(in uvec3 coordinate, in uint channel, in vec2 complex_value);
 #endif
 
 #ifndef _NBL_GLSL_EXT_FFT_GET_PADDED_DATA_DECLARED_
 #define _NBL_GLSL_EXT_FFT_GET_PADDED_DATA_DECLARED_
-nbl_glsl_complex nbl_glsl_ext_FFT_getPaddedData(in ivec3 coordinate, in uint channel);
+NBL_GLSL_API nbl_glsl_complex nbl_glsl_ext_FFT_getPaddedData(in ivec3 coordinate, in uint channel);
 #endif
 
 #ifndef _NBL_GLSL_EXT_FFT_GET_PARAMETERS_DEFINED_
@@ -35,14 +35,14 @@ nbl_glsl_complex nbl_glsl_ext_FFT_getPaddedData(in ivec3 coordinate, in uint cha
 #error "You need to define `nbl_glsl_ext_FFT_getPaddedData` and mark `_NBL_GLSL_EXT_FFT_GET_PADDED_DATA_DEFINED_`!"
 #endif
 
-uvec3 nbl_glsl_ext_FFT_getCoordinates(in uint tidx)
+NBL_GLSL_API uvec3 nbl_glsl_ext_FFT_getCoordinates(in uint tidx)
 {
     uint direction = nbl_glsl_ext_FFT_Parameters_t_getDirection();
     uvec3 tmp = gl_WorkGroupID;
     tmp[direction] = tidx;
     return tmp;
 }
-ivec3 nbl_glsl_ext_FFT_getPaddedCoordinates(in uint tidx, in uint log2FFTSize, in uint trueDimension)
+NBL_GLSL_API ivec3 nbl_glsl_ext_FFT_getPaddedCoordinates(in uint tidx, in uint log2FFTSize, in uint trueDimension)
 {
     const uint padding = ((0x1u<<log2FFTSize)-trueDimension)>>1u;
     return ivec3(nbl_glsl_ext_FFT_getCoordinates(tidx-padding));
@@ -52,9 +52,9 @@ ivec3 nbl_glsl_ext_FFT_getPaddedCoordinates(in uint tidx, in uint log2FFTSize, i
 #include "nbl/builtin/glsl/workgroup/fft.glsl"
 
 
-nbl_glsl_complex nbl_glsl_ext_FFT_impl_values[(_NBL_GLSL_EXT_FFT_MAX_DIM_SIZE_-1u)/_NBL_GLSL_WORKGROUP_SIZE_+1u]; // TODO: hardcoded channel count, multichannel FFT (shared twiddles), maybe even precompute twiddles into a LUT!?
+NBL_GLSL_API nbl_glsl_complex nbl_glsl_ext_FFT_impl_values[(_NBL_GLSL_EXT_FFT_MAX_DIM_SIZE_-1u)/_NBL_GLSL_WORKGROUP_SIZE_+1u]; // TODO: hardcoded channel count, multichannel FFT (shared twiddles), maybe even precompute twiddles into a LUT!?
 
-void nbl_glsl_ext_FFT_loop(in bool is_inverse, in uint virtual_thread_count, in uint step)
+NBL_GLSL_API void nbl_glsl_ext_FFT_loop(in bool is_inverse, in uint virtual_thread_count, in uint step)
 {
     for(uint t=0u; t<virtual_thread_count; t++)
     {
@@ -72,7 +72,7 @@ void nbl_glsl_ext_FFT_loop(in bool is_inverse, in uint virtual_thread_count, in 
     }
 }
 
-void nbl_glsl_ext_FFT_preloaded(bool is_inverse, in uint log2FFTSize)
+NBL_GLSL_API void nbl_glsl_ext_FFT_preloaded(bool is_inverse, in uint log2FFTSize)
 {
     // Virtual Threads Calculation
     const uint dataLength = 1u<<log2FFTSize;
@@ -101,7 +101,7 @@ void nbl_glsl_ext_FFT_preloaded(bool is_inverse, in uint log2FFTSize)
         nbl_glsl_ext_FFT_loop(true,virtual_thread_count,step);
 }
 
-void nbl_glsl_ext_FFT(bool is_inverse, uint channel)
+NBL_GLSL_API void nbl_glsl_ext_FFT(bool is_inverse, uint channel)
 {
     // Virtual Threads Calculation
     const uint log2FFTSize = nbl_glsl_ext_FFT_Parameters_t_getLog2FFTSize();

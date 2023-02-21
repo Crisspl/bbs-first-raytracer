@@ -8,7 +8,7 @@
 #include <3rdparty/glsl/limits/numeric.glsl>
 
 // move to ieee754 header?
-mat3 nbl_glsl_mul_with_bounds_wo_gamma(out mat3& error, in mat3 a, in mat3 b, in float b_relative_error)
+NBL_GLSL_API mat3 nbl_glsl_mul_with_bounds_wo_gamma(out mat3& error, in mat3 a, in mat3 b, in float b_relative_error)
 {
     mat3 retval;
     for (int i=0; i<3; i++)
@@ -27,7 +27,7 @@ mat3 nbl_glsl_mul_with_bounds_wo_gamma(out mat3& error, in mat3 a, in mat3 b, in
     error *= error_factor;
     return retval;
 }
-mat3 nbl_glsl_mul_with_bounds(out mat3& error, in mat3 a, in mat3 b, in float b_relative_error)
+NBL_GLSL_API mat3 nbl_glsl_mul_with_bounds(out mat3& error, in mat3 a, in mat3 b, in float b_relative_error)
 {
     mat3 retval = nbl_glsl_mul_with_bounds_wo_gamma(error,a,b,b_relative_error);
     error *= nbl_glsl_ieee754_gamma(2u);
@@ -35,15 +35,15 @@ mat3 nbl_glsl_mul_with_bounds(out mat3& error, in mat3 a, in mat3 b, in float b_
 }
 
 
-vec4 nbl_glsl_pseudoMul4x4with3x1(in mat4 m, in vec3 v)
+NBL_GLSL_API vec4 nbl_glsl_pseudoMul4x4with3x1(in mat4 m, in vec3 v)
 {
     return m[0] * v.x + m[1] * v.y + m[2] * v.z + m[3];
 }
-vec3 nbl_glsl_pseudoMul3x4with3x1(in mat4x3 m, in vec3 v)
+NBL_GLSL_API vec3 nbl_glsl_pseudoMul3x4with3x1(in mat4x3 m, in vec3 v)
 {
     return m[0] * v.x + m[1] * v.y + m[2] * v.z + m[3];
 }
-mat4x3 nbl_glsl_pseudoMul4x3with4x3(in mat4x3 lhs, in mat4x3 rhs) // TODO: change name to 3x4with3x4
+NBL_GLSL_API mat4x3 nbl_glsl_pseudoMul4x3with4x3(in mat4x3 lhs, in mat4x3 rhs) // TODO: change name to 3x4with3x4
 {
     mat4x3 result;
     for (int i = 0; i < 4; i++)
@@ -51,7 +51,7 @@ mat4x3 nbl_glsl_pseudoMul4x3with4x3(in mat4x3 lhs, in mat4x3 rhs) // TODO: chang
     result[3] += lhs[3];
     return result;
 }
-mat4 nbl_glsl_pseudoMul4x4with4x3(in mat4 proj, in mat4x3 tform)
+NBL_GLSL_API mat4 nbl_glsl_pseudoMul4x4with4x3(in mat4 proj, in mat4x3 tform)
 {
     mat4 result;
     for (int i = 0; i < 4; i++)
@@ -61,7 +61,7 @@ mat4 nbl_glsl_pseudoMul4x4with4x3(in mat4 proj, in mat4x3 tform)
 }
 
 // useful for fast computation of a Normal Matrix (you just need to remember to normalize the transformed normal because of the missing divide by the determinant)
-mat3 nbl_glsl_sub3x3TransposeCofactors(in mat3 sub3x3)
+NBL_GLSL_API mat3 nbl_glsl_sub3x3TransposeCofactors(in mat3 sub3x3)
 {
     return mat3(
         cross(sub3x3[1],sub3x3[2]),
@@ -70,14 +70,14 @@ mat3 nbl_glsl_sub3x3TransposeCofactors(in mat3 sub3x3)
     );
 }
 // returns a signflip mask
-uint nbl_glsl_sub3x3TransposeCofactors(in mat3 sub3x3, out mat3& sub3x3TransposeCofactors)
+NBL_GLSL_API uint nbl_glsl_sub3x3TransposeCofactors(in mat3 sub3x3, out mat3& sub3x3TransposeCofactors)
 {
     sub3x3TransposeCofactors = nbl_glsl_sub3x3TransposeCofactors(sub3x3);
     return floatBitsToUint(dot(sub3x3[0],sub3x3TransposeCofactors[0]))&0x80000000u;
 }
 
 // use this if you anticipate flipped/mirrored models
-vec3 nbl_glsl_fastNormalTransform(in uint signFlipMask, in mat3 sub3x3TransposeCofactors, in vec3 normal)
+NBL_GLSL_API vec3 nbl_glsl_fastNormalTransform(in uint signFlipMask, in mat3 sub3x3TransposeCofactors, in vec3 normal)
 {
     vec3 tmp = sub3x3TransposeCofactors*normal;
     const float tmpLenRcp = inversesqrt(dot(tmp,tmp));
@@ -85,7 +85,7 @@ vec3 nbl_glsl_fastNormalTransform(in uint signFlipMask, in mat3 sub3x3TransposeC
 }
 
 //
-mat4x3 nbl_glsl_pseudoInverse3x4(in mat4x3 tform)
+NBL_GLSL_API mat4x3 nbl_glsl_pseudoInverse3x4(in mat4x3 tform)
 {
     const mat3 sub3x3Inv = inverse(mat3(tform));
     mat4x3 retval;

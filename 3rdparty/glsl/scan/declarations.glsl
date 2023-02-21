@@ -6,7 +6,7 @@
 
 
 #ifndef _NBL_GLSL_SCAN_GET_PARAMETERS_DECLARED_
-nbl_glsl_scan_Parameters_t nbl_glsl_scan_getParameters();
+NBL_GLSL_API nbl_glsl_scan_Parameters_t nbl_glsl_scan_getParameters();
 #define _NBL_GLSL_SCAN_GET_PARAMETERS_DECLARED_
 #endif
 
@@ -21,7 +21,7 @@ nbl_glsl_scan_Parameters_t nbl_glsl_scan_getParameters();
 
 
 #ifndef _NBL_GLSL_SCAN_GET_PADDED_DATA_DECLARED_
-void nbl_glsl_scan_getData(
+NBL_GLSL_API void nbl_glsl_scan_getData(
 	inout nbl_glsl_scan_Storage_t& data,
 	in uint levelInvocationIndex,
 	in uint localWorkgroupIndex,
@@ -32,7 +32,7 @@ void nbl_glsl_scan_getData(
 #endif
 
 #ifndef _NBL_GLSL_SCAN_SET_DATA_DECLARED_
-void nbl_glsl_scan_setData(
+NBL_GLSL_API void nbl_glsl_scan_setData(
 	in nbl_glsl_scan_Storage_t data,
 	in uint levelInvocationIndex,
 	in uint localWorkgroupIndex,

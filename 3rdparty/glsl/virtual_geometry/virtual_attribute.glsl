@@ -10,7 +10,7 @@
 #define nbl_glsl_VG_VirtualAttributePacked_t uint
 
 #ifndef _NBL_VG_USE_SSBO
-struct nbl_glsl_VG_VirtualAttribute
+NBL_GLSL_API struct nbl_glsl_VG_VirtualAttribute
 {
     uint binding;
     int offset;
@@ -19,7 +19,7 @@ struct nbl_glsl_VG_VirtualAttribute
 #define nbl_glsl_VG_VirtualAttribute uint
 #endif
 
-nbl_glsl_VG_VirtualAttribute nbl_glsl_VG_unpackVirtualAttribute(in nbl_glsl_VG_VirtualAttributePacked_t vaPacked)
+NBL_GLSL_API nbl_glsl_VG_VirtualAttribute nbl_glsl_VG_unpackVirtualAttribute(in nbl_glsl_VG_VirtualAttributePacked_t vaPacked)
 {
 #ifndef _NBL_VG_USE_SSBO
     nbl_glsl_VG_VirtualAttribute result;
@@ -33,7 +33,7 @@ nbl_glsl_VG_VirtualAttribute nbl_glsl_VG_unpackVirtualAttribute(in nbl_glsl_VG_V
 }
 
 #if (defined(_NBL_VG_USE_SSBO) && defined(_NBL_VG_USE_SSBO_UVEC4)) || defined(_NBL_VG_FLOAT_BUFFERS_COUNT)
-vec4 nbl_glsl_VG_attribFetch4f(in nbl_glsl_VG_VirtualAttributePacked_t attr, uint vertexID)
+NBL_GLSL_API vec4 nbl_glsl_VG_attribFetch4f(in nbl_glsl_VG_VirtualAttributePacked_t attr, uint vertexID)
 {
   const nbl_glsl_VG_VirtualAttribute va = nbl_glsl_VG_unpackVirtualAttribute(attr);
 #ifdef _NBL_VG_USE_SSBO
@@ -47,7 +47,7 @@ vec4 nbl_glsl_VG_attribFetch4f(in nbl_glsl_VG_VirtualAttributePacked_t attr, uin
 #endif
 
 #if (defined(_NBL_VG_USE_SSBO) && defined(_NBL_VG_USE_SSBO_UVEC3)) || _NBL_VG_FLOAT_BUFFERS_COUNT
-vec3 nbl_glsl_VG_attribFetch3f(in nbl_glsl_VG_VirtualAttributePacked_t attr, in uint vertexID)
+NBL_GLSL_API vec3 nbl_glsl_VG_attribFetch3f(in nbl_glsl_VG_VirtualAttributePacked_t attr, in uint vertexID)
 {
   const nbl_glsl_VG_VirtualAttribute va = nbl_glsl_VG_unpackVirtualAttribute(attr);
 #ifdef _NBL_VG_USE_SSBO
@@ -61,7 +61,7 @@ vec3 nbl_glsl_VG_attribFetch3f(in nbl_glsl_VG_VirtualAttributePacked_t attr, in 
 #endif
 
 #if (defined(_NBL_VG_USE_SSBO) && defined(_NBL_VG_USE_SSBO_UVEC2)) || _NBL_VG_FLOAT_BUFFERS_COUNT
-vec2 nbl_glsl_VG_attribFetch2f(in nbl_glsl_VG_VirtualAttributePacked_t attr, in uint vertexID)
+NBL_GLSL_API vec2 nbl_glsl_VG_attribFetch2f(in nbl_glsl_VG_VirtualAttributePacked_t attr, in uint vertexID)
 {
   const nbl_glsl_VG_VirtualAttribute va = nbl_glsl_VG_unpackVirtualAttribute(attr);
 #ifdef _NBL_VG_USE_SSBO
@@ -75,7 +75,7 @@ vec2 nbl_glsl_VG_attribFetch2f(in nbl_glsl_VG_VirtualAttributePacked_t attr, in 
 #endif
 
 #if (defined(_NBL_VG_USE_SSBO) && defined(_NBL_VG_USE_SSBO_UINT)) || _NBL_VG_FLOAT_BUFFERS_COUNT
-float nbl_glsl_VG_attribFetch1f(in nbl_glsl_VG_VirtualAttributePacked_t attr, in uint vertexID)
+NBL_GLSL_API float nbl_glsl_VG_attribFetch1f(in nbl_glsl_VG_VirtualAttributePacked_t attr, in uint vertexID)
 {
   const nbl_glsl_VG_VirtualAttribute va = nbl_glsl_VG_unpackVirtualAttribute(attr);
 #ifdef _NBL_VG_USE_SSBO
@@ -88,7 +88,7 @@ float nbl_glsl_VG_attribFetch1f(in nbl_glsl_VG_VirtualAttributePacked_t attr, in
 #endif
 
 #if (defined(_NBL_VG_USE_SSBO) && defined(_NBL_VG_USE_SSBO_UVEC4)) || _NBL_VG_INT_BUFFERS_COUNT
-ivec4 nbl_glsl_VG_attribFetch4i(in nbl_glsl_VG_VirtualAttributePacked_t attr, uint vertexID)
+NBL_GLSL_API ivec4 nbl_glsl_VG_attribFetch4i(in nbl_glsl_VG_VirtualAttributePacked_t attr, uint vertexID)
 {
   const nbl_glsl_VG_VirtualAttribute va = nbl_glsl_VG_unpackVirtualAttribute(attr);
 #ifdef _NBL_VG_USE_SSBO
@@ -101,7 +101,7 @@ ivec4 nbl_glsl_VG_attribFetch4i(in nbl_glsl_VG_VirtualAttributePacked_t attr, ui
 #endif
 
 #if (defined(_NBL_VG_USE_SSBO) && defined(_NBL_VG_USE_SSBO_UVEC3)) || _NBL_VG_INT_BUFFERS_COUNT
-ivec3 nbl_glsl_VG_attribFetch3i(in nbl_glsl_VG_VirtualAttributePacked_t attr, in uint vertexID)
+NBL_GLSL_API ivec3 nbl_glsl_VG_attribFetch3i(in nbl_glsl_VG_VirtualAttributePacked_t attr, in uint vertexID)
 {
   const nbl_glsl_VG_VirtualAttribute va = nbl_glsl_VG_unpackVirtualAttribute(attr);
 #ifdef _NBL_VG_USE_SSBO
@@ -115,7 +115,7 @@ ivec3 nbl_glsl_VG_attribFetch3i(in nbl_glsl_VG_VirtualAttributePacked_t attr, in
 #endif
 
 #if (defined(_NBL_VG_USE_SSBO) && defined(_NBL_VG_USE_SSBO_UVEC2)) || _NBL_VG_INT_BUFFERS_COUNT
-ivec2 nbl_glsl_VG_attribFetch2i(in nbl_glsl_VG_VirtualAttributePacked_t attr, in uint vertexID)
+NBL_GLSL_API ivec2 nbl_glsl_VG_attribFetch2i(in nbl_glsl_VG_VirtualAttributePacked_t attr, in uint vertexID)
 {
   const nbl_glsl_VG_VirtualAttribute va = nbl_glsl_VG_unpackVirtualAttribute(attr);
 #ifdef _NBL_VG_USE_SSBO
@@ -128,7 +128,7 @@ ivec2 nbl_glsl_VG_attribFetch2i(in nbl_glsl_VG_VirtualAttributePacked_t attr, in
 #endif
 
 #if (defined(_NBL_VG_USE_SSBO) && defined(_NBL_VG_USE_SSBO_UINT)) || _NBL_VG_INT_BUFFERS_COUNT
-int nbl_glsl_VG_attribFetch1i(in nbl_glsl_VG_VirtualAttributePacked_t attr, in uint vertexID)
+NBL_GLSL_API int nbl_glsl_VG_attribFetch1i(in nbl_glsl_VG_VirtualAttributePacked_t attr, in uint vertexID)
 {
   const nbl_glsl_VG_VirtualAttribute va = nbl_glsl_VG_unpackVirtualAttribute(attr);
 #ifdef _NBL_VG_USE_SSBO
@@ -141,7 +141,7 @@ int nbl_glsl_VG_attribFetch1i(in nbl_glsl_VG_VirtualAttributePacked_t attr, in u
 #endif
 
 #if (defined(_NBL_VG_USE_SSBO) && defined(_NBL_VG_USE_SSBO_UVEC4)) || _NBL_VG_UINT_BUFFERS_COUNT
-uvec4 nbl_glsl_VG_attribFetch4u(in nbl_glsl_VG_VirtualAttributePacked_t attr, uint vertexID)
+NBL_GLSL_API uvec4 nbl_glsl_VG_attribFetch4u(in nbl_glsl_VG_VirtualAttributePacked_t attr, uint vertexID)
 {
   const nbl_glsl_VG_VirtualAttribute va = nbl_glsl_VG_unpackVirtualAttribute(attr);
 #ifdef _NBL_VG_USE_SSBO
@@ -153,7 +153,7 @@ uvec4 nbl_glsl_VG_attribFetch4u(in nbl_glsl_VG_VirtualAttributePacked_t attr, ui
 }
 #endif
 #if (defined(_NBL_VG_USE_SSBO) && defined(_NBL_VG_USE_SSBO_UVEC3)) || _NBL_VG_UINT_BUFFERS_COUNT
-uvec3 nbl_glsl_VG_attribFetch3u(in nbl_glsl_VG_VirtualAttributePacked_t attr, in uint vertexID)
+NBL_GLSL_API uvec3 nbl_glsl_VG_attribFetch3u(in nbl_glsl_VG_VirtualAttributePacked_t attr, in uint vertexID)
 {
   const nbl_glsl_VG_VirtualAttribute va = nbl_glsl_VG_unpackVirtualAttribute(attr);
 #ifdef _NBL_VG_USE_SSBO
@@ -166,7 +166,7 @@ uvec3 nbl_glsl_VG_attribFetch3u(in nbl_glsl_VG_VirtualAttributePacked_t attr, in
 }
 #endif
 #if (defined(_NBL_VG_USE_SSBO) && defined(_NBL_VG_USE_SSBO_UVEC2)) || _NBL_VG_UINT_BUFFERS_COUNT
-uvec2 nbl_glsl_VG_attribFetch2u(in nbl_glsl_VG_VirtualAttributePacked_t attr, in uint vertexID)
+NBL_GLSL_API uvec2 nbl_glsl_VG_attribFetch2u(in nbl_glsl_VG_VirtualAttributePacked_t attr, in uint vertexID)
 {
   const nbl_glsl_VG_VirtualAttribute va = nbl_glsl_VG_unpackVirtualAttribute(attr);
 #ifdef _NBL_VG_USE_SSBO
@@ -178,7 +178,7 @@ uvec2 nbl_glsl_VG_attribFetch2u(in nbl_glsl_VG_VirtualAttributePacked_t attr, in
 }
 #endif
 #if (defined(_NBL_VG_USE_SSBO) && defined(_NBL_VG_USE_SSBO_UINT)) || _NBL_VG_UINT_BUFFERS_COUNT
-uint nbl_glsl_VG_attribFetch1u(in nbl_glsl_VG_VirtualAttributePacked_t attr, in uint vertexID)
+NBL_GLSL_API uint nbl_glsl_VG_attribFetch1u(in nbl_glsl_VG_VirtualAttributePacked_t attr, in uint vertexID)
 {
   const nbl_glsl_VG_VirtualAttribute va = nbl_glsl_VG_unpackVirtualAttribute(attr);
 #ifdef _NBL_VG_USE_SSBO

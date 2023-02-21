@@ -7,7 +7,7 @@
 
 #include <3rdparty/glsl/material_compiler/common.glsl>
 
-void nbl_glsl_MC_instr_eval_execute(in nbl_glsl_MC_instr_t instr, in nbl_glsl_MC_precomputed_t precomp, inout nbl_glsl_LightSample& s, inout nbl_glsl_MC_microfacet_t& microfacet)
+NBL_GLSL_API void nbl_glsl_MC_instr_eval_execute(in nbl_glsl_MC_instr_t instr, in nbl_glsl_MC_precomputed_t precomp, inout nbl_glsl_LightSample& s, inout nbl_glsl_MC_microfacet_t& microfacet)
 {
 	const uint op = nbl_glsl_MC_instr_getOpcode(instr);
 
@@ -107,7 +107,7 @@ void nbl_glsl_MC_instr_eval_execute(in nbl_glsl_MC_instr_t instr, in nbl_glsl_MC
 	}
 }
 
-nbl_glsl_MC_bxdf_spectrum_t nbl_glsl_MC_runEvalStream(in nbl_glsl_MC_precomputed_t precomp, in nbl_glsl_MC_instr_stream_t stream, in vec3 L)
+NBL_GLSL_API nbl_glsl_MC_bxdf_spectrum_t nbl_glsl_MC_runEvalStream(in nbl_glsl_MC_precomputed_t precomp, in nbl_glsl_MC_instr_stream_t stream, in vec3 L)
 {
 	nbl_glsl_MC_setCurrInteraction(precomp);
 	nbl_glsl_LightSample s = nbl_glsl_createLightSample(L, currInteraction.inner);

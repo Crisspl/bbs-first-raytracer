@@ -3,21 +3,21 @@
 
 #include <3rdparty/glsl/bxdf/ndf/common.glsl>
 
-float nbl_glsl_smith_G1(in float lambda)
+NBL_GLSL_API float nbl_glsl_smith_G1(in float lambda)
 {
     return 1.0 / (1.0 + lambda);
 }
 
 
 
-float nbl_glsl_smith_VNDF_pdf_wo_clamps(in float ndf, in float lambda_V, in float maxNdotV, out float& onePlusLambda_V)
+NBL_GLSL_API float nbl_glsl_smith_VNDF_pdf_wo_clamps(in float ndf, in float lambda_V, in float maxNdotV, out float& onePlusLambda_V)
 {
     onePlusLambda_V = 1.0+lambda_V;
 
     return nbl_glsl_microfacet_to_light_measure_transform(ndf/onePlusLambda_V,maxNdotV);
 }
 
-float nbl_glsl_smith_VNDF_pdf_wo_clamps(in float ndf, in float lambda_V, in float absNdotV, in bool transmitted, in float VdotH, in float LdotH, in float VdotHLdotH, in float orientedEta, in float reflectance, out float& onePlusLambda_V)
+NBL_GLSL_API float nbl_glsl_smith_VNDF_pdf_wo_clamps(in float ndf, in float lambda_V, in float absNdotV, in bool transmitted, in float VdotH, in float LdotH, in float VdotHLdotH, in float orientedEta, in float reflectance, out float& onePlusLambda_V)
 {
     onePlusLambda_V = 1.0+lambda_V;
 
@@ -25,12 +25,12 @@ float nbl_glsl_smith_VNDF_pdf_wo_clamps(in float ndf, in float lambda_V, in floa
 }
 
 // for when you know the NDF and the uncorrelated smith masking function
-float nbl_glsl_smith_VNDF_pdf_wo_clamps(in float ndf, in float G1_over_2NdotV)
+NBL_GLSL_API float nbl_glsl_smith_VNDF_pdf_wo_clamps(in float ndf, in float G1_over_2NdotV)
 {
     return ndf*0.5*G1_over_2NdotV;
 }
 
-float nbl_glsl_smith_FVNDF_pdf_wo_clamps(in float fresnel_ndf, in float G1_over_2NdotV, in float absNdotV, in bool transmitted, in float VdotH, in float LdotH, in float VdotHLdotH, in float orientedEta)
+NBL_GLSL_API float nbl_glsl_smith_FVNDF_pdf_wo_clamps(in float fresnel_ndf, in float G1_over_2NdotV, in float absNdotV, in bool transmitted, in float VdotH, in float LdotH, in float VdotHLdotH, in float orientedEta)
 {
     float FNG = fresnel_ndf * G1_over_2NdotV;
     float factor = 0.5;
@@ -43,7 +43,7 @@ float nbl_glsl_smith_FVNDF_pdf_wo_clamps(in float fresnel_ndf, in float G1_over_
     return FNG * factor;
 }
 
-float nbl_glsl_smith_VNDF_pdf_wo_clamps(in float ndf, in float G1_over_2NdotV, in float absNdotV, in bool transmitted, in float VdotH, in float LdotH, in float VdotHLdotH, in float orientedEta, in float reflectance)
+NBL_GLSL_API float nbl_glsl_smith_VNDF_pdf_wo_clamps(in float ndf, in float G1_over_2NdotV, in float absNdotV, in bool transmitted, in float VdotH, in float LdotH, in float VdotHLdotH, in float orientedEta, in float reflectance)
 {
     float FN = (transmitted ? (1.0 - reflectance) : reflectance) * ndf;
     

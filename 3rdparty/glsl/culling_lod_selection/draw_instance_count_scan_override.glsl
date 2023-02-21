@@ -20,7 +20,7 @@
 #define NBL_GLSL_CULLING_LOD_SELECTION_DRAW_CALL_COUNTS_DESCRIPTOR_DECLARED
 #include <3rdparty/glsl/culling_lod_selection/output_descriptor_modifiers.glsl>
 
-void nbl_glsl_scan_getData(
+NBL_GLSL_API void nbl_glsl_scan_getData(
 	inout nbl_glsl_scan_Storage_t& data,
 	in uint levelInvocationIndex,
 	in uint localWorkgroupIndex,
@@ -63,7 +63,7 @@ void nbl_glsl_scan_getData(
 	}
 }
 
-void nbl_glsl_scan_setData(
+NBL_GLSL_API void nbl_glsl_scan_setData(
 	in uint data,
 	in uint levelInvocationIndex,
 	in uint localWorkgroupIndex,

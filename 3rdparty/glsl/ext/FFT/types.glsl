@@ -9,22 +9,22 @@
 #if _NBL_GLSL_EXT_FFT_HALF_STORAGE_!=0
 #define nbl_glsl_ext_FFT_storage_t uint
 
-nbl_glsl_complex nbl_glsl_ext_FFT_storage_t_get(in nbl_glsl_ext_FFT_storage_t _in)
+NBL_GLSL_API nbl_glsl_complex nbl_glsl_ext_FFT_storage_t_get(in nbl_glsl_ext_FFT_storage_t _in)
 {
 	return unpackHalf2x16(_in);
 }
-void nbl_glsl_ext_FFT_storage_t_set(out nbl_glsl_ext_FFT_storage_t& _out, in nbl_glsl_complex _in)
+NBL_GLSL_API void nbl_glsl_ext_FFT_storage_t_set(out nbl_glsl_ext_FFT_storage_t& _out, in nbl_glsl_complex _in)
 {
 	_out = packHalf2x16(_in);
 }
 #else
 #define nbl_glsl_ext_FFT_storage_t nbl_glsl_complex
 
-nbl_glsl_complex nbl_glsl_ext_FFT_storage_t_get(in nbl_glsl_ext_FFT_storage_t _in)
+NBL_GLSL_API nbl_glsl_complex nbl_glsl_ext_FFT_storage_t_get(in nbl_glsl_ext_FFT_storage_t _in)
 {
 	return _in;
 }
-void nbl_glsl_ext_FFT_storage_t_set(out nbl_glsl_ext_FFT_storage_t& _out, in nbl_glsl_complex _in)
+NBL_GLSL_API void nbl_glsl_ext_FFT_storage_t_set(out nbl_glsl_ext_FFT_storage_t& _out, in nbl_glsl_complex _in)
 {
 	_out = _in;
 }

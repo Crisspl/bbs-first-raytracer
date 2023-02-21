@@ -47,7 +47,7 @@ If `GL_KHR_subgroup_arithmetic` is not available then these functions require em
 
 
 // puts the result into shared memory at offsets [0,_NBL_GLSL_WORKGROUP_SIZE_/32)
-void nbl_glsl_workgroupBallot_noBarriers(in bool value)
+NBL_GLSL_API void nbl_glsl_workgroupBallot_noBarriers(in bool value)
 {
 	// TODO: Optimization using subgroupBallot in an ifdef NBL_GL_something (need to do feature mapping first)
 	if (gl_LocalInvocationIndex<nbl_glsl_workgroupBallot_impl_BitfieldDWORDs)
@@ -56,7 +56,7 @@ void nbl_glsl_workgroupBallot_noBarriers(in bool value)
 	if (value)
 		atomicOr(_NBL_GLSL_SCRATCH_SHARED_DEFINED_[nbl_glsl_workgroupBallot_impl_getDWORD(gl_LocalInvocationIndex)],1u<<(gl_LocalInvocationIndex&31u));
 }
-void nbl_glsl_workgroupBallot(in bool value)
+NBL_GLSL_API void nbl_glsl_workgroupBallot(in bool value)
 {
 	barrier();
 	nbl_glsl_workgroupBallot_noBarriers(value);
@@ -64,11 +64,11 @@ void nbl_glsl_workgroupBallot(in bool value)
 }
 
 // the ballot is expected to be in _NBL_GLSL_SCRATCH_SHARED_DEFINED_ at offsets [0,_NBL_GLSL_WORKGROUP_SIZE_/32)
-bool nbl_glsl_workgroupBallotBitExtract_noEndBarriers(in uint index)
+NBL_GLSL_API bool nbl_glsl_workgroupBallotBitExtract_noEndBarriers(in uint index)
 {
 	return (_NBL_GLSL_SCRATCH_SHARED_DEFINED_[nbl_glsl_workgroupBallot_impl_getDWORD(index)]&(1u<<(index&31u)))!=0u;
 }
-bool nbl_glsl_workgroupBallotBitExtract(in uint index)
+NBL_GLSL_API bool nbl_glsl_workgroupBallotBitExtract(in uint index)
 {
 	barrier();
 	const bool retval = nbl_glsl_workgroupBallotBitExtract_noEndBarriers(index);
@@ -76,17 +76,17 @@ bool nbl_glsl_workgroupBallotBitExtract(in uint index)
 	return retval;
 }
 
-bool nbl_glsl_workgroupInverseBallot_noEndBarriers()
+NBL_GLSL_API bool nbl_glsl_workgroupInverseBallot_noEndBarriers()
 {
 	return nbl_glsl_workgroupBallotBitExtract_noEndBarriers(gl_LocalInvocationIndex);
 }
-bool nbl_glsl_workgroupInverseBallot()
+NBL_GLSL_API bool nbl_glsl_workgroupInverseBallot()
 {
 	return nbl_glsl_workgroupBallotBitExtract(gl_LocalInvocationIndex);
 }
 
 
-uint nbl_glsl_workgroupBallotBitCount_noEndBarriers()
+NBL_GLSL_API uint nbl_glsl_workgroupBallotBitCount_noEndBarriers()
 {
 	_NBL_GLSL_SCRATCH_SHARED_DEFINED_[nbl_glsl_workgroupBallot_impl_BitfieldDWORDs] = 0u;
 	barrier();
@@ -100,7 +100,7 @@ uint nbl_glsl_workgroupBallotBitCount_noEndBarriers()
 
 	return _NBL_GLSL_SCRATCH_SHARED_DEFINED_[nbl_glsl_workgroupBallot_impl_BitfieldDWORDs];
 }
-uint nbl_glsl_workgroupBallotBitCount()
+NBL_GLSL_API uint nbl_glsl_workgroupBallotBitCount()
 {
 	barrier();
 	const uint retval = nbl_glsl_workgroupBallotBitCount_noEndBarriers();
@@ -113,22 +113,22 @@ uint nbl_glsl_workgroupBallotBitCount()
 	barrier();\
 	return INVCONV(_NBL_GLSL_SCRATCH_SHARED_DEFINED_[nbl_glsl_workgroupBallot_impl_BitfieldDWORDs]);
 
-uint nbl_glsl_workgroupBroadcast_noBarriers(in uint val, in uint id)
+NBL_GLSL_API uint nbl_glsl_workgroupBroadcast_noBarriers(in uint val, in uint id)
 {
 	NBL_GLSL_WORKGROUP_BROADCAST(nbl_glsl_identityFunction, nbl_glsl_identityFunction)
 }
 
-bool nbl_glsl_workgroupBroadcast_noBarriers(in bool val, in uint id)
+NBL_GLSL_API bool nbl_glsl_workgroupBroadcast_noBarriers(in bool val, in uint id)
 {
 	NBL_GLSL_WORKGROUP_BROADCAST(uint, bool)
 }
 
-float nbl_glsl_workgroupBroadcast_noBarriers(in float val, in uint id)
+NBL_GLSL_API float nbl_glsl_workgroupBroadcast_noBarriers(in float val, in uint id)
 {
 	NBL_GLSL_WORKGROUP_BROADCAST(floatBitsToUint, uintBitsToFloat)
 }
 
-int nbl_glsl_workgroupBroadcast_noBarriers(in int val, in uint id)
+NBL_GLSL_API int nbl_glsl_workgroupBroadcast_noBarriers(in int val, in uint id)
 {
 	NBL_GLSL_WORKGROUP_BROADCAST(uint, int)
 }
@@ -146,14 +146,14 @@ DECLARE_WORKGROUP_BROADCAST_OVERLOAD_WITH_BARRIERS(bool, workgroupBroadcast)
 DECLARE_WORKGROUP_BROADCAST_OVERLOAD_WITH_BARRIERS(float, workgroupBroadcast)
 DECLARE_WORKGROUP_BROADCAST_OVERLOAD_WITH_BARRIERS(int, workgroupBroadcast)
 
-uint nbl_glsl_workgroupBroadcastFirst_noBarriers(in uint val)
+NBL_GLSL_API uint nbl_glsl_workgroupBroadcastFirst_noBarriers(in uint val)
 {
 	if (nbl_glsl_workgroupElect())
 		_NBL_GLSL_SCRATCH_SHARED_DEFINED_[nbl_glsl_workgroupBallot_impl_BitfieldDWORDs] = val;
 	barrier();
 	return _NBL_GLSL_SCRATCH_SHARED_DEFINED_[nbl_glsl_workgroupBallot_impl_BitfieldDWORDs];
 }
-uint nbl_glsl_workgroupBroadcastFirst(in uint val)
+NBL_GLSL_API uint nbl_glsl_workgroupBroadcastFirst(in uint val)
 {
 	barrier();
 	const uint retval = nbl_glsl_workgroupBroadcastFirst_noBarriers(val);
@@ -162,14 +162,14 @@ uint nbl_glsl_workgroupBroadcastFirst(in uint val)
 }
 
 
-bool nbl_glsl_workgroupBroadcastFirst(in bool val) {return nbl_glsl_workgroupBroadcast(val,0u);}
-float nbl_glsl_workgroupBroadcastFirst(in float val) {return nbl_glsl_workgroupBroadcast(val,0u);}
-int nbl_glsl_workgroupBroadcastFirst(in int val) {return nbl_glsl_workgroupBroadcast(val,0u);}
+NBL_GLSL_API bool nbl_glsl_workgroupBroadcastFirst(in bool val) {return nbl_glsl_workgroupBroadcast(val,0u);}
+NBL_GLSL_API float nbl_glsl_workgroupBroadcastFirst(in float val) {return nbl_glsl_workgroupBroadcast(val,0u);}
+NBL_GLSL_API int nbl_glsl_workgroupBroadcastFirst(in int val) {return nbl_glsl_workgroupBroadcast(val,0u);}
 
 /** TODO @Hazardu, @Przemog or @Anastazluk
 // these could use optimization from `bitcount` on shared memory, then a part-sized arithmetic scan
-uint nbl_glsl_workgroupBallotFindLSB();
-uint nbl_glsl_workgroupBallotFindMSB();
+NBL_GLSL_API uint nbl_glsl_workgroupBallotFindLSB();
+NBL_GLSL_API uint nbl_glsl_workgroupBallotFindMSB();
 **/
 
 
@@ -253,24 +253,24 @@ uint nbl_glsl_workgroupBallotFindMSB();
 		return CONV(firstLevelScan);
 
 
-uint nbl_glsl_workgroupBallotScanBitCount_impl(in bool exclusive);
+NBL_GLSL_API uint nbl_glsl_workgroupBallotScanBitCount_impl(in bool exclusive);
 
-uint nbl_glsl_workgroupBallotInclusiveBitCount()
+NBL_GLSL_API uint nbl_glsl_workgroupBallotInclusiveBitCount()
 {
 	return nbl_glsl_workgroupBallotScanBitCount_impl(false);
 }
-uint nbl_glsl_workgroupBallotExclusiveBitCount()
+NBL_GLSL_API uint nbl_glsl_workgroupBallotExclusiveBitCount()
 {
 	return nbl_glsl_workgroupBallotScanBitCount_impl(true);
 }
 
-uint nbl_glsl_workgroupBallotScanBitCount_impl_impl(in uint localBitCount)
+NBL_GLSL_API uint nbl_glsl_workgroupBallotScanBitCount_impl_impl(in uint localBitCount)
 {
 	barrier();
 	NBL_GLSL_WORKGROUP_COMMON_IMPL_HEAD(nbl_glsl_identityFunction,nbl_glsl_subgroupInclusiveAdd_impl,localBitCount,0u,nbl_glsl_identityFunction,nbl_glsl_workgroupBallot_impl_BitfieldDWORDs,true)
 	NBL_GLSL_WORKGROUP_SCAN_IMPL_TAIL(true,nbl_glsl_identityFunction,nbl_glsl_subgroupInclusiveAdd_impl,0u,nbl_glsl_identityFunction,nbl_glsl_add)
 }
-uint nbl_glsl_workgroupBallotScanBitCount_impl(in bool exclusive)
+NBL_GLSL_API uint nbl_glsl_workgroupBallotScanBitCount_impl(in bool exclusive)
 {
 	const uint _dword = nbl_glsl_workgroupBallot_impl_getDWORD(gl_LocalInvocationIndex);
 	const uint localBitfield = _NBL_GLSL_SCRATCH_SHARED_DEFINED_[_dword];

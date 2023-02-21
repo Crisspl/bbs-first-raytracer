@@ -5,7 +5,7 @@
 #define uint uint32_t
 #endif
 
-struct nbl_glsl_blit_parameters_t
+NBL_GLSL_API struct nbl_glsl_blit_parameters_t
 {
 	uvec3 dims; // input dimensions in lower 16 bits, output dimensions in higher 16 bits
 	//! Offset into the shared memory array which tells us from where the second buffer of shared memory begins
@@ -31,33 +31,33 @@ struct nbl_glsl_blit_parameters_t
 #ifndef _NBL_GLSL_BLIT_PARAMETERS_METHODS_DEFINED_
 #define _NBL_GLSL_BLIT_PARAMETERS_METHODS_DEFINED_
 
-nbl_glsl_blit_parameters_t nbl_glsl_blit_getParameters();
+NBL_GLSL_API nbl_glsl_blit_parameters_t nbl_glsl_blit_getParameters();
 
-uvec3 nbl_glsl_blit_parameters_getInputImageDimensions()
+NBL_GLSL_API uvec3 nbl_glsl_blit_parameters_getInputImageDimensions()
 {
 	const nbl_glsl_blit_parameters_t params = nbl_glsl_blit_getParameters();
 	return uvec3(bitfieldExtract(params.dims.x, 0, 16), bitfieldExtract(params.dims.y, 0, 16), bitfieldExtract(params.dims.z, 0, 16));
 }
 
-uvec3 nbl_glsl_blit_parameters_getOutputImageDimensions()
+NBL_GLSL_API uvec3 nbl_glsl_blit_parameters_getOutputImageDimensions()
 {
 	const nbl_glsl_blit_parameters_t params = nbl_glsl_blit_getParameters();
 	return uvec3(bitfieldExtract(params.dims.x, 16, 32), bitfieldExtract(params.dims.y, 16, 32), bitfieldExtract(params.dims.z, 16, 32));
 }
 
-uvec3 nbl_glsl_blit_parameters_getWindowDimensions()
+NBL_GLSL_API uvec3 nbl_glsl_blit_parameters_getWindowDimensions()
 {
 	const nbl_glsl_blit_parameters_t params = nbl_glsl_blit_getParameters();
 	return uvec3(bitfieldExtract(params.windowDimPhaseCount.x, 0, 16), bitfieldExtract(params.windowDimPhaseCount.y, 0, 16), bitfieldExtract(params.windowDimPhaseCount.z, 0, 16));
 }
 
-uvec3 nbl_glsl_blit_parameters_getPhaseCount()
+NBL_GLSL_API uvec3 nbl_glsl_blit_parameters_getPhaseCount()
 {
 	const nbl_glsl_blit_parameters_t params = nbl_glsl_blit_getParameters();
 	return uvec3(bitfieldExtract(params.windowDimPhaseCount.x, 16, 32), bitfieldExtract(params.windowDimPhaseCount.y, 16, 32), bitfieldExtract(params.windowDimPhaseCount.z, 16, 32));
 }
 
-uvec3 nbl_glsl_blit_parameters_getOutputTexelsPerWG()
+NBL_GLSL_API uvec3 nbl_glsl_blit_parameters_getOutputTexelsPerWG()
 {
 	//! `outputTexelsPerWG.xy` just happens to be in the first components of `iterationRegionsXPrefixProducts` and `iterationRegionYPrefixProducts` --this is
 	//! the result of how we choose to iterate, i.e. if, in the future, we decide to iterate differently, this needs to change.

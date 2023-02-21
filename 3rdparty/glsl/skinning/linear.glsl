@@ -2,7 +2,7 @@
 #define _NBL_GLSL_SKINNING_LINEAR_GLSL_INCLUDED_
 
 #include <3rdparty/glsl/utils/transform.glsl>
-void nbl_glsl_skinning_linear(inout vec3& modelspacePos, inout vec3& modelspaceNormal, in mat4x3 blendedTform)
+NBL_GLSL_API void nbl_glsl_skinning_linear(inout vec3& modelspacePos, inout vec3& modelspaceNormal, in mat4x3 blendedTform)
 {
 	modelspacePos = nbl_glsl_pseudoMul3x4with3x1(blendedTform,modelspacePos);
 
@@ -13,13 +13,13 @@ void nbl_glsl_skinning_linear(inout vec3& modelspacePos, inout vec3& modelspaceN
 
 
 #include <3rdparty/glsl/skinning/render_descriptor_set.glsl>
-mat4x3 nbl_glsl_skinning_getJointMatrix(in uint skinCacheOffset, in uint jointID);
+NBL_GLSL_API mat4x3 nbl_glsl_skinning_getJointMatrix(in uint skinCacheOffset, in uint jointID);
 
-void nbl_glsl_skinning_linear(inout vec3& modelspacePos, inout vec3& modelspaceNormal, in uint skinCacheOffset, in uint jointID)
+NBL_GLSL_API void nbl_glsl_skinning_linear(inout vec3& modelspacePos, inout vec3& modelspaceNormal, in uint skinCacheOffset, in uint jointID)
 {
 	nbl_glsl_skinning_linear(modelspacePos,modelspaceNormal,nbl_glsl_skinning_getJointMatrix(skinCacheOffset,jointID));
 }
-void nbl_glsl_skinning_linear(inout vec3& modelspacePos, inout vec3& modelspaceNormal, in uint skinCacheOffset, in uvec2 jointID, in float jointWeight)
+NBL_GLSL_API void nbl_glsl_skinning_linear(inout vec3& modelspacePos, inout vec3& modelspaceNormal, in uint skinCacheOffset, in uvec2 jointID, in float jointWeight)
 {
 	mat4x3 skinTform = nbl_glsl_skinning_getJointMatrix(skinCacheOffset,jointID[0])*jointWeight;
 	if (jointWeight!=1.f)
@@ -27,7 +27,7 @@ void nbl_glsl_skinning_linear(inout vec3& modelspacePos, inout vec3& modelspaceN
 
 	nbl_glsl_skinning_linear(modelspacePos,modelspaceNormal,skinTform);
 }
-void nbl_glsl_skinning_linear(inout vec3& modelspacePos, inout vec3& modelspaceNormal, in uint skinCacheOffset, in uvec3 jointID, in vec2 jointWeight)
+NBL_GLSL_API void nbl_glsl_skinning_linear(inout vec3& modelspacePos, inout vec3& modelspaceNormal, in uint skinCacheOffset, in uvec3 jointID, in vec2 jointWeight)
 {
 	mat4x3 skinTform = nbl_glsl_skinning_getJointMatrix(skinCacheOffset,jointID[0])*jointWeight[0];
 	float lastWeight = 1.f-jointWeight[0];
@@ -41,7 +41,7 @@ void nbl_glsl_skinning_linear(inout vec3& modelspacePos, inout vec3& modelspaceN
 
 	nbl_glsl_skinning_linear(modelspacePos,modelspaceNormal,skinTform);
 }
-void nbl_glsl_skinning_linear(inout vec3& modelspacePos, inout vec3& modelspaceNormal, in uint skinCacheOffset, in uvec4 jointID, in vec3 jointWeight)
+NBL_GLSL_API void nbl_glsl_skinning_linear(inout vec3& modelspacePos, inout vec3& modelspaceNormal, in uint skinCacheOffset, in uvec4 jointID, in vec3 jointWeight)
 {
 	mat4x3 skinTform = nbl_glsl_skinning_getJointMatrix(skinCacheOffset,jointID[0])*jointWeight[0];
 	float lastWeight = 1.f-jointWeight[0];
@@ -62,7 +62,7 @@ void nbl_glsl_skinning_linear(inout vec3& modelspacePos, inout vec3& modelspaceN
 }
 
 #include <3rdparty/glsl/skinning/render_descriptor_set.glsl>
-mat4x3 nbl_glsl_skinning_getJointMatrix(in uint skinCacheOffset, in uint jointID)
+NBL_GLSL_API mat4x3 nbl_glsl_skinning_getJointMatrix(in uint skinCacheOffset, in uint jointID)
 {
 	return skinningTransforms.data[skinCacheOffset+jointID];
 }

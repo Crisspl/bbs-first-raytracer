@@ -96,12 +96,12 @@ layout(set = NBL_GLSL_OIT_SET_NUM, binding = NBL_GLSL_SPINLOCK_IMAGE_BINDING,   
 #endif
 
 
-float nbl_glsl_oit_get_rev_depth()
+NBL_GLSL_API float nbl_glsl_oit_get_rev_depth()
 {
     float d = gl_FragCoord.z;
     return d;
 }
-uint nbl_glsl_oit_encode_depth(in float d)
+NBL_GLSL_API uint nbl_glsl_oit_encode_depth(in float d)
 {
     uint du = floatBitsToUint(d);
     // 9 bits of mantissa and 7 of exponent

@@ -41,32 +41,32 @@ layout(set = 0, binding = 6, std430) restrict readonly buffer PREFETCH_INSTR_BUF
 
 // Note: this GLSL header defines just those 3 material compiler functions.
 // The rest of them must still be defined by the user!
-nbl_glsl_MC_instr_t nbl_glsl_MC_fetchInstr(in uint ix)
+NBL_GLSL_API nbl_glsl_MC_instr_t nbl_glsl_MC_fetchInstr(in uint ix)
 {
     return instr_buf.data[ix];
 }
-nbl_glsl_MC_prefetch_instr_t nbl_glsl_MC_fetchPrefetchInstr(in uint ix)
+NBL_GLSL_API nbl_glsl_MC_prefetch_instr_t nbl_glsl_MC_fetchPrefetchInstr(in uint ix)
 {
     return prefetch_instr_buf.data[ix];
 }
-nbl_glsl_MC_bsdf_data_t nbl_glsl_MC_fetchBSDFData(in uint ix)
+NBL_GLSL_API nbl_glsl_MC_bsdf_data_t nbl_glsl_MC_fetchBSDFData(in uint ix)
 {
     return bsdf_buf.data[ix];
 }
 
-uint nbl_glsl_VT_layer2pid(in uint layer)
+NBL_GLSL_API uint nbl_glsl_VT_layer2pid(in uint layer)
 {
     return VT_precomputed.layer_to_sampler_ix[layer];
 }
-uint nbl_glsl_VT_getPgTabSzLog2()
+NBL_GLSL_API uint nbl_glsl_VT_getPgTabSzLog2()
 {
     return VT_precomputed.pgtab_sz_log2;
 }
-float nbl_glsl_VT_getPhysPgTexSzRcp(in uint layer)
+NBL_GLSL_API float nbl_glsl_VT_getPhysPgTexSzRcp(in uint layer)
 {
     return VT_precomputed.phys_pg_tex_sz_rcp[layer];
 }
-float nbl_glsl_VT_getVTexSzRcp()
+NBL_GLSL_API float nbl_glsl_VT_getVTexSzRcp()
 {
     return VT_precomputed.vtex_sz_rcp;
 }

@@ -29,7 +29,7 @@
 
 //TODO: try radix-4 or even radix-8 for perf
 
-void nbl_glsl_workgroupFFT_loop(in bool is_inverse, in uint stride)
+NBL_GLSL_API void nbl_glsl_workgroupFFT_loop(in bool is_inverse, in uint stride)
 {
     barrier();
     const uint sub_ix = gl_LocalInvocationIndex&(stride-1u);
@@ -56,7 +56,7 @@ void nbl_glsl_workgroupFFT_loop(in bool is_inverse, in uint stride)
     _NBL_GLSL_SCRATCH_SHARED_DEFINED_[hi_y_ix] = floatBitsToUint(high.y);
 }
 //! Decimates in Frequency for forward transform, in Time for reverse, hence no bitreverse permutation needed
-void nbl_glsl_workgroupFFT(in bool is_inverse, inout nbl_glsl_complex& lo, inout nbl_glsl_complex& hi)
+NBL_GLSL_API void nbl_glsl_workgroupFFT(in bool is_inverse, inout nbl_glsl_complex& lo, inout nbl_glsl_complex& hi)
 {
     const float doubleWorkgroupSize = float(_NBL_GLSL_WORKGROUP_SIZE_<<1u);
     // special first iteration

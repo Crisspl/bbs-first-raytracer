@@ -8,7 +8,7 @@
 
 
 // forward declaration is useful for offline compilers to not moan until the end
-vec2 nbl_glsl_barycentric_frag_get();
+NBL_GLSL_API vec2 nbl_glsl_barycentric_frag_get();
 
 
 
@@ -16,7 +16,7 @@ vec2 nbl_glsl_barycentric_frag_get();
 #ifdef NBL_GL_NV_fragment_shader_barycentric
 
 
-vec2 nbl_glsl_barycentric_frag_get()
+NBL_GLSL_API vec2 nbl_glsl_barycentric_frag_get()
 {
     return gl_BaryCoordNV.xy;
 }
