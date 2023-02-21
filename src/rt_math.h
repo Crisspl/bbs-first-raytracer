@@ -12,7 +12,7 @@ float sum_parts(vec3 const& v)
 
 vec3 reflect(vec3 inp, vec3 normal)
 {
-	return in - 2.f * dot(inp, normal) * normal;
+	return inp - 2.f * dot(inp, normal) * normal;
 }
 
 bool refract(vec3 inp, vec3 normal, float ni_over_no, vec3& refracted)
@@ -21,7 +21,7 @@ bool refract(vec3 inp, vec3 normal, float ni_over_no, vec3& refracted)
 	float discriminant = 1 - ni_over_no * ni_over_no * (1 - h * h);
 	if (discriminant > 0)
 	{
-		refracted = ni_over_no * (in - normal * h) - normal * sqrt(discriminant);
+		refracted = ni_over_no * (inp - normal * h) - normal * sqrt(discriminant);
 		return true;
 	}
 	else
