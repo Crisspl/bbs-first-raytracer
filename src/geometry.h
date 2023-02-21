@@ -235,6 +235,7 @@ namespace geometry
 					rec.point = ray.At(rec.t);
 					rec.normal = Normal(rec.point);
 					rec.mat = material;
+					rec.setInteraction(&ray, rec.normal);
 					return true;
 
 				}
@@ -245,6 +246,7 @@ namespace geometry
 					rec.point = ray.At(rec.t);
 					rec.normal = Normal(rec.point);
 					rec.mat = material;
+					rec.setInteraction(&ray, rec.normal);
 					return true;
 				}
 			}

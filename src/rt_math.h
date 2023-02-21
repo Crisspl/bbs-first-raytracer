@@ -40,6 +40,12 @@ float schlick(float costheta, float index)
 }
 
 
+template <typename T>
+T random_variable()
+{
+	return glm::linearRand(T(0.f), T(1.f));
+}
+
 vec3 sample_in_sphere(vec3 center, vec3 radius)
 {
 	vec3 outp;

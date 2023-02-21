@@ -14,54 +14,7 @@
 #define GLM_FORCE_ALIGNED
 #define GLM_FORCE_AVX2
 
-#include <3rdparty\glm\glm.hpp>
-#include <3rdparty/glm/vec3.hpp>
-#include <3rdparty/glm/gtc/random.hpp>
-
-#define in
-#define out
-
-using glm::min;
-using glm::max;
-using glm::clamp;
-
-using glm::normalize;
-using glm::dot;
-
-using glm::fract;
-using glm::sign;
-using glm::inversesqrt;
-using glm::floatBitsToUint;
-using glm::floatBitsToInt;
-using glm::intBitsToFloat;
-using glm::uintBitsToFloat;
-
-using glm::findMSB;
-using glm::bitfieldExtract;
-using glm::bitfieldInsert;
-
-using glm::mat2;
-using glm::mat3x2;
-using glm::mat4x2;
-
-using glm::mat2x3;
-using glm::mat3;
-using glm::mat4x3;
-
-using glm::mat2x4;
-using glm::mat3x4;
-using glm::mat4;
-
-using glm::vec2;
-using glm::vec3;
-using glm::vec4;
-using glm::uint; 
-using glm::uvec2;
-using glm::uvec3;
-using glm::uvec4;
-using glm::ivec2;
-using glm::ivec3;
-using glm::ivec4;
+#include "glsl_integration_typedefs.h"
 
 #include "rt_math.h"
 #include <ray.h>
@@ -85,12 +38,14 @@ vec3 color(Ray const& r, Hitable& world, int recursion_num)
 	//FIXME (OS): Magic number
 	if (intersection)
 	{
+		vec3 u = random_variable<vec3>();
+
 		Ray scattered(vec3(0), vec3(0));
-		vec3 attenuation;
-		bool does_scatter = rec.mat->Scatter(r, rec, attenuation, scattered);
+		vec3 quotient; // eval/pdf * NdotL
+		bool does_scatter = rec.mat->Scatter(r, rec, u, quotient, scattered);
 		if (does_scatter && (recursion_num < RECURSION_DEPTH))
 		{
-			return attenuation * color(scattered, world, recursion_num + 1);
+			return quotient * color(scattered, world, recursion_num + 1);
 		}
 		else
 		{
@@ -111,13 +66,14 @@ vec3 color(Ray const& r, Hitable& world, int recursion_num)
 
 vec3 sample(Hitable& world, Camera const& camera, ivec2 const& pos, int const num_samples, Randomization const randomization)
 {
+	const float num_rcp = 1.0f / static_cast<float>(num_samples);
+
 	vec3 accum;
 	for (int i = 0; i < num_samples; ++i)
 	{
 		Ray r = camera.make_ray(pos, randomization);
-		accum += color(r, world, 0);
+		accum += color(r, world, 0) * num_rcp;
 	}
-	accum *= 1.0f / num_samples;
 	return accum;
 }
 
@@ -143,8 +99,15 @@ int trace(Hitable& world, int w, int h, unsigned char * img)
 	return 0;
 }
 
+#define ENABLE_DIELECTRIC 1
+
 int main()
 {
+	const mat2x3 ior_Au = mat2x3(
+		vec3(0.21415f, 0.52329f, 1.3319f),
+		vec3(3.2508f, 2.2714f, 1.8693f)
+	);
+
 	unsigned char *img = new unsigned char[w * h * 3];
 
 	HitableList world;
@@ -153,7 +116,7 @@ int main()
 	
 	//hacky floor in the form of a sphere
 	auto floor = make_shared<Sphere>(vec3(0, -1000, 0), 1000);
-	floor->material = make_shared<Lambertian>(vec3(0.2f, 0.2, 0.7));
+	floor->material = make_shared<Lambertian>(vec3(0.2f, 0.2, 0.7), 1.f);
 	world.Add(floor);
 
 	for (int a = -n; a < n; ++a)
@@ -166,32 +129,39 @@ int main()
 			{
 				auto sphere = make_shared<Sphere>(center, 0.2f);
 				world.Add(sphere);
-				if (choose_mat < 0.8)
+				if (choose_mat < 0.4)
 				{
 					vec3 c = linearRand(vec3(0.f), vec3(1.f));
 					c = c*c;
-					sphere->material = make_shared<Lambertian>(c);
+					float a = linearRand(0.f, 1.f);
+					sphere->material = make_shared<Lambertian>(c, a);
 				}
-				else if (choose_mat < 0.95)
+				else if (choose_mat < 0.7) // ENABLE_DIELECTRIC
 				{
-					sphere->material = make_shared<Metal>(linearRand(vec3(.5f), vec3(1.f)), linearRand(0.f, 0.5f));
+					sphere->material = make_shared<Metal>(ior_Au, linearRand(0.1f, 0.8f));
 				}
+#if ENABLE_DIELECTRIC
 				else
 				{
-					sphere->material = make_shared<Dielectric>(1.5);
+					sphere->material = make_shared<Dielectric>(linearRand(1.33f, 1.76f), linearRand(0.001f, 0.2f));
 				}
+#endif
 			}
 		}
 	}
 
 	//Hero spheres
+#if ENABLE_DIELECTRIC
 	auto crazy = make_shared<Sphere>(vec3(0, 1, 0), 1.0);
-	crazy->material = make_shared<Dielectric>(1.5);
-	auto sexy = make_shared<Sphere>(vec3(-4, 1, 0), 1.0);
-	sexy->material = make_shared<Lambertian>(vec3(0.5, 0.2, 0.5));
+	crazy->material = make_shared<Dielectric>(1.1f, 0.05f);
+#endif
+	auto sexy = make_shared<Sphere>(vec3(-4, 1, 0), 0.6f);
+	sexy->material = make_shared<Lambertian>(vec3(0.5, 0.2, 0.5), 0.4f);
 	auto cool = make_shared<Sphere>(vec3(4, 1, 0), 1.0);
-	cool->material = make_shared<Metal>(vec3(0.7, 0.6, 0.5), 0);
+	cool->material = make_shared<Metal>(ior_Au, 0.2f);
+#if ENABLE_DIELECTRIC
 	world.Add(crazy);
+#endif
 	world.Add(sexy);
 	world.Add(cool);
 

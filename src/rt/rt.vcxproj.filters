@@ -30,6 +30,9 @@
     <ClInclude Include="..\rt_math.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\glsl_integration_typedefs.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\ray.cpp">

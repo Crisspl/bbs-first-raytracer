@@ -72,19 +72,19 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>D:\code\cpp\bbs-first-raytracer\src;D:\code\cpp\bbs-first-raytracer;$(IncludePath)</IncludePath>
+    <IncludePath>D:\git_noav\bbs-first-raytracer;D:\git_noav\bbs-first-raytracer\src;D:\code\cpp\bbs-first-raytracer\src;D:\code\cpp\bbs-first-raytracer;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>D:\code\cpp\bbs-first-raytracer\src;D:\code\cpp\bbs-first-raytracer;$(IncludePath)</IncludePath>
+    <IncludePath>D:\git_noav\bbs-first-raytracer;D:\git_noav\bbs-first-raytracer\src;D:\code\cpp\bbs-first-raytracer\src;D:\code\cpp\bbs-first-raytracer;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>D:\code\cpp\bbs-first-raytracer\src;D:\code\cpp\bbs-first-raytracer;$(IncludePath)</IncludePath>
+    <IncludePath>D:\git_noav\bbs-first-raytracer;D:\git_noav\bbs-first-raytracer\src;D:\git_noav\bbs-first-raytracer\src;D:\git_noav\bbs-first-raytracer;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>D:\code\cpp\bbs-first-raytracer\src;D:\code\cpp\bbs-first-raytracer;$(IncludePath)</IncludePath>
+    <IncludePath>D:\git_noav\bbs-first-raytracer;D:\git_noav\bbs-first-raytracer\src;D:\code\cpp\bbs-first-raytracer\src;D:\code\cpp\bbs-first-raytracer;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -145,6 +145,7 @@
   <ItemGroup>
     <ClInclude Include="..\Camera.h" />
     <ClInclude Include="..\geometry.h" />
+    <ClInclude Include="..\glsl_integration_typedefs.h" />
     <ClInclude Include="..\Material.h" />
     <ClInclude Include="..\ray.h" />
     <ClInclude Include="..\rt_math.h" />
